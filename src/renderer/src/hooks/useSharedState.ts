@@ -24,8 +24,15 @@ import { useEffect, useState, useRef } from 'react'
  *    • atualiza imediatamente o estado local para `newValue`.
  *
  */
-export function useSharedState<T>(key: string, initialValue: T): [T, (newValue: T) => void] {
-  const [state, setState] = useState<T>(initialValue)
+
+interface SharedStateMap {
+  text: string
+}
+export function useSharedState<K extends keyof SharedStateMap>(
+  key: K,
+  initialValue: SharedStateMap[K]
+): [SharedStateMap[K], (newValue: SharedStateMap[K]) => void] {
+  const [state, setState] = useState<SharedStateMap[K]>(initialValue)
 
   const didInitialize = useRef(false)
 
@@ -38,7 +45,7 @@ export function useSharedState<T>(key: string, initialValue: T): [T, (newValue: 
         .then((rawValue: string | null) => {
           if (rawValue !== null) {
             try {
-              const parsed = JSON.parse(rawValue) as T
+              const parsed = JSON.parse(rawValue) as SharedStateMap[K]
               setState(parsed)
             } catch {
               console.warn(
@@ -68,7 +75,7 @@ export function useSharedState<T>(key: string, initialValue: T): [T, (newValue: 
       const handleSharedUpdate = (updatedKey: string, rawValue: string): void => {
         if (updatedKey === key) {
           try {
-            const parsed = JSON.parse(rawValue) as T
+            const parsed = JSON.parse(rawValue) as SharedStateMap[K]
             setState(parsed)
           } catch {
             console.warn(
@@ -83,7 +90,7 @@ export function useSharedState<T>(key: string, initialValue: T): [T, (newValue: 
     }
   }, [key, initialValue])
 
-  const setSharedValue = (newValue: T): void => {
+  const setSharedValue = (newValue: SharedStateMap[K]): void => {
     setState(newValue)
 
     try {
