@@ -31,7 +31,8 @@ const api = {
     onInspection: (callback: (data: unknown) => void) =>
       ipcRenderer.on('socket-inspection', (_, data) => callback(data)),
     onLogout: (callback: () => void) => ipcRenderer.on('socket-logout', () => callback())
-  }
+  },
+  runCimp: (effect: string) => ipcRenderer.invoke('run-cimp', effect)
 }
 
 // Use `contextBridge` APIs to expose Electron APIs to
