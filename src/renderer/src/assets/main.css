@@ -1,29 +1,19 @@
 @import './base.css';
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-image: url('./wavy-lines.svg');
-  background-size: cover;
-  user-select: none;
-}
-
-code {
-  font-weight: 600;
-  padding: 3px 5px;
-  border-radius: 2px;
-  background-color: var(--color-background-mute);
-  font-family:
-    ui-monospace,
-    SFMono-Regular,
-    SF Mono,
-    Menlo,
-    Consolas,
-    Liberation Mono,
-    monospace;
-  font-size: 85%;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  color: var(--ev-c-text-1);
+  background-color: var(--ev-c-background);
+  font-size: 16px;
+  line-height: 1.5;
+  width: 100vw;
+  height: 100vh;
 }
 
 #root {
@@ -31,141 +21,128 @@ code {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  margin-bottom: 80px;
 }
 
-.logo {
-  margin-bottom: 20px;
-  -webkit-user-drag: none;
-  height: 128px;
-  width: 128px;
-  will-change: filter;
-  transition: filter 300ms;
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
-.logo:hover {
-  filter: drop-shadow(0 0 1.2em #6988e6aa);
+:root {
+  --radius: 0.625rem;
+  --background: #fbfcfd; /* backgroundPrimary */
+  --foreground: #171b1c; /* contentPrimary */
+  --card: #fbfcfd; /* backgroundPrimary */
+  --card-foreground: #171b1c; /* contentPrimary */
+  --popover: #fbfcfd; /* backgroundPrimary */
+  --popover-foreground: #171b1c; /* contentPrimary */
+  --primary: #00a67d; /* contentBrand */
+  --primary-foreground: #fbfcfd; /* contentAlwaysLight */
+  --secondary: #f0f3f3; /* backgroundSecondary */
+  --secondary-foreground: #00a67d; /* contentBrand */
+  --muted: #e5e9ea; /* backgroundTertiary */
+  --muted-foreground: #5e6668; /* contentSecondary */
+  --accent: #d1f2e4; /* backgroundBrandLight */
+  --accent-foreground: #00a67d; /* contentBrand */
+  --destructive: #e61e32; /* accentRed */
+  --border: #c8d0d2; /* borderTerciary */
+  --input: #b3bdc0; /* borderSecondary */
+  --ring: #00a67d; /* contentBrand */
+  
+  /* Cores para gráficos */
+  --chart-1: #5530e8; /* accentPurple */
+  --chart-2: #2a89ef; /* accentBlue */
+  --chart-3: #15be78; /* accentGreen */
+  --chart-4: #ff850a; /* accentOrange */
+  --chart-5: #f9ab10; /* accentYellow */
+  
+  /* Sidebar */
+  --sidebar: #f0f3f3; /* backgroundSecondary */
+  --sidebar-foreground: #171b1c; /* contentPrimary */
+  --sidebar-primary: #00a67d; /* contentBrand */
+  --sidebar-primary-foreground: #fbfcfd; /* contentAlwaysLight */
+  --sidebar-accent: #d1f2e4; /* backgroundBrandLight */
+  --sidebar-accent-foreground: #00a67d; /* contentBrand */
+  --sidebar-border: #c8d0d2; /* borderTerciary */
+  --sidebar-ring: #00a67d; /* contentBrand */
 }
 
-.creator {
-  font-size: 14px;
-  line-height: 16px;
-  color: var(--ev-c-text-2);
-  font-weight: 600;
-  margin-bottom: 10px;
+.dark {
+  --background: #0f1112; /* backgroundPrimary */
+  --foreground: #fbfcfd; /* contentPrimary */
+  --card: #1c2122; /* backgroundTertiary */
+  --card-foreground: #fbfcfd; /* contentPrimary */
+  --popover: #1c2122; /* backgroundTertiary */
+  --popover-foreground: #fbfcfd; /* contentPrimary */
+  --primary: #00b388; /* contentBrand */
+  --primary-foreground: #fbfcfd; /* contentAlwaysLight */
+  --secondary: #171b1c; /* backgroundSecondary */
+  --secondary-foreground: #00b388; /* contentBrand */
+  --muted: #2d3234; /* backgroundQuaternary */
+  --muted-foreground: #7b8588; /* contentTertiary */
+  --accent: #0b5f46; /* backgroundBrandLight */
+  --accent-foreground: #00b388; /* contentBrand */
+  --destructive: #eb4b5b; /* accentRed */
+  --border: #4e5557; /* borderPrimary */
+  --input: #2d3234; /* borderSecondary */
+  --ring: #00b388; /* contentBrand */
+  
+  /* Cores para gráficos */
+  --chart-1: #9d8afe; /* accentPurple */
+  --chart-2: #55a1f2; /* accentBlue */
+  --chart-3: #44cb93; /* accentGreen */
+  --chart-4: #ff9d3b; /* accentOrange */
+  --chart-5: #fabc40; /* accentYellow */
+  
+  /* Sidebar */
+  --sidebar: #171b1c; /* backgroundSecondary */
+  --sidebar-foreground: #fbfcfd; /* contentPrimary */
+  --sidebar-primary: #00b388; /* contentBrand */
+  --sidebar-primary-foreground: #fbfcfd; /* contentAlwaysLight */
+  --sidebar-accent: #0b5f46; /* backgroundBrandLight */
+  --sidebar-accent-foreground: #00b388; /* contentBrand */
+  --sidebar-border: #4e5557; /* borderPrimary */
+  --sidebar-ring: #00b388; /* contentBrand */
 }
 
-.text {
-  font-size: 28px;
-  color: var(--ev-c-text-1);
-  font-weight: 700;
-  line-height: 32px;
-  text-align: center;
-  margin: 0 10px;
-  padding: 16px 0;
-}
-
-.tip {
-  font-size: 16px;
-  line-height: 24px;
-  color: var(--ev-c-text-2);
-  font-weight: 600;
-}
-
-.react {
-  background: -webkit-linear-gradient(315deg, #087ea4 55%, #7c93ee);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 700;
-}
-
-.ts {
-  background: -webkit-linear-gradient(315deg, #3178c6 45%, #f0dc4e);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-weight: 700;
-}
-
-.actions {
-  display: flex;
-  padding-top: 32px;
-  margin: -6px;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-}
-
-.action {
-  flex-shrink: 0;
-  padding: 6px;
-}
-
-.action a {
-  cursor: pointer;
-  text-decoration: none;
-  display: inline-block;
-  border: 1px solid transparent;
-  text-align: center;
-  font-weight: 600;
-  white-space: nowrap;
-  border-radius: 20px;
-  padding: 0 20px;
-  line-height: 38px;
-  font-size: 14px;
-  border-color: var(--ev-button-alt-border);
-  color: var(--ev-button-alt-text);
-  background-color: var(--ev-button-alt-bg);
-}
-
-.action a:hover {
-  border-color: var(--ev-button-alt-hover-border);
-  color: var(--ev-button-alt-hover-text);
-  background-color: var(--ev-button-alt-hover-bg);
-}
-
-.versions {
-  position: absolute;
-  bottom: 30px;
-  margin: 0 auto;
-  padding: 15px 0;
-  font-family: 'Menlo', 'Lucida Console', monospace;
-  display: inline-flex;
-  overflow: hidden;
-  align-items: center;
-  border-radius: 22px;
-  background-color: #202127;
-  backdrop-filter: blur(24px);
-}
-
-.versions li {
-  display: block;
-  float: left;
-  border-right: 1px solid var(--ev-c-gray-1);
-  padding: 0 20px;
-  font-size: 14px;
-  line-height: 14px;
-  opacity: 0.8;
-  &:last-child {
-    border: none;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-@media (max-width: 720px) {
-  .text {
-    font-size: 20px;
-  }
-}
-
-@media (max-width: 620px) {
-  .versions {
-    display: none;
-  }
-}
-
-@media (max-width: 350px) {
-  .tip,
-  .actions {
-    display: none;
+  body {
+    @apply bg-background text-foreground;
   }
 }
