@@ -9,7 +9,15 @@ export type ErrorMessageGet =
   | 'conflict'
   | 'not_implemented'
 
-export type ErrorMessagePost = 'server_error' | 'conflict' | 'bad_request' | 'not_implemented'
+export type ErrorMessagePost =
+  | 'server_error'
+  | 'conflict'
+  | 'bad_request'
+  | 'not_implemented'
+  | 'unauthorized'
+
+export type ErrorMessagePatch = 'server_error' | 'unauthorized' | 'bad_request' | 'not_implemented'
+
 export interface UserAPI {
   id: string
   created_at: string
@@ -22,18 +30,25 @@ export interface UserAPI {
   username: string
 }
 
-export interface UserAPIPost {
-  name: string
+export interface UserAPIPost
+  extends Omit<UserAPI, 'id' | 'created_at' | 'last_analysis' | 'last_login'> {
   password: string
-  personal_identification: string
-  role: string
-  spectrums: string[]
-  username: string
+}
+
+export interface UserAPIPut extends Pick<UserAPI, 'id'> {}
+
+export interface UserAPIUpdatePassword {
+  new: string
+  old: string
 }
 
 export interface UseUserService {
   get: () => Promise<User[] | void>
+  getById: (id: string) => Promise<User | void>
   post: (user: User) => Promise<'user-created' | void>
+  postById: (id: string) => Promise<'user-block-status-updated' | void>
+  put: (id: string, user: User) => Promise<UserAPIPut | void>
+  updatePassword: (data: { new: string; old: string }) => Promise<'user-password-updated' | void>
 }
 
 export interface User {

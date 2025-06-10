@@ -1,4 +1,4 @@
-import { ErrorMessageGet, ErrorMessagePost, User, UserAPI, UserAPIPost } from './interfaces'
+import { ErrorMessageGet, ErrorMessagePost, User, UserAPI, UserAPIPost, UserAPIPut } from './interfaces'
 
 export class userMappers {
   // TODO: Apply the translate function from the i18n library
@@ -30,5 +30,17 @@ export class userMappers {
     role: data.role,
     spectrums: data.spectrums,
     username: data.username
+  })
+
+  public static mapDataUpdatePassword = (data: {
+    new: string
+    old: string
+  }): { new: string; old: string } => ({
+    new: data.new,
+    old: data.old
+  })
+
+  public static mapDataPut = (id:string): UserAPIPut => ({
+    id
   })
 }
