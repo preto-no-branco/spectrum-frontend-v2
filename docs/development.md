@@ -193,7 +193,7 @@ import { useSharedState, useWindowManager } from 'path/to/hooks'
 
 export function MeuDashboard() {
   // Compartilha o tema da aplicação entre janelas
-  const [tema, setTema] = useSharedState<'claro' | 'escuro'>('appTheme', 'claro')
+  const [tema, setTema] = useSharedState('appTheme', 'claro')
 
   // Permite abrir uma nova janela para configurações
   const { createWindow } = useWindowManager()
