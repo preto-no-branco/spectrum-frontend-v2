@@ -14,6 +14,7 @@ body {
   line-height: 1.5;
   width: 100vw;
   height: 100vh;
+  background: var(--background);
 }
 
 #root {
@@ -59,6 +60,13 @@ body {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-content-primary: var(--content-primary);
+  --color-content-secondary: var(--content-secondary);
+  --color-content-tertiary: var(--content-tertiary);
+  --color-border-primary: var(--border-primary);
+  --color-border-secondary: var(--border-secondary);
+  --color-border-terciary: var(--border-terciary);
+  --color-background-tertiary: var(--background-tertiary);
 }
 
 :root {
@@ -81,6 +89,13 @@ body {
   --border: #c8d0d2; /* borderTerciary */
   --input: #b3bdc0; /* borderSecondary */
   --ring: #00a67d; /* contentBrand */
+  --content-primary: #171b1c; /* contentPrimary */
+  --content-secondary: #5e6668; /* contentSecondary */
+  --content-tertiary: #404344; /* contentTertiary */
+  --border-primary: #c8d0d2; /* borderPrimary */
+  --border-secondary: #b3bdc0; /* borderSecondary */
+  --border-terciary: #e5e9ea; /* borderTerciary */
+  --background-tertiary: #f0f3f3; /* backgroundTertiary */
   
   /* Cores para gráficos */
   --chart-1: #5530e8; /* accentPurple */
@@ -119,6 +134,13 @@ body {
   --border: #4e5557; /* borderPrimary */
   --input: #2d3234; /* borderSecondary */
   --ring: #00b388; /* contentBrand */
+  --content-primary: #fbfcfd; /* contentPrimary */
+  --content-secondary: #7b8588; /* contentTertiary */
+  --content-tertiary: #4e5557; /* contentQuaternary */
+  --background-tertiary: #1c2122; /* backgroundTertiary */
+  --border-primary: #4e5557; /* borderPrimary */
+  --border-secondary: #2d3234; /* borderSecondary */
+  
   
   /* Cores para gráficos */
   --chart-1: #9d8afe; /* accentPurple */

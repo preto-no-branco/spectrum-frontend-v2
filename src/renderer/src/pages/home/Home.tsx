@@ -16,7 +16,7 @@ function Home(): React.JSX.Element {
   const [text, setText] = useSharedState('text', 'Hello World')
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-background p-6 w-screen h-screen">
+    <div className="flex items-center justify-center w-full bg-background p-6">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Página Inicial</CardTitle>
