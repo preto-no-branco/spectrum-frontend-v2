@@ -28,6 +28,7 @@ import { useEffect, useState, useRef } from 'react'
 interface SharedStateMap {
   text: string
 }
+
 export function useSharedState<K extends keyof SharedStateMap>(
   key: K,
   initialValue: SharedStateMap[K]
