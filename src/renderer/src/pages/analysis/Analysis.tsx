@@ -9,38 +9,60 @@ import {
   CardFooter
 } from '@/components/ui/card'
 import { JSX } from 'react'
-import { Link } from 'react-router-dom'
+import { DataTable } from '@renderer/components/Table'
+
+import { Columns } from '@renderer/components/Table/interfaces'
+
+// This type is used to define the shape of our data.
+// You can use a Zod schema here if you want.
+export type Payment = {
+  id: string
+  amount?: number
+  status: 'pending' | 'processing' | 'success' | 'failed'
+  email: string
+}
+
+export const columns: Columns<Payment> = [
+  {
+    key: 'email',
+    header: 'Email',
+    render: (value) => <span>{value}</span>
+  },
+  {
+    key: 'status',
+    header: 'Status',
+    width: 100,
+    render: (value) => <span>{value}</span>
+  },
+  {
+    key: 'amount',
+    header: 'Amount',
+    render: (value) => <span>{value ?? 'N/A'}</span>
+  },
+  {
+    key: 'id',
+    header: 'ID',
+    width: 200,
+    render: (value) => <Button variant="link">{value}</Button>
+  }
+]
 
 export default function Analysis(): JSX.Element {
   const { createWindow } = useWindowManager()
 
   return (
     <div className="flex items-center justify-center bg-background p-6">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Janela de Gerenciamento</CardTitle>
-          <CardDescription>Crie novas janelas usando shadcn UI e Tailwind CSS.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4 flex flex-col gap-3">
-          <Button onClick={() => createWindow('/')} className="w-full">
-            Criar Home (Nova Janela)
-          </Button>
-
-          <Button variant="outline" onClick={() => createWindow('/analysis')} className="w-full">
-            Criar Analysis (Nova Janela)
-          </Button>
-
-          {/* Botão para voltar para a home na mesma janela */}
-          <Link to="/" className="w-full">
-            <Button variant="secondary" className="w-full">
-              Voltar para Home
-            </Button>
-          </Link>
-        </CardContent>
-        <CardFooter>
-          <p className="text-sm text-gray-500">Exemplo de página usando shadcn/ui</p>
-        </CardFooter>
-      </Card>
+      <DataTable
+        columns={columns}
+        data={[
+          {
+            amount: 20,
+            email: 'luccaparadeda@gmail.com',
+            id: 'aa',
+            status: 'pending'
+          }
+        ]}
+      />
     </div>
   )
 }
