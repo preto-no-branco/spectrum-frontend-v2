@@ -1,4 +1,4 @@
-import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 
 import {
   Table,
@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/table'
 import { TableProps } from './interfaces'
 import { useTable } from './useTable'
-import { DataTablePagination } from './tablePagination'
 
 export function DataTable<T>({ columns, data }: TableProps<T>) {
   const { columns: columns_def, data: tanstack_data } = useTable({ data, columns })
@@ -18,7 +17,7 @@ export function DataTable<T>({ columns, data }: TableProps<T>) {
   const table = useReactTable({
     data: tanstack_data,
     columns: columns_def,
-    getCoreRowModel: getCoreRowModel()
+    getCoreRowModel: getCoreRowModel<T>()
   })
 
   return (
@@ -59,7 +58,6 @@ export function DataTable<T>({ columns, data }: TableProps<T>) {
           )}
         </TableBody>
       </Table>
-      <DataTablePagination table={table} />
     </div>
   )
 }

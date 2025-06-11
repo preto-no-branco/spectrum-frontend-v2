@@ -1,18 +1,11 @@
 import { useWindowManager } from '@renderer/hooks/useWindowManager'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter
-} from '@/components/ui/card'
+
 import { JSX } from 'react'
 import { DataTable } from '@renderer/components/Table'
 
 import { Columns } from '@renderer/components/Table/interfaces'
-import { DataTablePagination } from '@renderer/components/Table/tablePagination'
+import { ArrowUpDown } from 'lucide-react'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -33,11 +26,16 @@ export const columns: Columns<Payment> = [
     key: 'status',
     header: 'Status',
     width: 100,
-    render: (value, row) => <span>{value}</span>
+    render: (value) => <span>{value}</span>
   },
   {
     key: 'amount',
-    header: 'Amount',
+    header: () => (
+      <Button variant="ghost" onClick={() => alert('Sort by amount')}>
+        Amount
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     render: (value) => <span>{value ?? 'N/A'}</span>
   },
   {
@@ -49,8 +47,6 @@ export const columns: Columns<Payment> = [
 ]
 
 export default function Analysis(): JSX.Element {
-  const { createWindow } = useWindowManager()
-
   return (
     <div className="flex items-center justify-center bg-background p-6">
       <DataTable
