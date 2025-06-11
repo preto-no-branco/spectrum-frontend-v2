@@ -18,7 +18,7 @@ const AnimatedBreadcrumb = ({ path }: { path: string | string[] }) => {
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1, transition: { delay } }}
               exit={{ x: 20, opacity: 0, transition: { duration: 0.2 } }}
-              className="overflow-hidden flex items-center gap-2"
+              className="flex items-center gap-2"
             >
               {index > 0 && (
                 <BreadcrumbSeparator>
