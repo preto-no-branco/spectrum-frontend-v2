@@ -8,6 +8,7 @@ declare global {
       sharedStateGetItem: (key: string) => Promise<string | null>
       sharedStateSetItem: (key: string, value: string) => void
       sharedStateUpdated: (callback: (key: string, value: string) => void) => void
+      runCimp: (effect: string) => Promise<{ success: boolean; data?: string; error?: string }>
       socket: {
         connect: (baseURL?: string) => Promise<void>
         disconnect: () => void
