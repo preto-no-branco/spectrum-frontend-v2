@@ -1,23 +1,17 @@
-import { getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import { DataTableProps } from './interfaces'
+import { ColumnDef } from '@tanstack/react-table'
+import { TableProps } from './interfaces'
 
-
-
-interface config<TData, TValue> {
-  data: TData[]
-  columns: TData, TValue[]
-}
-
-export function useTable<TData, TValue>({ data, columns }: DataTableProps<TData, TValue>) {
-  const config
-
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel()
-  })
-
+export function useTable<T>({ data, columns }: TableProps<T>) {
+  const columns_def: ColumnDef<T>[] = columns.map((column) => ({
+    accessorKey: column.key,
+    header: column.header,
+    cell: (info) => {
+      const value = info.row.getValue<T[keyof T]>(info.column.id)
+      return column.render ? column.render(value, info.row.original, info.row.index) : value
+    }
+  }))
   return {
-    table
+    columns: columns_def,
+    data
   }
 }
