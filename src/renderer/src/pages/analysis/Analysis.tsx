@@ -12,6 +12,7 @@ import { JSX } from 'react'
 import { DataTable } from '@renderer/components/Table'
 
 import { Columns } from '@renderer/components/Table/interfaces'
+import { DataTablePagination } from '@renderer/components/Table/tablePagination'
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -32,7 +33,7 @@ export const columns: Columns<Payment> = [
     key: 'status',
     header: 'Status',
     width: 100,
-    render: (value) => <span>{value}</span>
+    render: (value, row) => <span>{value}</span>
   },
   {
     key: 'amount',

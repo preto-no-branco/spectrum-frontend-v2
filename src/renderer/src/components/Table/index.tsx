@@ -9,19 +9,14 @@ import {
   TableRow
 } from '@/components/ui/table'
 import { TableProps } from './interfaces'
+import { useTable } from './useTable'
+import { DataTablePagination } from './tablePagination'
 
 export function DataTable<T>({ columns, data }: TableProps<T>) {
-  const columns_def: ColumnDef<T>[] = columns.map((column) => ({
-    accessorKey: column.key,
-    header: column.header,
-    cell: (info) => {
-      const value = info.row.getValue<T[keyof T]>(info.column.id)
-      return column.render ? column.render(value, info.row.original, info.row.index) : value
-    }
-  }))
+  const { columns: columns_def, data: tanstack_data } = useTable({ data, columns })
 
   const table = useReactTable({
-    data,
+    data: tanstack_data,
     columns: columns_def,
     getCoreRowModel: getCoreRowModel()
   })
@@ -64,6 +59,7 @@ export function DataTable<T>({ columns, data }: TableProps<T>) {
           )}
         </TableBody>
       </Table>
+      <DataTablePagination table={table} />
     </div>
   )
 }
