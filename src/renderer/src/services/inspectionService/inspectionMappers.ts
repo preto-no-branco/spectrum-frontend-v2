@@ -1,5 +1,5 @@
 import { ErrorMessageGet, ErrorMessagePost } from '../interfaces'
-import { Inspection, InspectionAPI, InspectionAPIGetHistory, InspectionAPIPut } from './interfaces'
+import { Inspection, InspectionAPI, InspectionAPIGetById, InspectionAPIGetHistory, InspectionAPIPut } from './interfaces'
 
 export class inspectionMappers {
   // TODO: Apply the translate function from the i18n library
@@ -29,19 +29,22 @@ export class inspectionMappers {
     wasEdited: data.was_edited
   })
 
-  public static mapDataGetById = (data: InspectionAPI): Inspection => ({
-    id: data.id,
+  public static mapDataGetById = (data: InspectionAPIGetById): Inspection => ({
+    bottomImage: data.bottom_image,
     caseId: data.case_id,
     containers: data.containers,
     createdAt: data.created_at,
-    isEmpty: data.is_empty,
-    isFlammable: data.is_flammable,
-    isMultiple: data.is_multiple,
-    isSuspect: data.is_suspect,
+    discardedDescription: data.discarded_description,
+    id: data.id,
+    keyValues: data.key_values,
+    movements: data.movements,
     plates: data.plates,
+    properties: data.properties,
+    radiation: data.radiation,
+    raioxImage: data.raiox_image,
     spectrumCode: data.spectrum_code,
     status: data.status,
-    wasEdited: data.was_edited
+    updatedAt: data.updated_at,
   })
 
   public static mapDataPutAreas = (data: InspectionAPIPut): InspectionAPIPut => ({

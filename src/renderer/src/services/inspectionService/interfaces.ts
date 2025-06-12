@@ -21,7 +21,7 @@ export interface InspectionAPI {
   movements: Movement[]
   properties: KeyValue[]
   radiation: boolean
-  x_ray_image: string
+  raiox_image: string
   updated_at: string
   areas: Area[]
   mask_image: string
@@ -56,33 +56,61 @@ export interface InspectionAPIPostAreas extends Pick<InspectionAPI, 'containers'
 export interface InspectionAPIPut extends Pick<InspectionAPI, 'id' | 'area_id'> {}
 
 export interface UseInspectionService {
+  getHistory: (params: InspectionAPIGetHistoryParams) => Promise<Inspection[] | void>
+  getReport: (params: InspectionAPIGetReportParams) => Promise<'inspection-report-generated' | void>
   getById: (id: string) => Promise<Inspection | void>
-  getHistory: (id: string) => Promise<Inspection | void>
-  getReport: (id: string) => Promise<Inspection | void>
-  postNewProperties: (inspection: Inspection) => Promise<'inspection-properties-added' | void>
+  postNewProperties: (id: string, data: KeyValue[]) => Promise<'inspection-properties-added' | void>
   postFinish: (id: string) => Promise<'inspection-finished' | void>
-  postAreas: (id: string, areas: string[]) => Promise<'inspection-areas-created' | void>
-  putAreas: (id: string, inspection: Inspection) => Promise<'inspection-areas-updated' | void>
+  postAreas: (id: string, areas: Area[]) => Promise<'inspection-areas-created' | void>
+  putAreas: (id: string, area_id: string, data: string) => Promise<'inspection-area-updated' | void>
 }
 
 export interface Inspection {
   caseId: string
+  bottomImage?: string
+  discardedDescription?: string
+  keyValues?: KeyValue[]
+  movements?: Movement[]
+  properties?: KeyValue[]
+  radiation?: boolean
+  raioxImage?: string
+  updatedAt?: string
   containers: Container[]
-  createdAt: string
+  createdAt?: string
   id: string
-  isEmpty: boolean
-  isFlammable: boolean
-  isMultiple: boolean
-  isSuspect: boolean
-  plates: Plate[]
-  spectrumCode: string
-  status: InspectionStatusEnum
-  wasEdited: boolean
+  isEmpty?: boolean
+  isFlammable?: boolean
+  isMultiple?: boolean
+  isSuspect?: boolean
+  plates?: Plate[]
+  spectrumCode?: string
+  status?: InspectionStatusEnum
+  wasEdited?: boolean
+}
+
+export interface InspectionAPIGetHistoryParams {
+  take: number
+  skip: number
+  spectrum: string
+  from: string
+  until: string
+  plate: string
+  container: string
+  case_id: string
+  altered_plate: boolean
+  altered_container: boolean
+  is_multiple: boolean
+  is_empty: boolean
+  is_flammable: boolean
+  is_suspect: boolean
+  is_finished: boolean
+  is_discarded: boolean
+  is_ignored: boolean
 }
 
 export interface InspectionAPIGetReportParams {
   from: string
   until: string
-  type: 'csv' | 'pdf'
   include_discarded: boolean
+  type: 'xlsx' | 'pdf'
 }

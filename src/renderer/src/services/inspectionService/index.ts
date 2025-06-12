@@ -1,14 +1,27 @@
 import { api } from '@renderer/utils/api'
-import { InspectionAPI, InspectionAPIGetById, InspectionAPIGetHistory, InspectionAPIGetReportParams, InspectionAPIPostAreas, InspectionAPIPostProperties, InspectionAPIPut } from './interfaces'
+import {
+  InspectionAPI,
+  InspectionAPIGetById,
+  InspectionAPIGetHistory,
+  InspectionAPIGetHistoryParams,
+  InspectionAPIGetReportParams,
+  InspectionAPIPostAreas,
+  InspectionAPIPostProperties,
+  InspectionAPIPut
+} from './interfaces'
 import { ErrorMessageGet, ErrorMessagePatch, ErrorMessagePost } from '../interfaces'
 import { callback, ResponseAsync } from '../interfaces'
+import { Area, KeyValue } from './childsTypes/interfaces'
 
 export default class InspectionService {
   static async getHistory<MappedResponse>(
+    params: InspectionAPIGetHistoryParams,
     callback: callback<InspectionAPIGetHistory[], MappedResponse>
   ): ResponseAsync<MappedResponse, ErrorMessageGet> {
     try {
-      const response = await api.get<InspectionAPIGetHistory[]>('/inspection')
+      const response = await api.get<InspectionAPIGetHistory[]>(
+        `/inspection?take=${params.take}&skip=${params.skip}&spectrum=${params.spectrum}&from=${params.from}&until=${params.until}&plate=${params.plate}&container=${params.container}&case_id=${params.case_id}&altered_plate=${params.altered_plate}&altered_container=${params.altered_container}&is_multiple=${params.is_multiple}&is_empty=${params.is_empty}&is_flammable=${params.is_flammable}&is_suspect=${params.is_suspect}&is_finished=${params.is_finished}&is_discarded=${params.is_discarded}&is_ignored=${params.is_ignored}`
+      )
       return {
         success: true,
         data: callback(response.data)
@@ -21,15 +34,16 @@ export default class InspectionService {
     }
   }
 
-  //vem um arquivo igual da lsl
   static async getReport(
     params: InspectionAPIGetReportParams
-  ): ResponseAsync<'inspection-report', ErrorMessageGet> {
+  ): ResponseAsync<'inspection-report-generated', ErrorMessageGet> {
     try {
-      await api.post<{ message: string }>(`/inspection/report?from=${params.from}&until=${params.until}&type=${params.type}&include_discarded=${params.include_discarded}`)
+      await api.post<{ message: string }>(
+        `/inspection/report?from=${params.from}&until=${params.until}&type=${params.type}&include_discarded=${params.include_discarded}`
+      )
       return {
         success: true,
-        data: 'inspection-report'
+        data: 'inspection-report-generated'
       }
     } catch (error) {
       if (error instanceof Error && error.message.includes('401')) {
@@ -79,9 +93,9 @@ export default class InspectionService {
     }
   }
 
-  static async postProperties(
+  static async postNewProperties(
     id: string,
-    data: InspectionAPIPostProperties
+    data: KeyValue[]
   ): ResponseAsync<'inspection-properties-added', ErrorMessagePost> {
     try {
       await api.post<{ message: string }>(`/inspection/${id}/properties`, data)
@@ -103,14 +117,12 @@ export default class InspectionService {
     }
   }
 
-  static async postStatus(
-    id: string
-  ): ResponseAsync<'inspection-status-updated', ErrorMessagePost> {
+  static async postFinish(id: string): ResponseAsync<'inspection-finished', ErrorMessagePost> {
     try {
       await api.post<{ message: string }>(`/inspection/${id}/finish`)
       return {
         success: true,
-        data: 'inspection-status-updated'
+        data: 'inspection-finished'
       }
     } catch (error) {
       if (error instanceof Error && error.message.includes('401')) {
@@ -133,13 +145,13 @@ export default class InspectionService {
 
   static async postAreas(
     id: string,
-    data: InspectionAPIPostAreas
-  ): ResponseAsync<'inspection-areas-updated', ErrorMessagePatch> {
+    data: Area[]
+  ): ResponseAsync<'inspection-areas-created', ErrorMessagePatch> {
     try {
       await api.patch<{ message: string }>(`/inspection/${id}/areas`, data)
       return {
         success: true,
-        data: 'inspection-areas-updated'
+        data: 'inspection-areas-created'
       }
     } catch (error) {
       if (error instanceof Error && error.message.includes('401')) {
@@ -160,17 +172,16 @@ export default class InspectionService {
     }
   }
 
-  static async putAreas<MappedResponse>(
+  static async putAreas(
     id: string,
     area_id: string,
-    data: InspectionAPIPut,
-    callback: callback<InspectionAPIPut, MappedResponse>
-  ): ResponseAsync<MappedResponse, ErrorMessagePatch> {
+    data: string
+  ): ResponseAsync<'inspection-area-updated', ErrorMessagePatch> {
     try {
-      const response = await api.put<InspectionAPIPut>(`/inspection/${id}/area/${area_id}`, data)
+      await api.put<InspectionAPIPut>(`/inspection/${id}/area/${area_id}`, data)
       return {
         success: true,
-        data: callback(response.data)
+        data: 'inspection-area-updated'
       }
     } catch (error) {
       if (error instanceof Error && error.message.includes('401')) {
