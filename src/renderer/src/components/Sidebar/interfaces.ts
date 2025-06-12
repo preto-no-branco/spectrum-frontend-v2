@@ -14,6 +14,20 @@ export interface SidebarItem {
 export interface SidebarProps {
   isHidden: boolean
   items: SidebarItem[]
-  onHelpClick?: () => void
-  onLogoutClick?: () => void
+  onHelpClick: () => void
+  onLogoutClick: () => void
+}
+
+export interface SidebarClosedProps {
+  edgeHoverWidth: string
+  onHover: () => void
+}
+
+export interface SidebarOpenProps {
+  sidebarWidth: string
+  items: SidebarProps['items']
+  onHelpClick: () => void
+  onLogoutClick: () => void
+  onMouseEnter: () => void
+  onMouseLeave: () => void
 }

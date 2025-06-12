@@ -5,18 +5,22 @@ import Settings from './settings/Settings'
 
 export const routes = [
   {
+    id: 'home',
     path: '/',
     element: <Home />
   },
   {
+    id: 'analysis',
     path: '/analysis',
     element: <Analysis />
   },
   {
+    id: 'settings',
     path: '/settings',
     element: <Settings />
   },
   {
+    id: 'history',
     path: '/history',
     element: <History />
   }

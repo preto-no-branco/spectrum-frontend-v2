@@ -12,7 +12,7 @@ export const SidebarButton: React.FC<SidebarButtonProps> = ({
     <TooltipTrigger asChild>
       <button
         onClick={onClick}
-        className={`p-2 rounded hover:bg-background-tertiary transition-colors ${className ?? ''}`}
+        className={`p-2 rounded hover:bg-background-tertiary transition-colors ${className}`}
         aria-label={label}
       >
         {icon}

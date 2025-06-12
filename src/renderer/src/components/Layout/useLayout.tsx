@@ -4,11 +4,12 @@ import HomeIcon from '../icons/HomeIcon'
 import RadarIcon from '../icons/RadarIcon'
 import ContainerIcon from '../icons/ContainerIcon'
 import SettingsIcon from '../icons/SettingsIcon'
+import { routes } from '@renderer/pages/routes'
 
-export const useFrame = () => {
+export const useLayout = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const isAnalysisPage = location.pathname === '/analysis'
+  const isAnalysisPage = location.pathname === routes.find((route) => route.id === 'analysis')?.path
 
   const sidebarItems: SidebarItem[] = [
     {
