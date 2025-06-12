@@ -20,14 +20,11 @@ export interface SidebarProps {
 
 export interface SidebarClosedProps {
   edgeHoverWidth: string
-  onHover: () => void
+  onEdgeHover: () => void
 }
 
 export interface SidebarOpenProps {
-  sidebarWidth: string
   items: SidebarProps['items']
   onHelpClick: () => void
   onLogoutClick: () => void
-  onMouseEnter: () => void
-  onMouseLeave: () => void
 }

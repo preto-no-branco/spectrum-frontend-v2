@@ -1,4 +1,5 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import { SidebarProps } from './interfaces'
 import { useSidebar } from './useSidebar'
 import SidebarOpen from './SidebarOpen'
@@ -17,18 +18,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isHidden, items, onHelpClick, onLogou
   return (
     <>
       {isHidden && !open && (
-        <SidebarClosed edgeHoverWidth={edgeHoverWidth} onHover={handleEdgeHover} />
+        <SidebarClosed edgeHoverWidth={edgeHoverWidth} onEdgeHover={handleEdgeHover} />
       )}
-      {open && (
-        <SidebarOpen
-          sidebarWidth={sidebarWidth}
-          items={items}
-          onHelpClick={onHelpClick}
-          onLogoutClick={onLogoutClick}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        />
-      )}
+
+      <motion.div
+        className="flex-shrink-0 h-full bg-background border-r border-secondary flex flex-col items-center py-2 overflow-hidden"
+        initial={false}
+        animate={{ width: open ? sidebarWidth : 0 }}
+        transition={{ type: 'tween', duration: 0.2 }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {open && (
+          <SidebarOpen items={items} onHelpClick={onHelpClick} onLogoutClick={onLogoutClick} />
+        )}
+      </motion.div>
     </>
   )
 }
