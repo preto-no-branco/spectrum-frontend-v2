@@ -6,7 +6,9 @@ export const useTopbar = () => {
 
   const routesToNames: Record<RoutePaths, string | string[]> = {
     '/': 'Home',
-    '/analysis': ['Análise', '8110-20240620-0009']
+    '/analysis': ['Análise', '8110-20240620-0009'],
+    '/settings': 'Configurações',
+    '/history': 'Histórico'
   }
 
   return {
