@@ -1,5 +1,5 @@
 export interface BaseIpcService {
-  registerSocketListeners(): void
+  registerIpcListeners(): void
   registerIpcHandlers(): void
   debug: boolean
 }
@@ -12,7 +12,7 @@ export class IpcFactory {
     debug: boolean = false
   ): T {
     const instance = new ServiceClass(debug)
-    instance.registerSocketListeners()
+    instance.registerIpcListeners()
     instance.registerIpcHandlers()
     return instance
   }

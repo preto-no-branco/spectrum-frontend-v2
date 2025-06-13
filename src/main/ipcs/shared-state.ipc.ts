@@ -12,7 +12,7 @@ export class SharedStateIpc implements BaseIpcService {
     }
   }
 
-  registerSocketListeners(): void {
+  registerIpcListeners(): void {
     ipcMain.on('shared-state-set-item', (_, key: string, value: string) => {
       if (this.debug) {
         console.log(`[SharedStateIpc] IPC set-item recebido: chave = "${key}", valor = "${value}"`)
