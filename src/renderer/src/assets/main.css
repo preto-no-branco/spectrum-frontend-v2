@@ -66,6 +66,7 @@ body {
   --color-border-primary: var(--border-primary);
   --color-border-secondary: var(--border-secondary);
   --color-border-terciary: var(--border-terciary);
+  --color-background-secondary: var(--background-secondary);
   --color-background-tertiary: var(--background-tertiary);
 }
 
@@ -95,6 +96,7 @@ body {
   --border-primary: #c8d0d2; /* borderPrimary */
   --border-secondary: #b3bdc0; /* borderSecondary */
   --border-terciary: #e5e9ea; /* borderTerciary */
+  --background-secondary: #f0f3f3; /* backgroundSecondary */
   --background-tertiary: #f0f3f3; /* backgroundTertiary */
   
   /* Cores para gráficos */
@@ -137,6 +139,7 @@ body {
   --content-primary: #fbfcfd; /* contentPrimary */
   --content-secondary: #7b8588; /* contentTertiary */
   --content-tertiary: #4e5557; /* contentQuaternary */
+  --background-secondary: #171b1c; /* backgroundSecondary */
   --background-tertiary: #1c2122; /* backgroundTertiary */
   --border-primary: #4e5557; /* borderPrimary */
   --border-secondary: #2d3234; /* borderSecondary */
