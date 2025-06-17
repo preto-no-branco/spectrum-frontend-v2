@@ -2,11 +2,12 @@ import Analysis from './analysis/Analysis'
 import History from './history/History'
 import Home from './home/Home'
 import Settings from './settings/Settings'
+import LoginPage from './login/Login'
 
 export const routes = [
   {
     id: 'home',
-    path: '/',
+    path: '/home',
     element: <Home />
   },
   {
@@ -23,6 +24,11 @@ export const routes = [
     id: 'history',
     path: '/history',
     element: <History />
+  },
+  {
+    id: 'login',
+    path: '/login',
+    element: <LoginPage />
   }
 ] as const
 

@@ -12,7 +12,7 @@ function App(): React.JSX.Element {
             {routes.map((route) => (
               <Route key={route.path} path={route.path} element={route.element} />
             ))}
-            <Route path="*" element={<Navigate to="/" />} />
+            <Route path="*" element={<Navigate to="/login" />} />
           </Routes>
         </Layout>
       </HashRouter>

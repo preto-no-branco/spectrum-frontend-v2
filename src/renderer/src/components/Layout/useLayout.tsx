@@ -10,13 +10,14 @@ export const useLayout = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const isAnalysisPage = location.pathname === routes.find((route) => route.id === 'analysis')?.path
+  const isLoginPage = location.pathname === routes.find((route) => route.id === 'login')?.path
 
   const sidebarItems: SidebarItem[] = [
     {
       icon: <HomeIcon className="fill-content-tertiary" />,
       label: 'Home',
       onClick: () => {
-        navigate('/')
+        navigate('/home')
       }
     },
     {
@@ -44,6 +45,7 @@ export const useLayout = () => {
 
   return {
     isAnalysisPage,
-    sidebarItems
+    sidebarItems,
+    isLoginPage
   }
 }

@@ -1,13 +1,15 @@
 @import './base.css';
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
   color: var(--ev-c-text-1);
   background-color: var(--ev-c-background);
   font-size: 16px;
@@ -98,14 +100,14 @@ body {
   --border-terciary: #e5e9ea; /* borderTerciary */
   --background-secondary: #f0f3f3; /* backgroundSecondary */
   --background-tertiary: #f0f3f3; /* backgroundTertiary */
-  
+
   /* Cores para gráficos */
   --chart-1: #5530e8; /* accentPurple */
   --chart-2: #2a89ef; /* accentBlue */
   --chart-3: #15be78; /* accentGreen */
   --chart-4: #ff850a; /* accentOrange */
   --chart-5: #f9ab10; /* accentYellow */
-  
+
   /* Sidebar */
   --sidebar: #f0f3f3; /* backgroundSecondary */
   --sidebar-foreground: #171b1c; /* contentPrimary */
@@ -137,21 +139,20 @@ body {
   --input: #2d3234; /* borderSecondary */
   --ring: #00b388; /* contentBrand */
   --content-primary: #fbfcfd; /* contentPrimary */
-  --content-secondary: #7b8588; /* contentTertiary */
+  --content-secondary: #b3bdc0; /* contentTertiary */
   --content-tertiary: #4e5557; /* contentQuaternary */
   --background-secondary: #171b1c; /* backgroundSecondary */
   --background-tertiary: #1c2122; /* backgroundTertiary */
   --border-primary: #4e5557; /* borderPrimary */
   --border-secondary: #2d3234; /* borderSecondary */
-  
-  
+
   /* Cores para gráficos */
   --chart-1: #9d8afe; /* accentPurple */
   --chart-2: #55a1f2; /* accentBlue */
   --chart-3: #44cb93; /* accentGreen */
   --chart-4: #ff9d3b; /* accentOrange */
   --chart-5: #fabc40; /* accentYellow */
-  
+
   /* Sidebar */
   --sidebar: #171b1c; /* backgroundSecondary */
   --sidebar-foreground: #fbfcfd; /* contentPrimary */
@@ -170,4 +171,14 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
