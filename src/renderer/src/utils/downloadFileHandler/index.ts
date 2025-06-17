@@ -1,7 +1,7 @@
 import { DownloadFileHandlerParams } from './interfaces'
 
-export default class DownloadFileHandler {
-  public static getReport = ({ report, type }: DownloadFileHandlerParams) => {
+export default class DownloadFileHandler implements DownloadFileHandler {
+  public static downloadFile = ({ report, type, name }: DownloadFileHandlerParams) => {
     const blob = new Blob([report], {
       type:
         type != 'xlsx'
@@ -21,7 +21,7 @@ export default class DownloadFileHandler {
       date.getMinutes()
     ]
 
-    link.download = `report_${day}-${month}-${year} ${hours}-${minutes}.${type}`
+    link.download = `${name}.${type}` || `report_${day}-${month}-${year} ${hours}-${minutes}.${type}`
     link.click()
     window.URL.revokeObjectURL(url)
     link.remove()

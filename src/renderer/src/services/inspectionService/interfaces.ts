@@ -89,23 +89,23 @@ export interface Inspection {
 }
 
 export interface InspectionAPIGetHistoryParams {
-  take: number
-  skip: number
-  spectrum: string
-  from: string
-  until: string
-  plate: string
-  container: string
-  case_id: string
-  altered_plate: boolean
-  altered_container: boolean
-  is_multiple: boolean
-  is_empty: boolean
-  is_flammable: boolean
-  is_suspect: boolean
-  is_finished: boolean
-  is_discarded: boolean
-  is_ignored: boolean
+  take?: number
+  skip?: number
+  spectrum?: string
+  from?: string
+  until?: string
+  plate?: string
+  container?: string
+  case_id?: string
+  altered_plate?: boolean
+  altered_container?: boolean
+  is_multiple?: boolean
+  is_empty?: boolean
+  is_flammable?: boolean
+  is_suspect?: boolean
+  is_finished?: boolean
+  is_discarded?: boolean
+  is_ignored?: boolean
 }
 
 export interface InspectionAPIGetReportParams {

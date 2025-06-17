@@ -1,15 +1,12 @@
 import InspectionService from '.'
 import {
   Inspection,
-  InspectionAPIGetById,
   InspectionAPIGetHistoryParams,
   InspectionAPIGetReportParams,
-  InspectionAPIPut,
   UseInspectionService
 } from './interfaces'
 import { inspectionMappers } from './inspectionMappers'
 import DownloadFileHandler from '@renderer/utils/downloadFileHandler'
-import { Key } from 'react'
 import { Area, KeyValue } from './childsTypes/interfaces'
 
 export const useInspectionAPI = (): UseInspectionService => {
@@ -34,7 +31,7 @@ export const useInspectionAPI = (): UseInspectionService => {
       alert(inspectionMappers.translateError[response.error])
       return
     }
-    DownloadFileHandler.getReport({
+    DownloadFileHandler.downloadFile({
       report: response.data,
       type: params.type
     })
