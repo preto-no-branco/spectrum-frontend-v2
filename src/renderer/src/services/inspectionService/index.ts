@@ -20,7 +20,10 @@ export default class InspectionService {
   ): ResponseAsync<MappedResponse, ErrorMessageGet> {
     try {
       const response = await api.get<InspectionAPIGetHistory[]>(
-        `/inspection?take=${params.take}&skip=${params.skip}&spectrum=${params.spectrum}&from=${params.from}&until=${params.until}&plate=${params.plate}&container=${params.container}&case_id=${params.case_id}&altered_plate=${params.altered_plate}&altered_container=${params.altered_container}&is_multiple=${params.is_multiple}&is_empty=${params.is_empty}&is_flammable=${params.is_flammable}&is_suspect=${params.is_suspect}&is_finished=${params.is_finished}&is_discarded=${params.is_discarded}&is_ignored=${params.is_ignored}`
+        `/inspection`,
+        {
+         params
+        }
       )
       return {
         success: true,
