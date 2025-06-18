@@ -2,7 +2,8 @@ import { Routes, Route, Navigate, HashRouter } from 'react-router-dom'
 import { ThemeProvider } from './components/themeProvider'
 import { routes } from './pages/routes'
 import Layout from './components/Layout/Layout'
-import { Toaster } from './components/ui/sonner'
+import { Toaster } from 'sonner'
+
 
 
 function App(): React.JSX.Element {

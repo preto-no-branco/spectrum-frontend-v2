@@ -1,50 +1,60 @@
-import { Toaster as Sonner, ToasterProps } from 'sonner'
-import { useTheme } from 'next-themes'
+import { toast as sonnerToast } from 'sonner'
+import { X } from 'lucide-react'
 import { cva } from 'class-variance-authority'
 import { cn } from '@renderer/lib/utils'
 
-const toastContainer = cva('group/toast border rounded-md  ', {
-  variants: {
-    variant: {
-      success: '!bg-background !border-border-secondary',
-      error: '!bg-background !border-border-secondary'
-    }
-  }
-})
-
-const toastTitle = cva('!text-content-primary !text-[0.850rem] !leading-[20px] !font-plex-sans', {
-  defaultVariants: {},
-  variants: {}
-})
-
-const toastDescription = cva(
-  '!text-content-secondary !font-normal !text-[0.850rem] !leading-[20px] !font-plex-sans'
-)
-
-const toastContent = cva('flex flex-row items-start gap-3 w-full')
-
-const toastActionButton = cva(
-  '!bg-background !text-content-secondary !flex !items-start !h-full  !text-[1rem] font-normal'
-)
-export const Toaster = (props: ToasterProps) => {
-  const { theme = 'system' } = useTheme()
-
-  return (
-    <Sonner
-      theme={theme as ToasterProps['theme']}
-      toastOptions={{
-        classNames: {
-          success: cn(toastContainer({ variant: 'success' })),
-          error: cn(toastContainer({ variant: 'error' })),
-          title: cn(toastTitle()),
-          description: cn(toastDescription()),
-          content: cn(toastContent()),
-          actionButton: cn(toastActionButton())
-        }
-      }}
-      {...props}
-    />
-  )
+interface CustomToastProps {
+  id: string | number
+  variant?: 'success' | 'error'
+  title: string
+  description?: string
+  icon?: string
 }
 
+const toastVariants = cva(
+  'group/toast border rounded-md px-4 py-3 w-full min-w-[20rem] max-w-[20rem] flex items-start gap-3 animate-in slide-in-from-top items-center',
+  {
+    variants: {
+      variant: {
+        success: 'bg-background border-border-secondary',
+        error: 'bg-background border-border-secondary'
+      }
+    },
+    defaultVariants: {
+      variant: 'success'
+    }
+  }
+)
 
+export const CustomToast = ({
+  id,
+  variant = 'success',
+  title,
+  description,
+  icon
+}: CustomToastProps) => {
+  return (
+    <div className={cn(toastVariants({ variant }), 'items-start ')}>
+      {icon && <img src={icon} alt={`${variant} icon`} className="w-[1rem] h-[1rem]" />}
+
+      <div className="flex-1 flex flex-col justify-start ">
+        <p className="text-content-primary text-[0.85rem] leading-none font-plex-sans font-bold mt-0 ">
+          {title}
+        </p>
+        {description && (
+          <p className="text-content-secondary font-normal text-[0.85rem] leading-[1.25rem] font-plex-sans mt-1">
+            {description}
+          </p>
+        )}
+      </div>
+
+      <button
+        onClick={() => sonnerToast.dismiss(id)}
+        className="text-content-secondary hover:text-content-primary  mt-[0.125rem]"
+        aria-label="Fechar"
+      >
+        <X className="w-[0.85rem] h-[0.85rem]" />
+      </button>
+    </div>
+  )
+}
