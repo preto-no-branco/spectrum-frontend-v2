@@ -1,4 +1,3 @@
-import { useWindowManager } from '@renderer/hooks/useWindowManager'
 import { Button } from '@/components/ui/button'
 
 import { JSX } from 'react'
