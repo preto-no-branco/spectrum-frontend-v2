@@ -3,7 +3,7 @@ import { useTheme } from 'next-themes'
 import { cva } from 'class-variance-authority'
 import { cn } from '@renderer/lib/utils'
 
-const toastContainer = cva('group/toast border rounded-md relative', {
+const toastContainer = cva('group/toast border rounded-md  ', {
   variants: {
     variant: {
       success: '!bg-background !border-border-secondary',
@@ -21,10 +21,11 @@ const toastDescription = cva(
   '!text-content-secondary !font-normal !text-[0.850rem] !leading-[20px] !font-plex-sans'
 )
 
-const toastClose = cva('!text-white !hover:text-white/70 !top-3 !right-3')
-
 const toastContent = cva('flex flex-row items-start gap-3 w-full')
 
+const toastActionButton = cva(
+  '!bg-background !text-content-secondary !flex !items-start !h-full  !text-[1rem] font-normal'
+)
 export const Toaster = (props: ToasterProps) => {
   const { theme = 'system' } = useTheme()
 
@@ -37,11 +38,13 @@ export const Toaster = (props: ToasterProps) => {
           error: cn(toastContainer({ variant: 'error' })),
           title: cn(toastTitle()),
           description: cn(toastDescription()),
-          closeButton: cn(toastClose()),
-          content: cn(toastContent())
+          content: cn(toastContent()),
+          actionButton: cn(toastActionButton())
         }
       }}
       {...props}
     />
   )
 }
+
+

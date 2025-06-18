@@ -30,11 +30,19 @@ export const showToast = (type: 'success' | 'error', title: string, options?: To
 
   toast[type](title, {
     description: options?.description,
-    duration: options?.duration ?? 5000,
+    duration: options?.duration ?? 3000,
     icon: options?.icon ?? defaultIcons[type],
-/*     closeButton: true,
- */    classNames: {
-      icon: '!h-4 !w-4 !flex-shrink-0 !self-start'
+    closeButton: false,
+    action: {
+      children: <span className="sr-only text-white">Fechar</span>,
+      label: "x",
+      
+      onClick: () => toast.dismiss()
+    },
+    classNames: {
+      icon: '!h-4 !w-4 !flex-shrink-0 !self-start !mt-1'
     }
   })
 }
+
+
