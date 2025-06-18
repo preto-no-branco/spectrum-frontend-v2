@@ -22,7 +22,7 @@ export function DataTable<T>({ columns, data }: TableProps<T>) {
   })
 
   return (
-    <div className="overflow-x-auto rounded-md ">
+    <div className="w-full overflow-x-auto rounded-md">
       <ScrollArea>
         <Table>
           <TableHeader>
