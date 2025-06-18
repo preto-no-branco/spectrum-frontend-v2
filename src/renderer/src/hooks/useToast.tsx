@@ -9,6 +9,19 @@ interface ToastOptions {
   icon?: ReactNode
 }
 
+// Modelos de uso:
+/* 
+ showToast('success', 'Tudo certo!', {
+      description: 'Operação finalizada com sucesso.'
+    })
+
+  showToast('error', 'Erro ao salvar', {
+      description: 'Verifique os campos e tente novamente.'
+    })
+  showToast('success', 'Tudo certo!', {})
+
+  showToast('error', 'Erro ao salvar', {}) */
+
 export const showToast = (type: 'success' | 'error', title: string, options?: ToastOptions) => {
   const defaultIcons = {
     success: <img src={toastSuccess} alt="Success" />,
@@ -19,8 +32,9 @@ export const showToast = (type: 'success' | 'error', title: string, options?: To
     description: options?.description,
     duration: options?.duration ?? 5000,
     icon: options?.icon ?? defaultIcons[type],
-    classNames: {
-      icon: `${options && options.description ? '!mb-[1.15rem]' : ''} !h-4 !w-4 flex-shrink-0`
+/*     closeButton: true,
+ */    classNames: {
+      icon: '!h-4 !w-4 !flex-shrink-0 !self-start'
     }
   })
 }

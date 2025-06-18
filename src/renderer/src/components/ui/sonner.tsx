@@ -3,20 +3,7 @@ import { useTheme } from 'next-themes'
 import { cva } from 'class-variance-authority'
 import { cn } from '@renderer/lib/utils'
 
-// Modelos de uso:
-/* 
- showToast('success', 'Tudo certo!', {
-      description: 'Operação finalizada com sucesso.'
-    })
-
-  showToast('error', 'Erro ao salvar', {
-      description: 'Verifique os campos e tente novamente.'
-    })
-  showToast('success', 'Tudo certo!', {})
-
-  showToast('error', 'Erro ao salvar', {}) */
-
-const toastContainer = cva('group/toast border rounded-md', {
+const toastContainer = cva('group/toast border rounded-md relative', {
   variants: {
     variant: {
       success: '!bg-background !border-border-secondary',
@@ -34,7 +21,7 @@ const toastDescription = cva(
   '!text-content-secondary !font-normal !text-[0.850rem] !leading-[20px] !font-plex-sans'
 )
 
-const toastClose = cva('!text-white !hover:text-white/70 top-3 right-3')
+const toastClose = cva('!text-white !hover:text-white/70 !top-3 !right-3')
 
 const toastContent = cva('flex flex-row items-start gap-3 w-full')
 

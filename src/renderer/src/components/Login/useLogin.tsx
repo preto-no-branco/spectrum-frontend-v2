@@ -67,7 +67,7 @@ export function useLogin() {
     setStatusState({ status: 'loading', icon: statusIcons.loading })
     setTimeout(() => {
       setStatusState({ status: 'success', icon: statusIcons.success })
-    }, 1000)
+    }, 500)
 
     // setTimeout(() => {
     //   setStatusState({ status: 'error', icon: statusIcons.error, message: 'Servidor inválido' })
@@ -80,16 +80,13 @@ export function useLogin() {
   const onSubmit = (data) => {
     console.log('submit', data)
 
-    showToast('success', 'Tudo certo!', {
-      description: 'Operação finalizada com sucesso.'
+    showToast('error', 'Não foi possível acessar o sistema', {
+      description: 'Sua conta está bloqueada. Entre em contato com o suporte..'
     })
-
-    showToast('error', 'Erro ao salvar', {
-      description: 'Verifique os campos e tente novamente.'
+    showToast('error', 'Não foi possível acessar o sistema', {
+      description: 'Sua conta está ..'
     })
-    showToast('success', 'Tudo certo!', {})
-
-    showToast('error', 'Erro ao salvar', {})
+    showToast('error', 'Não foi possível acessar o sistema', {})
   }
 
   const updatedFields = fields.map((f) => {
