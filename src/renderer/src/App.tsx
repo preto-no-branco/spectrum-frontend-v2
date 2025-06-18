@@ -2,6 +2,8 @@ import { Routes, Route, Navigate, HashRouter } from 'react-router-dom'
 import { ThemeProvider } from './components/themeProvider'
 import { routes } from './pages/routes'
 import Layout from './components/Layout/Layout'
+import { Toaster } from './components/ui/sonner'
+
 
 function App(): React.JSX.Element {
   return (
@@ -16,6 +18,7 @@ function App(): React.JSX.Element {
           </Routes>
         </Layout>
       </HashRouter>
+      <Toaster />
     </ThemeProvider>
   )
 }
