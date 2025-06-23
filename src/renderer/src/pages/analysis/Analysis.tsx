@@ -61,3 +61,4 @@ export default function Analysis(): JSX.Element {
     </div>
   )
 }
+
