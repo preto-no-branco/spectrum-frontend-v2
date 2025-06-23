@@ -13,7 +13,7 @@ import {
 import { ModeToggle } from '@renderer/components/ModoToggle'
 
 function Home(): React.JSX.Element {
-  const [text, setText] = useSharedState('text', 'Hello World')
+  const [text, setText] = useSharedState('text', 'World')
 
   return (
     <div className="flex items-center justify-center w-full bg-background p-6">
