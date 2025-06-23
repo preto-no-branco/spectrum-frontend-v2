@@ -68,7 +68,9 @@ function Button({
     return (
       <Tooltip>
         <TooltipTrigger asChild>{buttonElement}</TooltipTrigger>
-        <TooltipContent sideOffset={10} side={tooltipPosition}>{tooltipText}</TooltipContent>
+        <TooltipContent sideOffset={10} side={tooltipPosition}>
+          {tooltipText}
+        </TooltipContent>
       </Tooltip>
     )
   }

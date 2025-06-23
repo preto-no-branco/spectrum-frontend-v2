@@ -8,44 +8,6 @@ export const useUserAPI = (): UseUserService => {
       return data.map((user) => userMappers.mapDataGet(user))
     })
     if (!teste.success) {
-      // TODO: Use a equivalent of chakra's toast in shadcn/ui
-      // (ShadCN UI (built on top of Radix UI and Tailwind) does not provide a built-in "toast"
-      // component out of the box like Chakra UI does,
-      //  but the recommended and common practice is to integrate sonner — a headless,
-      //  Tailwind-friendly toast library that fits perfectly into the ShadCN ecosystem.)
-      //
-      //how to use:
-      //npm install sonner
-      //import { Toaster } from 'sonner';
-      //
-      // export default function App() {
-      //   return (
-      //     <>
-      //       {/* your app */}
-      //       <Toaster />
-      //     </>
-      //   );
-      // }
-      //
-      // import { toast } from 'sonner'
-      //
-      // toast.success('Data saved successfully!')
-      // toast.error('Something went wrong')
-      // toast('Custom toast with default style')
-      //
-      //<Toaster
-      //position="top-right"
-      //toastOptions={{
-      //  style: {
-      //background: '#333',
-      //color: '#fff',
-      //  },
-      //  duration: 5000,
-      //  className: 'my-toast',
-      //  closeButton: true,
-      //}}
-      ///>
-
       alert(userMappers.translateError[teste.error])
       return
     } else {

@@ -1,10 +1,11 @@
-import { ErrorMessageGet, ErrorMessagePost, User, UserAPI, UserAPIPost, UserAPIPut } from './interfaces'
+import { ErrorMessageGet, ErrorMessagePost } from '../interfaces'
+import { User, UserAPI, UserAPIPost, UserAPIPut } from './interfaces'
 
 export class userMappers {
   // TODO: Apply the translate function from the i18n library
   public static translateError: Record<ErrorMessageGet | ErrorMessagePost, string> = {
-    user_not_found: 'Usuário não encontrado',
     invalid_credentials: 'Credenciais inválidas',
+    not_found: 'Usuário não encontrado',
     server_error: 'Erro no servidor',
     network_error: 'Erro de rede',
     unauthorized: 'Não autorizado',
@@ -40,7 +41,7 @@ export class userMappers {
     old: data.old
   })
 
-  public static mapDataPut = (id:string): UserAPIPut => ({
+  public static mapDataPut = (id: string): UserAPIPut => ({
     id
   })
 }
