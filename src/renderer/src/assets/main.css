@@ -99,7 +99,7 @@ body {
   --border-terciary: #e5e9ea; /* borderTerciary */
   --background-secondary: #f0f3f3; /* backgroundSecondary */
   --background-tertiary: #f0f3f3; /* backgroundTertiary */
-  
+
   /* Cores para gráficos */
   --chart-1: #5530e8; /* accentPurple */
   --chart-2: #2a89ef; /* accentBlue */
@@ -107,7 +107,7 @@ body {
   --chart-3: #15be78; /* accentGreen */
   --chart-4: #ff850a; /* accentOrange */
   --chart-5: #f9ab10; /* accentYellow */
-  
+
   /* Sidebar */
   --sidebar: #f0f3f3; /* backgroundSecondary */
   --sidebar-foreground: #171b1c; /* contentPrimary */
@@ -145,15 +145,14 @@ body {
   --background-tertiary: #1c2122; /* backgroundTertiary */
   --border-primary: #4e5557; /* borderPrimary */
   --border-secondary: #2d3234; /* borderSecondary */
-  
-  
+
   /* Cores para gráficos */
   --chart-1: #9d8afe; /* accentPurple */
   --chart-2: #55a1f2; /* accentBlue */
   --chart-3: #44cb93; /* accentGreen */
   --chart-4: #ff9d3b; /* accentOrange */
   --chart-5: #fabc40; /* accentYellow */
-  
+
   /* Sidebar */
   --sidebar: #171b1c; /* backgroundSecondary */
   --sidebar-foreground: #fbfcfd; /* contentPrimary */
