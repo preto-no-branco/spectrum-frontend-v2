@@ -6,6 +6,7 @@ import { CgArrowLongRightC } from 'react-icons/cg'
 import { LuTrash2 } from 'react-icons/lu'
 import { Badge } from '@renderer/components/ui/badge'
 import { Checkbox } from '@renderer/components/ui/checkbox'
+import { FiltersBar } from './components/FiltersBar'
 
 export default function Analysis(): JSX.Element {
   async function main() {
@@ -21,7 +22,7 @@ export default function Analysis(): JSX.Element {
   }, [])
 
   return (
-    <div className="flex items-center justify-center bg-background">
+    <div className="flex flex-col items-center justify-center bg-background">
       <div className="bg-background border-b border-border-secondary w-full px-6 py-5 flex justify-between items-center">
         <Button variant={'neutral'}>
           <FaSquare className="!w-3 !h-3" /> Parar Operação
@@ -44,6 +45,7 @@ export default function Analysis(): JSX.Element {
           </div>
         </div>
       </div>
+      <FiltersBar />
     </div>
   )
 }
