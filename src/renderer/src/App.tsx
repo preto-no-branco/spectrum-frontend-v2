@@ -1,7 +1,7 @@
-import { Routes, Route, Navigate, HashRouter } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import Layout from './components/Layout/Layout'
 import { ThemeProvider } from './components/themeProvider'
 import { routes } from './pages/routes'
-import Layout from './components/Layout/Layout'
 
 function App(): React.JSX.Element {
   return (
@@ -9,9 +9,23 @@ function App(): React.JSX.Element {
       <HashRouter>
         <Layout>
           <Routes>
-            {routes.map((route) => (
-              <Route key={route.path} path={route.path} element={route.element} />
-            ))}
+            {routes.map((route) => {
+              if (route.children) {
+                return (
+                  <Route key={route.id} path={route.path} element={route.element}>
+                    {route.children.map((childRoute) => (
+                      <Route
+                        key={childRoute.id}
+                        path={childRoute.path}
+                        element={childRoute.element}
+                      />
+                    ))}
+                  </Route>
+                )
+              }
+
+              return <Route key={route.id} path={route.path} element={route.element} />
+            })}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Layout>

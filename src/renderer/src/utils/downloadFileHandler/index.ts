@@ -21,7 +21,8 @@ export default class DownloadFileHandler implements DownloadFileHandler {
       date.getMinutes()
     ]
 
-    link.download = `${name}.${type}` || `report_${day}-${month}-${year} ${hours}-${minutes}.${type}`
+    link.download =
+      `${name}.${type}` || `report_${day}-${month}-${year} ${hours}-${minutes}.${type}`
     link.click()
     window.URL.revokeObjectURL(url)
     link.remove()

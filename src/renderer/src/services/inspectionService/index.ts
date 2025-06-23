@@ -19,12 +19,9 @@ export default class InspectionService {
     callback: callback<InspectionAPIGetHistory[], MappedResponse>
   ): ResponseAsync<MappedResponse, ErrorMessageGet> {
     try {
-      const response = await api.get<InspectionAPIGetHistory[]>(
-        `/inspection`,
-        {
-         params
-        }
-      )
+      const response = await api.get<InspectionAPIGetHistory[]>(`/inspection`, {
+        params
+      })
       return {
         success: true,
         data: callback(response.data)

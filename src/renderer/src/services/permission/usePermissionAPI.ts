@@ -46,9 +46,13 @@ export const usePermissionAPI = (): UsePermissionService => {
   }
 
   const put = async (id: string, permission: Permission): Promise<PermissionAPIPut | void> => {
-    const response = await PermissionService.put(id, permissionMappers.mapDataPut(permission), (response) => {
-      return permissionMappers.mapDataPut(response)
-    })
+    const response = await PermissionService.put(
+      id,
+      permissionMappers.mapDataPut(permission),
+      (response) => {
+        return permissionMappers.mapDataPut(response)
+      }
+    )
     if (!response.success) {
       alert(permissionMappers.translateError[response.error])
       return

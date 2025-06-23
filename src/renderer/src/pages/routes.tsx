@@ -1,29 +1,62 @@
+import { APP_ROUTES } from '@renderer/core/constants/appRoutes'
 import Analysis from './analysis/Analysis'
 import History from './history/History'
 import Home from './home/Home'
+import AccessSettings from './settings/AccessSettings'
+import CategoriesSettings from './settings/CategoriesSettings'
+import InspectionsSettings from './settings/InspectionsSettings'
 import Settings from './settings/Settings'
+import SystemSettings from './settings/SystemSettings'
+import UserSettings from './settings/UserSettings'
 
 export const routes = [
   {
     id: 'home',
-    path: '/',
+    path: APP_ROUTES.HOME,
     element: <Home />
   },
   {
     id: 'analysis',
-    path: '/analysis',
+    path: APP_ROUTES.ANALYSIS,
     element: <Analysis />
   },
   {
     id: 'settings',
-    path: '/settings',
-    element: <Settings />
+    path: APP_ROUTES.SETTINGS.INITIAL,
+    element: <Settings />,
+    children: [
+      {
+        id: 'user-settings',
+        path: APP_ROUTES.SETTINGS.USER,
+        element: <UserSettings />
+      },
+      {
+        id: 'access-settings',
+        path: APP_ROUTES.SETTINGS.ACCESS,
+        element: <AccessSettings />
+      },
+      {
+        id: 'system-settings',
+        path: APP_ROUTES.SETTINGS.SYSTEM,
+        element: <SystemSettings />
+      },
+      {
+        id: 'categories-settings',
+        path: APP_ROUTES.SETTINGS.CATEGORIES,
+        element: <CategoriesSettings />
+      },
+      {
+        id: 'inspection-settings',
+        path: APP_ROUTES.SETTINGS.INSPECTION_WAYS,
+        element: <InspectionsSettings />
+      }
+    ]
   },
   {
     id: 'history',
-    path: '/history',
+    path: APP_ROUTES.HISTORY,
     element: <History />
   }
-] as const
+]
 
 export type RoutePaths = (typeof routes)[number]['path']
