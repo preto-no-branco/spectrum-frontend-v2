@@ -68,6 +68,7 @@ body {
   --color-border-terciary: var(--border-terciary);
   --color-background-secondary: var(--background-secondary);
   --color-background-tertiary: var(--background-tertiary);
+  --color-accent-blue: var(--accentBlue);
 }
 
 :root {
@@ -102,6 +103,7 @@ body {
   /* Cores para gráficos */
   --chart-1: #5530e8; /* accentPurple */
   --chart-2: #2a89ef; /* accentBlue */
+  --accentBlue: #2a89ef; /* accentBlue */
   --chart-3: #15be78; /* accentGreen */
   --chart-4: #ff850a; /* accentOrange */
   --chart-5: #f9ab10; /* accentYellow */

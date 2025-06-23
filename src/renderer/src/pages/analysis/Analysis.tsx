@@ -51,7 +51,26 @@ export const columns: Columns<Payment> = [
 ]
 
 export default function Analysis(): JSX.Element {
+<<<<<<< HEAD
+||||||| parent of 216fd96 (Adding Analysis start components and OpenCV Singleton)
+  const { createWindow } = useWindowManager()
+
+=======
+  async function main() {
+    const cv = await cvReadyPromise
+    console.log('OpenCV.js is ready!')
+    console.log(cv.getBuildInformation())
+  }
+
+  useEffect(() => {
+    main().catch((error) => {
+      console.error('Error initializing OpenCV:', error)
+    })
+  }, [])
+
+>>>>>>> 216fd96 (Adding Analysis start components and OpenCV Singleton)
   return (
+<<<<<<< HEAD
     <div className="flex items-center justify-center bg-background p-6">
       <DataTable
         columns={columns}
@@ -64,6 +83,58 @@ export default function Analysis(): JSX.Element {
           }
         ]}
       />
+||||||| parent of 216fd96 (Adding Analysis start components and OpenCV Singleton)
+    <div className="flex items-center justify-center bg-background p-6">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Janela de Gerenciamento</CardTitle>
+          <CardDescription>Crie novas janelas usando shadcn UI e Tailwind CSS.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4 flex flex-col gap-3">
+          <Button onClick={() => createWindow('/')} className="w-full">
+            Criar Home (Nova Janela)
+          </Button>
+
+          <Button variant="outline" onClick={() => createWindow('/analysis')} className="w-full">
+            Criar Analysis (Nova Janela)
+          </Button>
+
+          {/* Botão para voltar para a home na mesma janela */}
+          <Link to="/" className="w-full">
+            <Button variant="secondary" className="w-full">
+              Voltar para Home
+            </Button>
+          </Link>
+        </CardContent>
+        <CardFooter>
+          <p className="text-sm text-gray-500">Exemplo de página usando shadcn/ui</p>
+        </CardFooter>
+      </Card>
+=======
+    <div className="flex items-center justify-center bg-background">
+      <div className="bg-background border-b border-border-secondary w-full px-6 py-5 flex justify-between items-center">
+        <Button variant={'neutral'}>
+          <FaSquare className="!w-3 !h-3" /> Parar Operação
+        </Button>
+        <div className="flex items-center gap-10">
+          <div className="border border-border-secondary rounded-md p-3 flex gap-4">
+            <Badge variant={'blue'}>Simples</Badge>
+            <Checkbox label="Suspeito" />
+            <Checkbox label="Inflamável" />
+            <Checkbox label="Vazio" />
+          </div>
+          <div className="flex items-center gap-4">
+            <Button tooltipText="Limpar efeitos" tooltipPosition="bottom" variant={'neutral'}>
+              <LuTrash2 className="!w-4 !h-4" />
+            </Button>
+            <Button tooltipText="Desfazer efeito" tooltipPosition="bottom" variant={'neutral'}>
+              <CgArrowLongRightC className="!w-4 !h-4" />
+            </Button>
+            <Button>Finalizar inspeção</Button>
+          </div>
+        </div>
+      </div>
+>>>>>>> 216fd96 (Adding Analysis start components and OpenCV Singleton)
     </div>
   )
 }
