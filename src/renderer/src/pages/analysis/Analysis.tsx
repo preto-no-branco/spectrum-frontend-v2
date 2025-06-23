@@ -31,7 +31,7 @@ export const columns: Columns<Payment> = [
   {
     key: 'amount',
     header: () => (
-      <Button variant="ghost" onClick={() => alert('Sort by amount')}>
+      <Button variant="ghost" className="has-[>svg]:px-0" onClick={() => alert('Sort by amount')}>
         Amount
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
@@ -42,7 +42,11 @@ export const columns: Columns<Payment> = [
     key: 'id',
     header: 'ID',
     width: 200,
-    render: (value) => <Button variant="link">{value}</Button>
+    render: (value) => (
+      <Button className="p-0" variant="link">
+        {value}
+      </Button>
+    )
   }
 ]
 
