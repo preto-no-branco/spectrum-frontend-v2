@@ -11,7 +11,8 @@ import EditableTagList from '../EditableTagList'
 
 export default function AnalysisSidebar() {
   const [open, setOpen] = useState(false)
-  const [width, setWidth] = useState(450)
+  const [width, setWidth] = useState(401)
+  const [showContent, setShowContent] = useState(false)
   const [resizing, setResizing] = useState(false)
   const [plates, setPlates] = useState<string[]>(['ABC1234', 'XYZ5678'])
   const [containers, setContainers] = useState<string[]>(['12345678912', '98765432100'])
@@ -24,7 +25,7 @@ export default function AnalysisSidebar() {
       if (!isResizing.current) return
       if (sidebarRef.current) {
         const newWidth = e.clientX - sidebarRef.current.getBoundingClientRect().left
-        if (newWidth >= 450 && newWidth <= 600) {
+        if (newWidth >= 325 && newWidth <= 600) {
           setWidth(newWidth)
         }
       }
@@ -44,6 +45,20 @@ export default function AnalysisSidebar() {
     }
   }, [])
 
+  useEffect(() => {
+    let timeout: NodeJS.Timeout
+
+    if (open) {
+      timeout = setTimeout(() => {
+        setShowContent(true)
+      }, 300)
+    } else {
+      setShowContent(false)
+    }
+
+    return () => clearTimeout(timeout)
+  }, [open])
+
   return (
     <div
       ref={sidebarRef}
@@ -54,40 +69,57 @@ export default function AnalysisSidebar() {
     >
       <div
         className={`h-[50px] px-2 border-b border-[#2D3234] flex items-center ${
-          open ? 'justify-between' : 'justify-center'
+          !open ? 'justify-center' : !showContent ? 'justify-end' : 'justify-between'
         }`}
       >
         {open ? (
-          <div className="flex justify-between w-full h-full ">
-            <button
-              onClick={() => setActiveTab('detalhes')}
-              className={`flex items-center gap-2 w-full justify-center px-2 py-1 ${
-                activeTab === 'detalhes'
-                  ? 'border-b-[#00B388] border-b-2'
-                  : 'text-[#B3BDC0] hover:text-white'
-              }`}
-            >
-              <img src={inspectionSidebar} alt="Detalhes da inspeção" className="w-5 h-5" />
-              <span className="text-[15px] font-normal">Detalhes da inspeção</span>
-            </button>
-            <button
-              onClick={() => setActiveTab('movimentacoes')}
-              className={`flex items-center gap-2 w-full justify-center px-2 py-1 ${
-                activeTab === 'movimentacoes'
-                  ? 'border-b-[#00B388] border-b-2'
-                  : 'text-[#B3BDC0] hover:text-white'
-              }`}
-            >
-              <img src={inspectionSidebar} alt="Movimentações" className="w-5 h-5" />
-              <span className="text-[15px] font-normal">Movimentações</span>
-            </button>
+          <div
+            className={`flex justify-between w-full h-full ${width > 450 ? 'text-[15px]' : width > 380 ? 'text-[12px]' : 'text-[10px]'} ${
+              !showContent ? 'justify-end' : 'justify-between'
+            }`}
+          >
+            {showContent && (
+              <>
+                <button
+                  onClick={() => setActiveTab('detalhes')}
+                  className={`flex items-center gap-2 w-[45%] justify-center px-2 py-1 ${
+                    activeTab === 'detalhes'
+                      ? 'border-b-[#00B388] border-b-2'
+                      : 'text-[#B3BDC0] hover:text-white'
+                  }`}
+                >
+                  <img src={inspectionSidebar} alt="Detalhes da inspeção" className="w-5 h-5" />
+                  <span className="font-normal">Detalhes da inspeção</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab('movimentacoes')}
+                  className={`flex items-center gap-2 w-[40%] justify-center px-2 py-1 ${
+                    activeTab === 'movimentacoes'
+                      ? 'border-b-[#00B388] border-b-2'
+                      : 'text-[#B3BDC0] hover:text-white'
+                  }`}
+                >
+                  <img src={inspectionSidebar} alt="Movimentações" className="w-5 h-5" />
+                  <span className="font-normal">Movimentações</span>
+                </button>
+              </>
+            )}
 
-            <button
-              onClick={() => setOpen(false)}
-              className="w-10 h-10 bg-no-repeat bg-center bg-contain self-center"
-              style={{ backgroundImage: `url(${closeIcon})` }}
-              aria-label="Fechar sidebar"
-            />
+            {showContent ? (
+              <button
+                onClick={() => setOpen(false)}
+                className="w-5 h-5 bg-no-repeat bg-center bg-contain self-center"
+                style={{ backgroundImage: `url(${closeIcon})` }}
+                aria-label="Fechar sidebar"
+              />
+            ) : (
+              <button
+                onClick={() => setOpen(false)}
+                className="w-5 h-5 bg-no-repeat bg-center bg-contain self-center"
+                style={{ backgroundImage: `url(${closeIcon})` }}
+                aria-label="Fechar sidebar"
+              />
+            )}
           </div>
         ) : (
           <button
@@ -101,90 +133,92 @@ export default function AnalysisSidebar() {
 
       {open && (
         <div className="flex-1 overflow-hidden flex flex-col">
-          <div
-            className="p-5 space-y-4 overflow-y-auto h-full"
-            style={{
-              scrollbarWidth: 'none',
-              msOverflowStyle: 'none'
-            }}
-          >
-            {activeTab === 'detalhes' && (
-              <>
-                <CustomAccordion title="Reconhecimento" time="12/05/24 16:15:01">
-                  <div className="flex flex-col gap-4 bg-[#171B1C] rounded-sm overflow-hidden p-5">
-                    <div className="bg-[#663504] text-[#FF9D3B] text-center rounded-sm w-fit px-2 font-bold">
-                      Múltiplo
-                    </div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <img src={spectrumA} className="w-[16px] h-[16px]" />
-                      <span className="pl-1 text-sm font-normal text-[#B3BDC0]">Spectrum A</span>
-                    </div>
-                    <div className="flex items-center gap-2 mt-2">
-                      <img src={inspectionSidebar} className="w-[16px] h-[16px]" />
-                      <span className="pl-1 text-sm font-normal text-[#B3BDC0]">
-                        Aguardando dados...
-                      </span>
-                    </div>
-                  </div>
-                </CustomAccordion>
-
-                <CustomAccordion title="Detalhes OCR">
-                  <InfoSection title="Placa">
-                    <EditableTagList
-                      values={plates}
-                      setValues={setPlates}
-                      placeholder="Nova placa"
-                    />
-                  </InfoSection>
-                  <div className="h-4"></div>
-                  <InfoSection title="Contêiner">
-                    <EditableTagList
-                      values={containers}
-                      setValues={setContainers}
-                      placeholder="Novo contêiner"
-                    />
-                  </InfoSection>
-                </CustomAccordion>
-
-                <CustomAccordion title="Detecção">
-                  <div className="flex flex-col gap-4 bg-[#0F1112] rounded-sm overflow-hidden">
-                    <div className="flex flex-col gap-2 bg-[#171B1C] border border-[#2D3234] rounded-md p-4">
-                      <span className="text-sm text-[#7B8588]">Radiação</span>
-                      <div className="flex items-center gap-2">
-                        <img src={checkCircle} className="w-[16px] h-[16px]" />
-                        <span className="text-sm text-white">Não detectada.</span>
+          {showContent && (
+            <div
+              className="p-5 space-y-4 overflow-y-auto h-full"
+              style={{
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none'
+              }}
+            >
+              {activeTab === 'detalhes' && (
+                <>
+                  <CustomAccordion title="Reconhecimento" time="12/05/24 16:15:01">
+                    <div className="flex flex-col gap-4 bg-[#171B1C] rounded-sm overflow-hidden p-5">
+                      <div className="bg-[#663504] text-[#FF9D3B] text-center rounded-sm w-fit px-2 font-bold">
+                        Múltiplo
                       </div>
-                      <span className="text-sm text-[#7B8588] mt-3">Imagem inferior</span>
-                      <span className="text-sm text-[#B3BDC0]">Informação recebida.</span>
+                      <div className="flex items-center gap-2 mt-1">
+                        <img src={spectrumA} className="w-[16px] h-[16px]" />
+                        <span className="pl-1 text-sm font-normal text-[#B3BDC0]">Spectrum A</span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-2">
+                        <img src={inspectionSidebar} className="w-[16px] h-[16px]" />
+                        <span className="pl-1 text-sm font-normal text-[#B3BDC0]">
+                          Aguardando dados...
+                        </span>
+                      </div>
                     </div>
-                    <InfoSection title="Raio-X" componentProps="flex-col">
-                      <div className="mt-1 flex flex-col gap-2">
-                        <span className="text-sm text-[#7B8588]">Máscara</span>
-                        <p className="text-sm text-[#B3BDC0]">Informação recebida.</p>
-                      </div>
+                  </CustomAccordion>
 
-                      <div className="mt-3 flex flex-col gap-2">
-                        <span className="text-sm text-[#7B8588]">Miniatura</span>
-                        <div className="flex items-center gap-2 mt-1">
-                          <div className="w-[16px] h-[16px] flex items-center justify-center">
-                            <img src={infoCircle} className="w-[16px] h-[16px]" />
-                          </div>
-                          <p className="text-sm text-[#B3BDC0]">Aguardando dados...</p>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 flex flex-col gap-2">
-                        <span className="text-sm text-[#7B8588]">Alta definição</span>
-                        <p className="text-sm text-[#B3BDC0]">Informação recebida.</p>
-                      </div>
+                  <CustomAccordion title="Detalhes OCR">
+                    <InfoSection title="Placa">
+                      <EditableTagList
+                        values={plates}
+                        setValues={setPlates}
+                        placeholder="Nova placa"
+                      />
                     </InfoSection>
-                  </div>
-                </CustomAccordion>
-              </>
-            )}
+                    <div className="h-4"></div>
+                    <InfoSection title="Contêiner">
+                      <EditableTagList
+                        values={containers}
+                        setValues={setContainers}
+                        placeholder="Novo contêiner"
+                      />
+                    </InfoSection>
+                  </CustomAccordion>
 
-            {activeTab === 'movimentacoes' && <div className="flex flex-1" />}
-          </div>
+                  <CustomAccordion title="Detecção">
+                    <div className="flex flex-col gap-4 bg-[#0F1112] rounded-sm overflow-hidden">
+                      <div className="flex flex-col gap-2 bg-[#171B1C] border border-[#2D3234] rounded-md p-4">
+                        <span className="text-sm text-[#7B8588]">Radiação</span>
+                        <div className="flex items-center gap-2">
+                          <img src={checkCircle} className="w-[16px] h-[16px]" />
+                          <span className="text-sm text-white">Não detectada.</span>
+                        </div>
+                        <span className="text-sm text-[#7B8588] mt-3">Imagem inferior</span>
+                        <span className="text-sm text-[#B3BDC0]">Informação recebida.</span>
+                      </div>
+                      <InfoSection title="Raio-X" componentProps="flex-col">
+                        <div className="mt-1 flex flex-col gap-2">
+                          <span className="text-sm text-[#7B8588]">Máscara</span>
+                          <p className="text-sm text-[#B3BDC0]">Informação recebida.</p>
+                        </div>
+
+                        <div className="mt-3 flex flex-col gap-2">
+                          <span className="text-sm text-[#7B8588]">Miniatura</span>
+                          <div className="flex items-center gap-2 mt-1">
+                            <div className="w-[16px] h-[16px] flex items-center justify-center">
+                              <img src={infoCircle} className="w-[16px] h-[16px]" />
+                            </div>
+                            <p className="text-sm text-[#B3BDC0]">Aguardando dados...</p>
+                          </div>
+                        </div>
+
+                        <div className="mt-3 flex flex-col gap-2">
+                          <span className="text-sm text-[#7B8588]">Alta definição</span>
+                          <p className="text-sm text-[#B3BDC0]">Informação recebida.</p>
+                        </div>
+                      </InfoSection>
+                    </div>
+                  </CustomAccordion>
+                </>
+              )}
+
+              {activeTab === 'movimentacoes' && <div className="flex flex-1" />}
+            </div>
+          )}
         </div>
       )}
 
