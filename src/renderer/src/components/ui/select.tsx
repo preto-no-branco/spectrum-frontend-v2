@@ -203,6 +203,7 @@ function Select({
 
 export {
   Select,
+  SelectCn,
   SelectContent,
   SelectGroup,
   SelectItem,
