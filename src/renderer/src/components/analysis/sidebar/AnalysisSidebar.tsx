@@ -11,7 +11,7 @@ import EditableTagList from '../EditableTagList'
 
 export default function AnalysisSidebar() {
   const [open, setOpen] = useState(false)
-  const [width, setWidth] = useState(401)
+  const [width, setWidth] = useState(400)
   const [showContent, setShowContent] = useState(false)
   const [resizing, setResizing] = useState(false)
   const [plates, setPlates] = useState<string[]>(['ABC1234', 'XYZ5678'])
@@ -25,7 +25,7 @@ export default function AnalysisSidebar() {
       if (!isResizing.current) return
       if (sidebarRef.current) {
         const newWidth = e.clientX - sidebarRef.current.getBoundingClientRect().left
-        if (newWidth >= 325 && newWidth <= 600) {
+        if (newWidth >= 200 && newWidth <= 600) {
           setWidth(newWidth)
         }
       }
@@ -89,7 +89,7 @@ export default function AnalysisSidebar() {
                   }`}
                 >
                   <img src={inspectionSidebar} alt="Detalhes da inspeção" className="w-5 h-5" />
-                  <span className="font-normal">Detalhes da inspeção</span>
+                  {width > 320 && <span className="font-normal">Detalhes da inspeção</span>}
                 </button>
                 <button
                   onClick={() => setActiveTab('movimentacoes')}
@@ -100,7 +100,7 @@ export default function AnalysisSidebar() {
                   }`}
                 >
                   <img src={inspectionSidebar} alt="Movimentações" className="w-5 h-5" />
-                  <span className="font-normal">Movimentações</span>
+                  {width > 320 && <span className="font-normal">Movimentações</span>}
                 </button>
               </>
             )}
@@ -143,7 +143,7 @@ export default function AnalysisSidebar() {
             >
               {activeTab === 'detalhes' && (
                 <>
-                  <CustomAccordion title="Reconhecimento" time="12/05/24 16:15:01">
+                  <CustomAccordion title="Reconhecimento" time="12/05/24 16:15:01" width={width}>
                     <div className="flex flex-col gap-4 bg-[#171B1C] rounded-sm overflow-hidden p-5">
                       <div className="bg-[#663504] text-[#FF9D3B] text-center rounded-sm w-fit px-2 font-bold">
                         Múltiplo
