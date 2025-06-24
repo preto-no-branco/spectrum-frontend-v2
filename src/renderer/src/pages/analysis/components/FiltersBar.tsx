@@ -4,6 +4,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { FiChevronDown } from 'react-icons/fi'
 import { cn } from '@renderer/lib/utils'
 import { useState } from 'react'
+import { RiContrastFill } from 'react-icons/ri'
+import { BiBrightnessHalf } from 'react-icons/bi'
 
 export const FiltersBar = () => {
   return (
@@ -19,6 +21,7 @@ export const FiltersBar = () => {
 const ImageAdjustments = () => {
   const [open, setOpen] = useState(false)
   const [contrastSliderValue, setContrastSliderValue] = useState<number[]>([50])
+  const [expositionSliderValue, setExpositionSliderValue] = useState<number[]>([50])
 
   const handleOpenChange = () => {
     setOpen((prev) => !prev)
@@ -27,7 +30,7 @@ const ImageAdjustments = () => {
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger>
-        <div className="flex gap-1 items-center">
+        <div className="flex hover:cursor-pointer gap-1 items-center">
           Ajustes de Imagem{' '}
           <FiChevronDown
             className={cn(
@@ -39,14 +42,49 @@ const ImageAdjustments = () => {
         </div>
       </PopoverTrigger>
       <PopoverContent>
-        <div className="flex gap-10">
-          <p>Contraste</p>{' '}
-          <Slider
-            value={contrastSliderValue}
-            onValueChange={setContrastSliderValue}
-            max={100}
-            min={1}
-          />
+        <div className="grid grid-cols-5">
+          <div className="flex items-center gap-1 col-span-2">
+            <RiContrastFill
+              className="text-content-tertiary"
+              style={{
+                filter: `contrast(${Math.max(0.5, contrastSliderValue[0] / 50)})`,
+                transition: 'filter 0.3s ease-in-out'
+              }}
+            />
+            <p className="text-content-secondary">Contraste</p>
+          </div>
+          <div className="flex items-center gap-2 col-span-3">
+            <Slider
+              value={contrastSliderValue}
+              className="hover:cursor-grab"
+              onValueChange={setContrastSliderValue}
+              max={100}
+              min={1}
+            />
+            <p className="text-xs text-content-primary">{contrastSliderValue}</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-5">
+          <div className="flex items-center gap-1 col-span-2">
+            <BiBrightnessHalf
+              style={{
+                filter: `brightness(${Math.max(0.5, expositionSliderValue[0] / 50)})`, // Ensure a minimum brightness of 0.5
+                transition: 'filter 0.3s ease-in-out' // Smooth transition for brightness changes
+              }}
+              className="text-content-tertiary"
+            />
+            <p className="text-content-secondary">Exposição</p>
+          </div>
+          <div className="flex items-center gap-2 col-span-3">
+            <Slider
+              value={expositionSliderValue}
+              className="hover:cursor-grab"
+              onValueChange={setExpositionSliderValue}
+              max={100}
+              min={1}
+            />
+            <p className="text-xs text-content-primary">{expositionSliderValue}</p>
+          </div>
         </div>
       </PopoverContent>
     </Popover>
