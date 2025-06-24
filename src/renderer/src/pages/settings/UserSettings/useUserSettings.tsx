@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-export function useUserSettings() {
+export const useUserSettings = () => {
   const userFilters = [
     {
       label: 'Todos os usuários',
