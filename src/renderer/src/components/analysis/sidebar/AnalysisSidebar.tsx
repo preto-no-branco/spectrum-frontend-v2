@@ -6,13 +6,15 @@ import CustomAccordion from '@renderer/components/analysis/sidebar/CustomAccordi
 import spectrumA from '@/assets/analysis/spectrumA.png'
 import infoCircle from '@/assets/analysis/info-circle.png'
 import checkCircle from '@/assets/analysis/check-circle-filled.png'
-import { X } from 'lucide-react'
 import InfoSection from './InfoSection'
+import EditableTagList from '../EditableTagList'
 
 export default function AnalysisSidebar() {
   const [open, setOpen] = useState(false)
   const [width, setWidth] = useState(450)
   const [resizing, setResizing] = useState(false)
+  const [plates, setPlates] = useState<string[]>(['ABC1234', 'XYZ5678'])
+  const [containers, setContainers] = useState<string[]>(['12345678912', '98765432100'])
   const [activeTab, setActiveTab] = useState<'detalhes' | 'movimentacoes'>('detalhes')
   const sidebarRef = useRef<HTMLDivElement>(null)
   const isResizing = useRef(false)
@@ -128,13 +130,19 @@ export default function AnalysisSidebar() {
 
                 <CustomAccordion title="Detalhes OCR">
                   <InfoSection title="Placa">
-                    <Tag value="ABC1234" />
-                    <Tag value="ABC1234" />
+                    <EditableTagList
+                      values={plates}
+                      setValues={setPlates}
+                      placeholder="Nova placa"
+                    />
                   </InfoSection>
                   <div className="h-4"></div>
                   <InfoSection title="Contêiner">
-                    <Tag value="12345678912" />
-                    <Tag value="12345678912" />
+                    <EditableTagList
+                      values={containers}
+                      setValues={setContainers}
+                      placeholder="Novo contêiner"
+                    />
                   </InfoSection>
                 </CustomAccordion>
 
@@ -189,17 +197,6 @@ export default function AnalysisSidebar() {
           className="absolute top-0 right-0 h-full w-[5px] cursor-ew-resize z-20"
         />
       )}
-    </div>
-  )
-}
-
-function Tag({ value }: { value: string }) {
-  return (
-    <div className="flex items-center bg-[#0F1112] border border-[#2D3234] rounded-md px-3 py-1">
-      <span className="text-[#B3BDC0] text-sm">{value}</span>
-      <button className="ml-2">
-        <X className="w-4 h-4 text-[#B3BDC0]" />
-      </button>
     </div>
   )
 }
