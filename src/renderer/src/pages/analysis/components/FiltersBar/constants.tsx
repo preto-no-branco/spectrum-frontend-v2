@@ -81,10 +81,10 @@ export const LINEAR_MAPS = [
     label: 'Mapa não-linear'
   },
   {
-    label: 'Mapa não-linear 2'
+    label: 'Mapa não-linear 4'
   },
   {
-    label: 'Mapa não-linear 3'
+    label: 'Mapa não-linear 4'
   },
   {
     label: 'Mapa não-linear 4'
@@ -93,72 +93,72 @@ export const LINEAR_MAPS = [
 
 export const COMPLEX_FILTERS: filter[] = [
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-5 h-5" />,
+    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   }

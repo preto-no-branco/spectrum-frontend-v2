@@ -10,7 +10,7 @@ import { colorFilters } from './constants'
 export const ColorFilter = () => {
   return (
     <SelectCn>
-      <SelectTrigger size="sm" className="w-[180px] text-content-secondary">
+      <SelectTrigger size="sm" className="w-[100px] xl:w-[180px] text-content-secondary">
         <SelectValue placeholder="Selecione Filtro" />
       </SelectTrigger>
       <SelectContent>

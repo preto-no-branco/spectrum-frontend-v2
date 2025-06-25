@@ -5,17 +5,17 @@ import { ComplexFilters } from './ComplexFilters'
 export const FiltersControllers = ({ controllers }: { controllers: filterControllersProps }) => {
   const filters: filter[] = [
     {
-      icon: <Undo className="w-5" />,
+      icon: <Undo className="w-4 xl:w-5" />,
       function: controllers.handleBackwards,
       name: 'Desfazer ultimo filtro'
     },
     {
-      icon: <Redo className="w-5" />,
+      icon: <Redo className="w-4 xl:w-5" />,
       function: controllers.handleForwards,
       name: 'Avançar'
     },
     {
-      icon: <RotateCcw className="w-5" />,
+      icon: <RotateCcw className="w-4 xl:w-5" />,
       function: controllers.handleUndo,
       name: 'Resetar filtros'
     }

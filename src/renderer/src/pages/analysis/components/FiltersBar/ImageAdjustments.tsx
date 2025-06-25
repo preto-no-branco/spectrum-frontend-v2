@@ -18,7 +18,7 @@ export const ImageAdjustments = () => {
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger>
-        <div className="flex text-content-secondary hover:cursor-pointer gap-1 text-sm items-center">
+        <div className="flex text-content-secondary hover:cursor-pointer gap-1 text-xs xl:text-sm items-center">
           Ajustes de Imagem{' '}
           <FiChevronDown
             className={cn(

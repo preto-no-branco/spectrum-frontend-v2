@@ -10,7 +10,7 @@ import { LINEAR_MAPS } from './constants'
 export const LinearMap = () => {
   return (
     <SelectCn>
-      <SelectTrigger size="sm" className="w-[180px] text-content-secondary">
+      <SelectTrigger size="sm" className="w-[120px] xl:w-[180px] text-content-secondary">
         <SelectValue placeholder="Selecione Mapa" />
       </SelectTrigger>
       <SelectContent>
