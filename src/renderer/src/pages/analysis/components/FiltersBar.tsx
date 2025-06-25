@@ -347,11 +347,26 @@ type filterControllersProps = {
 }
 
 const FiltersControllers = ({ controllers }: { controllers: filterControllersProps }) => {
+  const filters: filter[] = [
+    {
+      icon: <Undo className="w-5" />,
+      function: controllers.handleBackwards,
+      name: 'Desfazer ultimo filtro'
+    },
+    {
+      icon: <Redo className="w-5" />,
+      function: controllers.handleForwards,
+      name: 'Avançar'
+    },
+    {
+      icon: <RotateCcw className="w-5" />,
+      function: controllers.handleUndo,
+      name: 'Resetar filtros'
+    }
+  ]
   return (
-    <div className="flex items-center gap-5 text-content-secondary brightness-150">
-      <Undo className="hover:cursor-pointer w-5" onClick={controllers.handleBackwards} />
-      <Redo className="hover:cursor-pointer w-5" onClick={controllers.handleForwards} />
-      <RotateCcw className="hover:cursor-pointer w-5" onClick={controllers.handleUndo} />
+    <div className="flex items-center gap-5 text-content-secondary">
+      <ComplexFilters filters={filters} />
     </div>
   )
 }
