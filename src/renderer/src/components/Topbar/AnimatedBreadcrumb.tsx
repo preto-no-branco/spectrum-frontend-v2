@@ -9,7 +9,7 @@ const AnimatedBreadcrumb = ({ path }: { path: string | string[] }) => {
 
   return (
     <Breadcrumb className="gap-2 flex items-center">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="sync">
         {itemsArray.map((item, index) => {
           const delay = index * baseDuration
           return (

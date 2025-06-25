@@ -1,9 +1,15 @@
 import { Columns } from '@renderer/components/Table/interfaces'
 import { Avatar, AvatarFallback } from '@renderer/components/ui/avatar'
 import { Badge } from '@renderer/components/ui/badge'
+import { Button } from '@renderer/components/ui/button'
+import { CircleSlashIcon, EditIcon } from 'lucide-react'
 import { ColumnUser } from './interface'
 
-export const useUserTable = () => {
+interface Props {
+  onEdit: (id: string) => void
+}
+
+export const useUserTable = ({ onEdit }: Props) => {
   const usersData: ColumnUser[] = [
     {
       id: '6690',
@@ -51,23 +57,19 @@ export const useUserTable = () => {
     },
     {
       key: 'username',
-      header: 'Nome de usuário',
-      render: (value) => <span>{value}</span>
+      header: 'Nome de usuário'
     },
     {
       key: 'position',
-      header: 'Cargo',
-      render: (value) => <span>{value}</span>
+      header: 'Cargo'
     },
     {
       key: 'accessLevel',
-      header: 'Perfil de acesso',
-      render: (value) => <span>{value}</span>
+      header: 'Perfil de acesso'
     },
     {
       key: 'id',
-      header: 'Identificador',
-      render: (value) => <span>{value}</span>
+      header: 'Identificador'
     },
     {
       key: 'status',
@@ -80,18 +82,32 @@ export const useUserTable = () => {
     },
     {
       key: 'lastAccess',
-      header: 'Ultimo acesso',
-      render: (value) => <span>{value}</span>
+      header: 'Ultimo acesso'
     },
     {
       key: 'email',
-      header: 'Email',
-      render: (value) => <span>{value}</span>
+      header: 'Email'
     },
     {
       key: 'actions',
       header: 'Ações',
-      render: (value) => <span>{value}</span>
+      cell(props) {
+        return (
+          <div className="flex items-center">
+            <Button variant="ghost" size="icon" className="size-8">
+              <CircleSlashIcon />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-8"
+              onClick={() => onEdit(props.row.original.id)}
+            >
+              <EditIcon />
+            </Button>
+          </div>
+        )
+      }
     }
   ]
   return {

@@ -1,45 +1,23 @@
 import * as SelectPrimitive from '@radix-ui/react-select'
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from 'lucide-react'
-import * as React from 'react'
 
 import { cn } from '@/lib/utils'
-
-type SelectProps = React.ComponentProps<typeof SelectPrimitive.Root>
-type SelectGroupProps = React.ComponentProps<typeof SelectPrimitive.Group>
-type SelectValueProps = React.ComponentProps<typeof SelectPrimitive.Value>
-type SelectTriggerProps = React.ComponentProps<typeof SelectPrimitive.Trigger> & {
-  size?: 'sm' | 'default'
-}
-type SelectContentProps = React.ComponentProps<typeof SelectPrimitive.Content>
-type SelectItemProps = React.ComponentProps<typeof SelectPrimitive.Item>
-type SelectLabelProps = React.ComponentProps<typeof SelectPrimitive.Label>
-type SelectSeparatorProps = React.ComponentProps<typeof SelectPrimitive.Separator>
-type SelectScrollUpButtonProps = React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>
-type SelectScrollDownButtonProps = React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>
-
-type Option = {
-  value: string
-  label: string
-}
-
-type CustomSelectProps = SelectProps & {
-  options: Option[]
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
-  placeholder?: string
-  label?: string
-  // size?: 'sm' | 'default'
-
-  groupProps?: SelectGroupProps
-  valueProps?: SelectValueProps
-  triggerProps?: SelectTriggerProps
-  contentProps?: SelectContentProps
-  itemProps?: SelectItemProps
-  labelProps?: SelectLabelProps
-  separatorProps?: SelectSeparatorProps
-  scrollUpButtonProps?: SelectScrollUpButtonProps
-  scrollDownButtonProps?: SelectScrollDownButtonProps
-}
+import {
+  CustomSelectProps,
+  SelectContentProps,
+  SelectGroupProps,
+  SelectItemProps,
+  SelectLabelProps,
+  SelectProps,
+  SelectScrollDownButtonProps,
+  SelectScrollUpButtonProps,
+  SelectSeparatorProps,
+  SelectTriggerProps,
+  SelectValueProps
+} from '@renderer/core/@types/components/select'
+import { Controller } from 'react-hook-form'
+import { InputErrorMessage } from './errorMessage'
+import { Label } from './label'
 
 function SelectCn({ ...props }: SelectProps) {
   return <SelectPrimitive.Root data-slot="select" {...props} />
@@ -166,7 +144,7 @@ function SelectScrollDownButton({ className, ...props }: SelectScrollDownButtonP
   )
 }
 
-function Select({
+function RenderSelect({
   options,
   label,
   placeholder,
@@ -176,29 +154,59 @@ function Select({
   triggerProps,
   valueProps,
   contentProps,
+  errorMessage,
   itemProps,
   labelProps,
+  showExternalLabel = true,
+  containerProps,
   ...props
 }: CustomSelectProps) {
+  const { className: containerClassName, ...restContainerProps } = containerProps || {}
+
   return (
-    <SelectCn {...props}>
-      <SelectTrigger {...triggerProps}>
-        {leftIcon && <SelectPrimitive.Icon>{leftIcon}</SelectPrimitive.Icon>}
-        <SelectValue placeholder={placeholder} {...valueProps} />
-        {rightIcon && <SelectPrimitive.Icon>{rightIcon}</SelectPrimitive.Icon>}
-      </SelectTrigger>
-      <SelectContent {...contentProps}>
-        <SelectGroup {...groupProps}>
-          {label && <SelectLabel {...labelProps}>{label}</SelectLabel>}
-          {options.map((option) => (
-            <SelectItem key={option.value} value={option.value} {...itemProps}>
-              {option.label}
-            </SelectItem>
-          ))}
-        </SelectGroup>
-      </SelectContent>
-    </SelectCn>
+    <div
+      className={`flex flex-col gap-2 pb-6 relative ${containerClassName}`}
+      {...restContainerProps}
+    >
+      {showExternalLabel && label && <Label {...labelProps} /* htmlFor={name} */>{label}</Label>}
+      <SelectCn {...props}>
+        <SelectTrigger {...triggerProps} className="w-full">
+          {leftIcon && <SelectPrimitive.Icon>{leftIcon}</SelectPrimitive.Icon>}
+          <SelectValue placeholder={placeholder} {...valueProps} />
+          {rightIcon && <SelectPrimitive.Icon>{rightIcon}</SelectPrimitive.Icon>}
+        </SelectTrigger>
+        <SelectContent {...contentProps}>
+          <SelectGroup {...groupProps}>
+            {label && <SelectLabel>{label}</SelectLabel>}
+            {options.map((option) => (
+              <SelectItem key={option.value} value={option.value} {...itemProps}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </SelectCn>
+      <div className="absolute bottom-0.5 left-0">
+        <InputErrorMessage message={errorMessage} />
+      </div>
+    </div>
   )
+}
+
+function Select({ control, name, ...props }: CustomSelectProps) {
+  if (control) {
+    return (
+      <Controller
+        name={name}
+        control={control}
+        render={({ field: { value = '', ...field } }) => {
+          return <RenderSelect {...props} {...field} value={value} onValueChange={field.onChange} />
+        }}
+      />
+    )
+  }
+
+  return <RenderSelect {...props} />
 }
 
 export {
