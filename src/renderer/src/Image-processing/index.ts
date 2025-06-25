@@ -1,5 +1,6 @@
 import { Mat, CV } from '@techstark/opencv-js'
-import OpenCV from './openCv'
+import { Pipeline } from './pipeline'
+import { PipelineStep } from './interfaces/pipeline'
 
 export enum NonLinearMap {
   Linear = 'linearMap',
@@ -9,6 +10,7 @@ export enum NonLinearMap {
   Gamma2 = 'gammaMap2'
 }
 export enum ColorMap {
+  none = '',
   gray = 'gray',
   velocityGreen = 'velocity-green',
   velocityBlue = 'velocity-blue',
@@ -21,6 +23,8 @@ export enum ColorMap {
   rainbow = 'rainbow',
   freesurfaceBlue = 'freesurface-blue'
 }
+export type ColorMapType = (typeof ColorMap)[keyof typeof ColorMap]
+
 export enum Effect {
   emboss = 'emboss',
   denseObject = 'denseObject',
@@ -51,25 +55,23 @@ export default class ImageProcessing {
   private effectStack: Effect[] = []
   private originalImage: Mat | null = null
   private currentImage: Mat | null = null
-  private HistogramROI: ROI | null = null
-  private ROI: ROI | null = null
+  private histogram: Mat | null = null
+  private pipeline: Pipeline<Mat>
 
   constructor(cvInstance: CV) {
     this.cv = cvInstance
-  }
-
-  static async createInstance(): Promise<ImageProcessing> {
-    const openCVInstance = await OpenCV.getInstance()
-    if (!openCVInstance.cv) {
-      throw new Error('OpenCV not initialized')
-    }
-    return new ImageProcessing(openCVInstance.cv)
+    this.pipeline = new Pipeline<Mat>()
   }
 
   resetImage(): void {
     this.nonLinearMap = NonLinearMap.Linear
     this.colorMap = ColorMap.gray
     this.effectStack = []
+  }
+
+  addColorMapStep(colorMap: ColorMapType, step: PipelineStep<Mat, ColorMapType>): void {
+    this.colorMap = colorMap
+    this.pipeline.addStep(step, colorMap)
   }
 }
 
