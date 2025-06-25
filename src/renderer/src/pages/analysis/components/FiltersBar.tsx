@@ -91,7 +91,7 @@ const COMPLEX_FILTERS: filter[] = [
 export const FiltersBar = () => {
   return (
     <div className="bg-background border-b border-border-secondary w-full px-6 py-5 flex justify-between items-center">
-      <div className="flex gap-14">
+      <div className="flex justify-between items-center w-full gap-14">
         <Sidebar className="hover:cursor-pointer stroke-1 text-text-content-secondary" />
         <div className="flex gap-4 items-center">
           <ImageAdjustments />
