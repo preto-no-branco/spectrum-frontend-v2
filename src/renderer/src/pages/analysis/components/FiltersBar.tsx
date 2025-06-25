@@ -17,72 +17,72 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 
 const COMPLEX_FILTERS: filter[] = [
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf />,
+    icon: <BiBrightnessHalf className="w-5 h-5" />,
     function: () => {},
     name: 'teste'
   }
@@ -90,7 +90,7 @@ const COMPLEX_FILTERS: filter[] = [
 
 export const FiltersBar = () => {
   return (
-    <div className="bg-background border-b border-border-secondary w-full px-6 py-5 flex justify-between items-center">
+    <div className="bg-background border-b border-border-secondary w-full px-6 py-2 flex justify-between items-center">
       <div className="flex justify-between items-center w-full gap-14">
         <Sidebar className="hover:cursor-pointer stroke-1 text-text-content-secondary" />
         <div className="flex gap-4 items-center">
@@ -123,7 +123,7 @@ const ImageAdjustments = () => {
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger>
-        <div className="flex text-content-secondary hover:cursor-pointer gap-1 items-center">
+        <div className="flex text-content-secondary hover:cursor-pointer gap-1 text-sm items-center">
           Ajustes de Imagem{' '}
           <FiChevronDown
             className={cn(
@@ -134,7 +134,7 @@ const ImageAdjustments = () => {
           />
         </div>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent align="start" sideOffset={20} className="flex flex-col gap-3">
         <div className="grid grid-cols-5">
           <div className="flex items-center gap-1 col-span-2">
             <RiContrastFill
@@ -144,7 +144,7 @@ const ImageAdjustments = () => {
                 transition: 'filter 0.3s ease-in-out'
               }}
             />
-            <p className="text-content-secondary">Contraste</p>
+            <p className="text-content-secondary text-sm">Contraste</p>
           </div>
           <div className="flex items-center gap-2 col-span-3">
             <Slider
@@ -166,7 +166,7 @@ const ImageAdjustments = () => {
               }}
               className="text-content-tertiary"
             />
-            <p className="text-content-secondary">Exposição</p>
+            <p className="text-content-secondary text-sm">Exposição</p>
           </div>
           <div className="flex items-center gap-2 col-span-3">
             <Slider
@@ -258,7 +258,7 @@ const colorFilters = [
 const ColorFilter = () => {
   return (
     <SelectCn>
-      <SelectTrigger className="w-[180px] text-content-secondary">
+      <SelectTrigger size="sm" className="w-[180px] text-content-secondary">
         <SelectValue placeholder="Selecione Filtro" />
       </SelectTrigger>
       <SelectContent>
@@ -298,7 +298,7 @@ const LINEAR_MAPS = [
 const LinearMap = () => {
   return (
     <SelectCn>
-      <SelectTrigger className="w-[180px] text-content-secondary">
+      <SelectTrigger size="sm" className="w-[180px] text-content-secondary">
         <SelectValue placeholder="Selecione Mapa" />
       </SelectTrigger>
       <SelectContent>
@@ -320,12 +320,12 @@ type filter = {
 
 const ComplexFilters = ({ filters }: { filters: filter[] }) => {
   return (
-    <div className="flex">
+    <div className="flex gap-2">
       {filters.map((filter) => {
         return (
           <Tooltip delayDuration={500} key={filter.name}>
             <TooltipTrigger
-              className="brightness-150 text-content-secondary cursor-pointer px-2"
+              className="brightness-150 w-fit text-content-secondary cursor-pointer p-2 rounded hover:bg-background-tertiary transition-colors"
               onClick={filter.function}
             >
               {filter.icon}
@@ -349,9 +349,9 @@ type filterControllersProps = {
 const FiltersControllers = ({ controllers }: { controllers: filterControllersProps }) => {
   return (
     <div className="flex items-center gap-5 text-content-secondary brightness-150">
-      <Undo className="hover:cursor-pointer" onClick={controllers.handleBackwards} />
-      <Redo className="hover:cursor-pointer" onClick={controllers.handleForwards} />
-      <RotateCcw className="hover:cursor-pointer" onClick={controllers.handleUndo} />
+      <Undo className="hover:cursor-pointer w-5" onClick={controllers.handleBackwards} />
+      <Redo className="hover:cursor-pointer w-5" onClick={controllers.handleForwards} />
+      <RotateCcw className="hover:cursor-pointer w-5" onClick={controllers.handleUndo} />
     </div>
   )
 }
