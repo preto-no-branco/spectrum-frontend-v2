@@ -5,7 +5,7 @@ import {
   AccordionTrigger
 } from '@/components/ui/accordion'
 
-export default function CustomAccordion({
+export default function AccordionSidebar({
   title,
   time,
   children,
