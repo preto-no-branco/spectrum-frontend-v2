@@ -8,6 +8,7 @@ import infoCircle from '@/assets/analysis/info-circle.png'
 import checkCircle from '@/assets/analysis/check-circle-filled.png'
 import InfoSection from './InfoSection'
 import EditableTagList from '../EditableTagList'
+import movements from '@/assets/analysis/movements.png'
 
 export default function AnalysisSidebar() {
   const [open, setOpen] = useState(false)
@@ -99,7 +100,7 @@ export default function AnalysisSidebar() {
                       : 'text-[#B3BDC0] hover:text-white'
                   }`}
                 >
-                  <img src={inspectionSidebar} alt="Movimentações" className="w-5 h-5" />
+                  <img src={movements} alt="Movimentações" className="w-5 h-5" />
                   {width > 320 && <span className="font-normal">Movimentações</span>}
                 </button>
               </>
