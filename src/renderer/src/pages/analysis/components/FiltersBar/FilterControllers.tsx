@@ -1,3 +1,7 @@
+import { Redo, RotateCcw, Undo } from 'lucide-react'
+import { filter, filterControllersProps } from './interfaces'
+import { ComplexFilters } from './ComplexFilters'
+
 export const FiltersControllers = ({ controllers }: { controllers: filterControllersProps }) => {
   const filters: filter[] = [
     {

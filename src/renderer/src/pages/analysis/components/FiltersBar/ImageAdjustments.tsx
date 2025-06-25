@@ -1,5 +1,6 @@
 import { Popover, PopoverContent, PopoverTrigger } from '@renderer/components/ui/popover'
 import { Slider } from '@renderer/components/ui/slider'
+import { cn } from '@renderer/lib/utils'
 import { useState } from 'react'
 import { BiBrightnessHalf } from 'react-icons/bi'
 import { FiChevronDown } from 'react-icons/fi'

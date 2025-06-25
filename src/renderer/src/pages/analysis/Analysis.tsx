@@ -7,7 +7,6 @@ import { LuTrash2 } from 'react-icons/lu'
 import { Badge } from '@renderer/components/ui/badge'
 import { Checkbox } from '@renderer/components/ui/checkbox'
 import { FiltersBar } from './components/FiltersBar'
-import { Separator } from '@renderer/components/ui/separator'
 
 export default function Analysis(): JSX.Element {
   async function main() {
