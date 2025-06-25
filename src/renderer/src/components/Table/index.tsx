@@ -21,14 +21,14 @@ export function DataTable<T>({ columns, data }: TableProps<T>) {
   })
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border-none">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead key={header.id} className="px-3 border-none">
                     {header.isPlaceholder
                       ? null
                       : flexRender(header.column.columnDef.header, header.getContext())}
@@ -41,9 +41,13 @@ export function DataTable<T>({ columns, data }: TableProps<T>) {
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+                className="px-3 border-none hover:text-[#B3BDC0]"
+              >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell key={cell.id} className="px-3">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
