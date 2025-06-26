@@ -16,7 +16,6 @@ class Step2 implements PipelineStep<string, { name: string; age: number }> {
 
 class Step3 implements PipelineStep<string, { repeat: number }> {
   apply(input: string, args: { repeat: number }): string {
-    // repete exatamente a string recebida, sem espaços adicionais
     return input.repeat(args.repeat)
   }
 }
@@ -40,6 +39,16 @@ function assertArrayLength<T>(arr: T[], expectedLen: number, testName: string) {
   }
 }
 
+function assertTrue(value: boolean, testName: string) {
+  console.log(`${value ? '✅ PASS' : '❌ FAIL'} ${testName}`)
+  if (!value) console.log(`    expected true but got false`)
+}
+
+function assertFalse(value: boolean, testName: string) {
+  console.log(`${!value ? '✅ PASS' : '❌ FAIL'} ${testName}`)
+  if (value) console.log(`    expected false but got true`)
+}
+
 // --- testes ---
 export function runTests() {
   console.log('--- Pipeline Tests ---')
@@ -50,11 +59,10 @@ export function runTests() {
 
   // 1) Teste básico de addStep + run
   const p1 = new Pipeline<string>().addStep(s1, { foo: 10 }).addStep(s2, { name: 'Bob', age: 30 })
-
   const out1 = p1.run('Hi')
   assertEquals(out1, 'Hi [Step1: foo=10] [Step2: name=Bob, age=30]', 'addStep + run')
 
-  // 2) Teste removeStep
+  // 2) Test removeStep
   p1.removeStep(0) // remove Step1
   const out2 = p1.run('Hi')
   assertEquals(out2, 'Hi [Step2: name=Bob, age=30]', 'removeStep(0)')
@@ -79,15 +87,26 @@ export function runTests() {
 
   // 7) Test chaining completo
   const p2 = new Pipeline<string>()
-    .addStep(s1, { foo: 1 }) // -> "Z [Step1: foo=1]"
-    .addStep(s2, { name: 'X', age: 9 }) // -> "Z [Step1: foo=1] [Step2: name=X, age=9]"
-    .removeStep(1) // remove o Step2
-    .addStep(s3, { repeat: 2 }) // repete a saída de Step1 duas vezes
-
+    .addStep(s1, { foo: 1 })
+    .addStep(s2, { name: 'X', age: 9 })
+    .removeStep(1)
+    .addStep(s3, { repeat: 2 })
   const out7 = p2.run('Z')
-  // Step1 produz "Z [Step1: foo=1]", Step3 repete sem espaço:
-  // "Z [Step1: foo=1]" + "Z [Step1: foo=1]"
   assertEquals(out7, 'Z [Step1: foo=1]Z [Step1: foo=1]', 'chaining mix')
+
+  // 8) Test updateStepIfExists sucesso
+  const p3 = new Pipeline<string>().addStep(s1, { foo: 5 })
+  const updated = p3.updateStepIfExists((step) => step instanceof Step1, { foo: 99 })
+  assertTrue(updated, 'updateStepIfExists retorna true quando encontra passo')
+  const out8 = p3.run('X')
+  assertEquals(out8, 'X [Step1: foo=99]', 'updateStepIfExists atualiza args do step existente')
+
+  // 9) Test updateStepIfExists falha
+  const failed = p3.updateStepIfExists((step) => step instanceof Step2, { name: 'Jane', age: 20 })
+  assertFalse(failed, 'updateStepIfExists retorna false quando não encontra passo')
+
+  // 10) Verifica que não duplicou o passo ao atualizar
+  assertArrayLength(p3.getSteps(), 1, 'updateStepIfExists não altera quantidade de steps')
 
   console.log('--- Tests finished ---')
 }

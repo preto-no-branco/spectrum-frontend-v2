@@ -1,7 +1,7 @@
 // src/OpenCVContext.tsx
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import type { CV } from '@techstark/opencv-js'
-import OpenCV from '../openCV'
+import OpenCV from '../openCv'
 
 interface OpenCVContextValue {
   cv: CV | null
@@ -12,7 +12,7 @@ interface OpenCVContextValue {
 const OpenCVContext = createContext<OpenCVContextValue>({
   cv: null,
   ready: false,
-  error: null,
+  error: null
 })
 
 export const OpenCVProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -52,9 +52,7 @@ export const OpenCVProvider: React.FC<React.PropsWithChildren> = ({ children }) 
   }, [error])
 
   return (
-    <OpenCVContext.Provider value={{ cv: cvObj, ready, error }}>
-      {children}
-    </OpenCVContext.Provider>
+    <OpenCVContext.Provider value={{ cv: cvObj, ready, error }}>{children}</OpenCVContext.Provider>
   )
 }
 

@@ -1,17 +1,26 @@
 import { PipelineStep } from '../../../interfaces/pipeline'
-import { Mat, COLOR_RGBA2GRAY, COLOR_GRAY2RGBA, LUT, cvtColor } from '@techstark/opencv-js'
 import createColormap from 'colormap'
+import { Mat, CV } from '@techstark/opencv-js'
 import { ColorMapType } from '../../..'
 
-export class ApplyColorMapStep implements PipelineStep<Mat, ColorMapType> {
+export class ColorMapStep implements PipelineStep<Mat, ColorMapType> {
+  private cv: CV
+
+  constructor(cv: CV) {
+    this.cv = cv
+  }
+
   apply(input: Mat, colorMap: ColorMapType): Mat {
+    const { cv } = this
+    if (input.type() !== cv.CV_8UC1) {
+      const tmp8 = new cv.Mat()
+      input.convertTo(tmp8, cv.CV_8U)
+      cv.cvtColor(tmp8, input, cv.COLOR_GRAY2RGBA)
+      tmp8.delete()
+    }
     if (colorMap === '') {
       return input
     }
-
-    const gray = new Mat()
-    cvtColor(input, gray, COLOR_RGBA2GRAY, 0)
-
     const gradientColors = createColormap({
       colormap: colorMap,
       nshades: 256,
@@ -19,7 +28,7 @@ export class ApplyColorMapStep implements PipelineStep<Mat, ColorMapType> {
       alpha: 1
     })
 
-    const lut = new Mat(256, 1, input.type())
+    const lut = new cv.Mat(256, 1, cv.CV_8UC4)
 
     if (colorMap === 'rainbow') {
       for (let i = 0; i < 256; i++) {
@@ -37,13 +46,15 @@ export class ApplyColorMapStep implements PipelineStep<Mat, ColorMapType> {
       }
     }
 
-    const grayColor = new Mat()
-    cvtColor(gray, grayColor, COLOR_GRAY2RGBA)
+    const gray = new cv.Mat()
+    cv.cvtColor(input, gray, cv.COLOR_RGBA2GRAY, 0)
 
-    const dst = new Mat()
-    LUT(grayColor, lut, dst)
+    const grayColor = new cv.Mat()
+    cv.cvtColor(gray, grayColor, cv.COLOR_GRAY2RGBA)
 
-    input.delete()
+    const dst = new cv.Mat()
+    cv.LUT(grayColor, lut, dst)
+
     gray.delete()
     grayColor.delete()
     lut.delete()

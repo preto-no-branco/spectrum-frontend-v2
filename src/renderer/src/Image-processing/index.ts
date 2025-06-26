@@ -11,7 +11,6 @@ export enum NonLinearMap {
 }
 export enum ColorMap {
   none = '',
-  gray = 'gray',
   velocityGreen = 'velocity-green',
   velocityBlue = 'velocity-blue',
   phase = 'phase',
@@ -23,7 +22,8 @@ export enum ColorMap {
   rainbow = 'rainbow',
   freesurfaceBlue = 'freesurface-blue'
 }
-export type ColorMapType = (typeof ColorMap)[keyof typeof ColorMap]
+
+export type ColorMapType = keyof typeof ColorMap | ''
 
 export enum Effect {
   emboss = 'emboss',
@@ -37,42 +37,127 @@ export enum Effect {
   logarithmEnhancement = 'logarithmEnhancement'
 }
 
-export interface ImageProcessorStage {
-  apply(input: Mat): Mat
-}
-
-export interface ROI {
-  x_start: number
-  x_end: number
-  y_start: number
-  y_end: number
-}
+export type EffectType = keyof typeof Effect | ''
 
 export default class ImageProcessing {
   private cv: CV
-  private nonLinearMap: NonLinearMap = NonLinearMap.Linear
-  private colorMap: ColorMap = ColorMap.gray
-  private effectStack: Effect[] = []
-  private originalImage: Mat | null = null
-  private currentImage: Mat | null = null
-  private histogram: Mat | null = null
   private pipeline: Pipeline<Mat>
+  private originalImageMat: Mat | null = null
+  private currentImageMat: Mat | null = null
+  private canvas: HTMLCanvasElement
 
-  constructor(cvInstance: CV) {
+  constructor(cvInstance: CV, canvas: HTMLCanvasElement, imageUrl: string) {
     this.cv = cvInstance
+    this.canvas = canvas
     this.pipeline = new Pipeline<Mat>()
+    this.initializeImage(imageUrl)
   }
 
-  resetImage(): void {
-    this.nonLinearMap = NonLinearMap.Linear
-    this.colorMap = ColorMap.gray
-    this.effectStack = []
+  public processImage(): void {
+    if (!this.originalImageMat || !this.currentImageMat) {
+      return
+    }
+    this.resetCurrentImage()
+    const result = this.pipeline.getSteps().length
+      ? this.pipeline.run(this.currentImageMat)
+      : this.currentImageMat
+    this.renderMat(result)
   }
 
-  addColorMapStep(colorMap: ColorMapType, step: PipelineStep<Mat, ColorMapType>): void {
-    this.colorMap = colorMap
-    this.pipeline.addStep(step, colorMap)
+  public colorMapStep(colorMap: ColorMapType, step: PipelineStep<Mat, ColorMapType>): void {
+    const updated = this.pipeline.updateStepIfExists(
+      (s) => s.constructor.name === step.constructor.name,
+      colorMap
+    )
+    if (!updated) {
+      this.pipeline.addStep(step, colorMap)
+    }
+  }
+
+  private initializeImage(imageUrl: string): void {
+    this.imageToMat(imageUrl).then((mat) => {
+      this.originalImageMat = this.convertTo16UC1(mat)
+      this.originalImageMat.copyTo((this.currentImageMat = new this.cv.Mat()))
+      mat.delete()
+      this.renderMat(this.currentImageMat)
+    })
+  }
+
+  private async imageToMat(image: string): Promise<Mat> {
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+      img.crossOrigin = 'anonymous'
+      img.onload = () => {
+        const tmpCanvas = document.createElement('canvas')
+        tmpCanvas.width = img.width
+        tmpCanvas.height = img.height
+        const ctx = tmpCanvas.getContext('2d')!
+        ctx.drawImage(img, 0, 0)
+        const mat = this.cv.imread(tmpCanvas)
+        resolve(mat)
+      }
+      img.onerror = () => reject(new Error('Erro ao carregar imagem'))
+      img.src = image
+    })
+  }
+
+  private resetCurrentImage(): void {
+    this.currentImageMat?.delete()
+    this.originalImageMat?.copyTo((this.currentImageMat = new this.cv.Mat()))
+  }
+
+  private convertTo16UC1(src: Mat): Mat {
+    const { cv } = this
+    const gray8 = new cv.Mat()
+    if (src.channels() === 1) {
+      src.copyTo(gray8)
+    } else if (src.channels() === 3) {
+      cv.cvtColor(src, gray8, cv.COLOR_RGB2GRAY)
+    } else {
+      cv.cvtColor(src, gray8, cv.COLOR_RGBA2GRAY)
+    }
+    const dst16 = new cv.Mat()
+    gray8.convertTo(dst16, cv.CV_16U)
+    gray8.delete()
+    return dst16
+  }
+
+  private renderMat(mat: Mat): void {
+    const { cv, canvas } = this
+    let disp: Mat
+
+    switch (mat.type()) {
+      case cv.CV_16UC1: {
+        const tmp8 = new cv.Mat()
+        mat.convertTo(tmp8, cv.CV_8U)
+        disp = new cv.Mat()
+        cv.cvtColor(tmp8, disp, cv.COLOR_GRAY2RGBA)
+        tmp8.delete()
+        break
+      }
+      case cv.CV_8UC1: {
+        disp = new cv.Mat()
+        cv.cvtColor(mat, disp, cv.COLOR_GRAY2RGBA)
+        break
+      }
+      case cv.CV_8UC3: {
+        disp = new cv.Mat()
+        cv.cvtColor(mat, disp, cv.COLOR_RGB2RGBA)
+        break
+      }
+      case cv.CV_8UC4: {
+        disp = mat
+        break
+      }
+      default: {
+        disp = mat
+      }
+    }
+
+    canvas.width = disp.cols
+    canvas.height = disp.rows
+    cv.imshow(canvas, disp)
+
+    if (disp !== mat) disp.delete()
   }
 }
-
-// imagem original 16b  -> MAPAS NÃO LINEARES -> HISTOGRAMA ROI -> EFEITOS[] -> MAPAS DE COR -> NORMALIZACAO/FINAL
