@@ -7,7 +7,8 @@ import { LuTrash2 } from 'react-icons/lu'
 import { Badge } from '@renderer/components/ui/badge'
 import { Checkbox } from '@renderer/components/ui/checkbox'
 import { FiltersBar } from './components/FiltersBar'
-import { PausedOperation } from './components/PausedOperation'
+import { BiRadar } from 'react-icons/bi'
+import { BackgroundScreen } from './components/BackgroundScreen'
 
 export default function Analysis(): JSX.Element {
   async function main() {
@@ -52,7 +53,11 @@ export default function Analysis(): JSX.Element {
         </div>
       </div>
       <FiltersBar />
-      <PausedOperation />
+      <BackgroundScreen
+        description="Inicie um novo escaneamento para visualizar resultados."
+        icon={<BiRadar />}
+        title="Aguardando dados"
+      />
     </div>
   )
 }

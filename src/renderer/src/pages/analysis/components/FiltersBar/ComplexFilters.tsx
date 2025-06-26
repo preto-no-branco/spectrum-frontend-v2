@@ -1,9 +1,16 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from '@renderer/components/ui/tooltip'
 import { filter } from './interfaces'
+import { cn } from '@renderer/lib/utils'
 
-export const ComplexFilters = ({ filters }: { filters: filter[] }) => {
+export const ComplexFilters = ({
+  filters,
+  className
+}: {
+  filters: filter[]
+  className?: string
+}) => {
   return (
-    <div className="flex gap-2">
+    <div className={cn('flex gap-2', className)}>
       {filters.map((filter) => {
         return (
           <Tooltip delayDuration={500} key={filter.name}>
