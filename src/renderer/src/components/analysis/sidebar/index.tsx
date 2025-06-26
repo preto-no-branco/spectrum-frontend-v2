@@ -7,7 +7,7 @@ export default function AnalysisSidebar() {
   const [width, setWidth] = useState(400)
   const [showContent, setShowContent] = useState(false)
   const [resizing, setResizing] = useState(false)
-  const [activeTab, setActiveTab] = useState<'detalhes' | 'movimentacoes'>('detalhes')
+  const [activeTab, setActiveTab] = useState<'details' | 'movements'>('details')
   const sidebarRef = useRef<HTMLDivElement>(null)
   const isResizing = useRef(false)
 
@@ -68,13 +68,7 @@ export default function AnalysisSidebar() {
       />
 
       {open && (
-        <SidebarBody
-          activeTab={activeTab}
-          showContent={showContent}
-          width={width}
-          isResizing={isResizing}
-          setResizing={setResizing}
-        />
+        <SidebarBody activeTab={activeTab} isResizing={isResizing} setResizing={setResizing} />
       )}
     </div>
   )

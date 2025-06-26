@@ -1,4 +1,4 @@
-import { JSX, useEffect } from 'react'
+import { JSX, useEffect, useRef, useState } from 'react'
 import cvReadyPromise from '@techstark/opencv-js'
 import { Button } from '@renderer/components/ui/button'
 import { FaSquare } from 'react-icons/fa'
@@ -9,8 +9,14 @@ import { Checkbox } from '@renderer/components/ui/checkbox'
 import { FiltersBar } from './components/FiltersBar'
 import { BiRadar } from 'react-icons/bi'
 import { BackgroundScreen } from './components/BackgroundScreen'
+import SidebarBody from '@renderer/components/analysis/sidebar/body'
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 
 export default function Analysis(): JSX.Element {
+  const inspectionDetailsControls = useState(false)
+
+  const [isInspectionDetailsOpen] = inspectionDetailsControls
+
   async function main() {
     const cv = await cvReadyPromise
     console.log('OpenCV.js is ready!')
@@ -23,8 +29,14 @@ export default function Analysis(): JSX.Element {
     })
   }, [])
 
+  const isResizing = useRef<boolean>(false)
+
+  const setResizing = (value: boolean) => {
+    isResizing.current = value
+  }
+
   return (
-    <div className="flex flex-col h-screen max-h-full items-center justify-center bg-background">
+    <div className="flex flex-col h-screen max-h-full items-center bg-background">
       <div className="bg-background border-b border-border-secondary w-full px-6 py-2 flex justify-between items-center">
         <Button variant={'neutral'} size={'sm'}>
           <FaSquare className="!w-3 !h-3" /> Parar Operação
@@ -52,12 +64,20 @@ export default function Analysis(): JSX.Element {
           </div>
         </div>
       </div>
-      <FiltersBar />
-      <BackgroundScreen
-        description="Inicie um novo escaneamento para visualizar resultados."
-        icon={<BiRadar />}
-        title="Aguardando dados"
-      />
+      <FiltersBar inspectionDetailsControls={inspectionDetailsControls} />
+      <ResizablePanelGroup direction="horizontal" className="flex w-full h-full">
+        <ResizablePanel defaultSize={15} className="min-w-[200px]" hidden={isInspectionDetailsOpen}>
+          <SidebarBody activeTab={'details'} isResizing={isResizing} setResizing={setResizing} />
+        </ResizablePanel>
+        <ResizableHandle withHandle hidden={isInspectionDetailsOpen} />
+        <ResizablePanel minSize={50}>
+          <BackgroundScreen
+            description="Inicie um novo escaneamento para visualizar resultados."
+            icon={<BiRadar />}
+            title="Aguardando dados"
+          />
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   )
 }

@@ -2,8 +2,8 @@ import inspectionSidebar from '@/assets/analysis/inspectionSidebar.png'
 import movements from '@/assets/analysis/movements.png'
 
 interface SidebarOpenProps {
-  activeTab: 'detalhes' | 'movimentacoes'
-  setActiveTab: (tab: 'detalhes' | 'movimentacoes') => void
+  activeTab: 'details' | 'movements'
+  setActiveTab: (tab: 'details' | 'movements') => void
   setOpen: (open: boolean) => void
   width: number
   closeIcon: string
@@ -19,9 +19,9 @@ export default function SidebarOpen({
   return (
     <>
       <button
-        onClick={() => setActiveTab('detalhes')}
+        onClick={() => setActiveTab('details')}
         className={`flex items-center gap-2 w-[45%] justify-center px-2 py-1 ${
-          activeTab === 'detalhes'
+          activeTab === 'details'
             ? 'border-b-[#00B388] border-b-2'
             : 'text-[#B3BDC0] hover:text-white'
         }`}
@@ -30,9 +30,9 @@ export default function SidebarOpen({
         {width > 320 && <span className="font-normal">Detalhes da inspeção</span>}
       </button>
       <button
-        onClick={() => setActiveTab('movimentacoes')}
+        onClick={() => setActiveTab('movements')}
         className={`flex items-center gap-2 w-[40%] justify-center px-2 py-1 ${
-          activeTab === 'movimentacoes'
+          activeTab === 'movements'
             ? 'border-b-[#00B388] border-b-2'
             : 'text-[#B3BDC0] hover:text-white'
         }`}

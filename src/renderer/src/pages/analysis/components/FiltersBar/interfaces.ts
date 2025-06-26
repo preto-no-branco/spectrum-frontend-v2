@@ -9,3 +9,7 @@ export type filterControllersProps = {
   handleBackwards: () => void
   handleForwards: () => void
 }
+
+export type FiltersBarProps = {
+  inspectionDetailsControls: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
+}

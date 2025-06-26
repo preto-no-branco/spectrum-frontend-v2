@@ -3,8 +3,8 @@ import openIcon from '@/assets/analysis/openSidebar.png'
 import closeIcon from '@/assets/analysis/closeSidebar.png'
 
 interface SidebarHeaderProps {
-  activeTab: 'detalhes' | 'movimentacoes'
-  setActiveTab: (tab: 'detalhes' | 'movimentacoes') => void
+  activeTab: 'details' | 'movements'
+  setActiveTab: (tab: 'details' | 'movements') => void
   setOpen: (open: boolean) => void
   open: boolean
   width: number

@@ -17,11 +17,11 @@ export default function AccordionSidebar({
   width?: number
 }) {
   return (
-    <Accordion type="single" collapsible className="w-full">
+    <Accordion type="single" collapsible defaultValue="item-1" className="w-full">
       <AccordionItem value="item-1">
-        <AccordionTrigger className="flex-row-reverse justify-end items-center gap-2 font-normal no-underline hover:no-underline">
+        <AccordionTrigger className="flex-row-reverse hover:cursor-pointer justify-end items-center gap-2 font-normal no-underline hover:no-underline">
           <div
-            className={`flex justify-between items-center gap-2 font-normal ${width && width < 250 ? 'text-[10px]' : 'text-xs'} text-[#7B8588] w-full`}
+            className={`flex justify-between items-center gap-x-2 flex-wrap font-normal ${width && width < 250 ? 'text-[10px]' : 'text-xs'} text-content-secondary w-full`}
           >
             <span className="text-[#B3BDC0] text-sm hover:underline">{title}</span>
             {time && <span>{time}</span>}
