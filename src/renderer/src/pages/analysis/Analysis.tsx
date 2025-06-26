@@ -11,6 +11,7 @@ import { BiRadar } from 'react-icons/bi'
 import { BackgroundScreen } from './components/BackgroundScreen'
 import SidebarBody from '@renderer/components/analysis/sidebar/body'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
+import { motion } from 'framer-motion'
 
 export default function Analysis(): JSX.Element {
   const inspectionDetailsControls = useState(false)
@@ -66,7 +67,7 @@ export default function Analysis(): JSX.Element {
       </div>
       <FiltersBar inspectionDetailsControls={inspectionDetailsControls} />
       <ResizablePanelGroup direction="horizontal" className="flex w-full h-full">
-        <ResizablePanel defaultSize={15} className="min-w-[200px]" hidden={isInspectionDetailsOpen}>
+        <ResizablePanel defaultSize={20} className="min-w-[200px]" hidden={isInspectionDetailsOpen}>
           <SidebarBody activeTab={'details'} isResizing={isResizing} setResizing={setResizing} />
         </ResizablePanel>
         <ResizableHandle withHandle hidden={isInspectionDetailsOpen} />
