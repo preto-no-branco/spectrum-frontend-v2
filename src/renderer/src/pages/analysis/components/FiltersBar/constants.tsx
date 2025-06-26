@@ -81,10 +81,10 @@ export const LINEAR_MAPS = [
     label: 'Mapa não-linear'
   },
   {
-    label: 'Mapa não-linear 4'
+    label: 'Mapa não-linear 2'
   },
   {
-    label: 'Mapa não-linear 4'
+    label: 'Mapa não-linear 3'
   },
   {
     label: 'Mapa não-linear 4'
