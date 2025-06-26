@@ -2,14 +2,16 @@ import { Columns } from '@renderer/components/Table/interfaces'
 import { Avatar, AvatarFallback } from '@renderer/components/ui/avatar'
 import { Badge } from '@renderer/components/ui/badge'
 import { Button } from '@renderer/components/ui/button'
+import { Tooltip } from '@renderer/components/ui/tooltip'
 import { CircleSlashIcon, EditIcon } from 'lucide-react'
 import { ColumnUser } from './interface'
 
 interface Props {
   onEdit: (id: string) => void
+  onBlock: (id: string) => void
 }
 
-export const useUserTable = ({ onEdit }: Props) => {
+export const useUserTable = ({ onEdit, onBlock }: Props) => {
   const usersData: ColumnUser[] = [
     {
       id: '6690',
@@ -94,17 +96,40 @@ export const useUserTable = ({ onEdit }: Props) => {
       cell(props) {
         return (
           <div className="flex items-center">
-            <Button variant="ghost" size="icon" className="size-8">
-              <CircleSlashIcon />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="size-8"
-              onClick={() => onEdit(props.row.original.id)}
+            <Tooltip
+              label="Bloquear"
+              labelProps={{
+                side: 'bottom',
+                sideOffset: 3
+              }}
             >
-              <EditIcon />
-            </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8"
+                aria-label="Bloquear"
+                onClick={() => onBlock(props.row.original.id)}
+              >
+                <CircleSlashIcon />
+              </Button>
+            </Tooltip>
+            <Tooltip
+              label="Editar"
+              labelProps={{
+                side: 'bottom',
+                sideOffset: 3
+              }}
+            >
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8"
+                aria-label="Editar"
+                onClick={() => onEdit(props.row.original.id)}
+              >
+                <EditIcon />
+              </Button>
+            </Tooltip>
           </div>
         )
       }

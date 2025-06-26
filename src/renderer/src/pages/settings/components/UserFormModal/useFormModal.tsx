@@ -1,4 +1,4 @@
-import { FormHandle, createForm } from '@renderer/components/Form'
+import { FormHandle, createForm } from '@renderer/components/custom/Form'
 import { registerUserForm } from '@renderer/core/configs/forms/user/registerUserForm'
 import {
   CreateUser,
