@@ -1,6 +1,6 @@
 import { BsHourglass } from 'react-icons/bs'
 
-export const WaitingInspection = () => {
+export const PausedOperation = () => {
   return (
     <div className="w-full h-full flex items-center justify-center flex-col gap-8">
       <div className="bg-background-tertiary  p-5 rounded-full">

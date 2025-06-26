@@ -7,7 +7,7 @@ import { LuTrash2 } from 'react-icons/lu'
 import { Badge } from '@renderer/components/ui/badge'
 import { Checkbox } from '@renderer/components/ui/checkbox'
 import { FiltersBar } from './components/FiltersBar'
-import { WaitingInspection } from './components/WaitingInspection'
+import { PausedOperation } from './components/PausedOperation'
 
 export default function Analysis(): JSX.Element {
   async function main() {
@@ -52,7 +52,7 @@ export default function Analysis(): JSX.Element {
         </div>
       </div>
       <FiltersBar />
-      <WaitingInspection />
+      <PausedOperation />
     </div>
   )
 }
