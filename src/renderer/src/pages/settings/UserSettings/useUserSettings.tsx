@@ -38,16 +38,32 @@ export const useUserSettings = () => {
   }, [])
 
   const handleBlockUser = useCallback(
-    (userId: string) => {
-      showAlert({
-        title: 'Você deseja bloquear este usuário?',
-        message: 'Após o bloqueio, este usuário não poderá mais acessar o sistema.',
-        onConfirm: () => {
-          console.log('🚀 ~ userId:', userId)
+    (userId: string, isActive: boolean) => {
+      const toggleBlockUser = {
+        true: {
+          title: 'Bloquear usuário',
+          message: 'Após o bloqueio, este usuário não poderá mais acessar o sistema.',
+          confirmText: 'Bloquear',
+          btnClassName: 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
         },
-        confirmText: 'Bloquear',
+        false: {
+          title: 'Desbloquear usuário',
+          message:
+            'Após o desbloqueio, este usuário poderá voltar a acessar o sistema normalmente.',
+          confirmText: 'Desbloquear',
+          btnClassName: ''
+        }
+      }
+
+      const { btnClassName, ...restToggleBlockUser } = toggleBlockUser[String(isActive)] || {}
+
+      showAlert({
+        ...restToggleBlockUser,
+        onConfirm: () => {
+          console.log('🚀 ~ userId:', userId, isActive)
+        },
         onConfirmProps: {
-          className: 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+          className: btnClassName
         }
       })
     },

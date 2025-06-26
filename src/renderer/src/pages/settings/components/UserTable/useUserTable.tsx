@@ -8,7 +8,7 @@ import { ColumnUser } from './interface'
 
 interface Props {
   onEdit: (id: string) => void
-  onBlock: (id: string) => void
+  onBlock: (id: string, isActive: boolean) => void
 }
 
 export const useUserTable = ({ onEdit, onBlock }: Props) => {
@@ -22,7 +22,8 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
       accessLevel: 'admin',
       email: 'mail@gmail.com',
       lastAccess: '2023-01-01',
-      actions: ''
+      actions: '',
+      isActive: true
     },
     {
       id: '6790',
@@ -33,7 +34,8 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
       accessLevel: 'suport',
       email: 'mail@mail.com',
       lastAccess: '2023-01-01',
-      actions: ''
+      actions: '',
+      isActive: false
     }
   ]
   const usersColumns: Columns<ColumnUser> = [
@@ -42,7 +44,8 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
       header: 'Nome completo',
       enableSorting: true,
       enableHiding: true,
-      render: (value) => {
+      cell: (props) => {
+        const value = props.row.original.fullName
         const [firstName, lastName] = value.split(' ')
         const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`
         return (
@@ -108,7 +111,7 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
                 size="icon"
                 className="size-8"
                 aria-label="Bloquear"
-                onClick={() => onBlock(props.row.original.id)}
+                onClick={() => onBlock(props.row.original.id, props.row.original.isActive)}
               >
                 <CircleSlashIcon />
               </Button>

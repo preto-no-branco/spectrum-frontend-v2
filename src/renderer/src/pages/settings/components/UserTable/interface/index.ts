@@ -7,6 +7,7 @@ export type User = {
   accessLevel: 'admin' | 'user' | 'suport' | 'operator' | 'analyst'
   email: string
   lastAccess: string
+  isActive: boolean
 }
 
 export type ColumnUser = User & {

@@ -4,7 +4,7 @@ import { useUserTable } from './useUserTable'
 
 export interface UserTableProps {
   onEdit: (userId: string) => void
-  onBlock: (userId: string) => void
+  onBlock: (userId: string, isActive: boolean) => void
 }
 
 export function UserTable({ onEdit, onBlock }: UserTableProps) {
