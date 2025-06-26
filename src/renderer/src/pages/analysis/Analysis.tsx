@@ -7,6 +7,7 @@ import { LuTrash2 } from 'react-icons/lu'
 import { Badge } from '@renderer/components/ui/badge'
 import { Checkbox } from '@renderer/components/ui/checkbox'
 import { FiltersBar } from './components/FiltersBar'
+import { WaitingInspection } from './components/WaitingInspection'
 
 export default function Analysis(): JSX.Element {
   async function main() {
@@ -22,7 +23,7 @@ export default function Analysis(): JSX.Element {
   }, [])
 
   return (
-    <div className="flex flex-col items-center justify-center bg-background">
+    <div className="flex flex-col h-screen max-h-full items-center justify-center bg-background">
       <div className="bg-background border-b border-border-secondary w-full px-6 py-2 flex justify-between items-center">
         <Button variant={'neutral'} size={'sm'}>
           <FaSquare className="!w-3 !h-3" /> Parar Operação
@@ -51,6 +52,7 @@ export default function Analysis(): JSX.Element {
         </div>
       </div>
       <FiltersBar />
+      <WaitingInspection />
     </div>
   )
 }
