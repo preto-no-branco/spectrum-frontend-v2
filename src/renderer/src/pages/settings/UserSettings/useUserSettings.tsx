@@ -1,6 +1,8 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 
-export function useUserSettings() {
+export const useUserSettings = () => {
+  const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false)
+
   const userFilters = [
     {
       label: 'Todos os usuários',
@@ -16,17 +18,29 @@ export function useUserSettings() {
     }
   ]
 
-  const handleCreateUser = useCallback(() => {
-    console.log('create user')
+  const onCloseCreateUserModal = useCallback(() => {
+    setIsCreateUserModalOpen(false)
   }, [])
 
   const onSelectFilterChange = useCallback((value: string) => {
     console.log(value)
   }, [])
 
+  const handleCreateUser = useCallback(() => {
+    setIsCreateUserModalOpen(true)
+  }, [])
+
+  const handleEditUser = useCallback((userId: string) => {
+    console.log('🚀 ~ userId:', userId)
+    setIsCreateUserModalOpen(true)
+  }, [])
+
   return {
     userFilters,
+    isCreateUserModalOpen,
     handleCreateUser,
-    onSelectFilterChange
+    handleEditUser,
+    onSelectFilterChange,
+    onCloseCreateUserModal
   }
 }
