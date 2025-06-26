@@ -4,6 +4,7 @@ import { Control } from 'react-hook-form'
 
 export type CommonInputProps = {
   label?: string
+  placeholder?: string
   errorMessage?: string
   leftIcon?: ReactNode
   rightIcon?: ReactNode

@@ -20,6 +20,7 @@ export interface ModalProps {
   cancelText?: string
   confirmText?: string
   showCancelButton?: boolean
+  showFooter?: boolean
 
   footerProps?: React.ComponentProps<typeof DialogFooter>
   contentProps?: React.ComponentProps<typeof DialogContent>
@@ -38,6 +39,7 @@ export function Modal({
   cancelText,
   confirmText,
   showCancelButton = true,
+  showFooter = true,
   headerProps,
   contentProps,
   footerProps,
@@ -61,24 +63,26 @@ export function Modal({
           className={`border-b border-secondary pb-2 ${headerClassName}`}
           {...restHeaderProps}
         >
-          <DialogTitle className={`text-xl ${titleClassName}`} {...restTitleProps}>
+          <DialogTitle className={`text-xl font-bold ${titleClassName}`} {...restTitleProps}>
             {title}
           </DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}
         </DialogHeader>
         {children}
-        <DialogFooter {...footerProps}>
-          {showCancelButton && (
-            <DialogClose asChild>
-              <Button variant="outline" {...cancelButtonProps}>
-                {cancelText ?? 'Cancel'}
-              </Button>
-            </DialogClose>
-          )}
-          <Button type="submit" {...confirmButtonProps}>
-            {confirmText ?? 'Confirm'}
-          </Button>
-        </DialogFooter>
+        {showFooter && (
+          <DialogFooter {...footerProps}>
+            {showCancelButton && (
+              <DialogClose asChild>
+                <Button variant="outline" {...cancelButtonProps}>
+                  {cancelText ?? 'Cancel'}
+                </Button>
+              </DialogClose>
+            )}
+            <Button type="submit" {...confirmButtonProps}>
+              {confirmText ?? 'Confirm'}
+            </Button>
+          </DialogFooter>
+        )}
       </DialogContent>
     </Dialog>
   )

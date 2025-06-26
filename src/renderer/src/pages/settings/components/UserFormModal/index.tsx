@@ -1,21 +1,11 @@
-import { Form } from '@renderer/components/Form'
 import { Modal } from '@renderer/components/Modal'
-import { registerUserForm } from '@renderer/core/configs/forms/user/registerUserForm'
-import {
-  CreateUser,
-  registerUserSchema
-} from '@renderer/core/configs/forms/user/registerUserSchema'
-import { User } from '@renderer/pages/settings/components/UserTable/interface'
-
-export interface UserFormModalProps {
-  isOpen: boolean
-  onClose: () => void
-  onSubmit: () => void
-  // TODO: implement user interface
-  user?: User
-}
+import { CircleCheck } from 'lucide-react'
+import { UserFormModalProps } from './interface'
+import { useFormModal } from './useFormModal'
 
 export function UserFormModal({ isOpen, onClose, onSubmit }: UserFormModalProps) {
+  const { UserForm, formRef, passwordRules, handleSubmit } = useFormModal()
+
   return (
     <Modal
       isOpen={isOpen}
@@ -23,15 +13,22 @@ export function UserFormModal({ isOpen, onClose, onSubmit }: UserFormModalProps)
       title="Cadastrar usuário"
       cancelText="Cancelar"
       confirmText="Cadastrar"
-      confirmButtonProps={{ onClick: onSubmit }}
+      contentProps={{ className: 'w-full' }}
+      confirmButtonProps={{ onClick: handleSubmit }}
     >
-      <Form<CreateUser>
-        defaultValues={{ username: '' }}
-        columns={2}
-        schema={registerUserSchema}
-        fields={registerUserForm}
-        onSubmit={(data) => console.log(data)}
-      />
+      <UserForm ref={formRef} columns={2} showSubmitButton={false} onSubmit={onSubmit}>
+        <div className="flex flex-col">
+          {passwordRules.map(({ message, isValid }, idx) => {
+            const textColor = isValid ? 'text-primary' : 'text-content-tertiary'
+            return (
+              <div key={idx} className="flex items-center gap-2">
+                <CircleCheck size={16} className={textColor} />
+                <span className={textColor}>{message}</span>
+              </div>
+            )
+          })}
+        </div>
+      </UserForm>
     </Modal>
   )
 }

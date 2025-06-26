@@ -2,60 +2,122 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@renderer/components/ui/button'
 import { Input } from '@renderer/components/ui/input'
 import { Select } from '@renderer/components/ui/select'
-import { useEffect, useMemo } from 'react'
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { FormComponentProps } from './interface'
 
-export function Form<T extends FieldValues>({
+type OmitedFormProps = 'schema' | 'defaultValues' | 'control' | 'fields' | 'watch'
+export type FormHandle = {
+  submitForm: (submit?: (data: FieldValues) => void) => void
+}
+
+export function createForm<T extends FieldValues>({
   fields,
-  columns = 1,
-  schema,
   defaultValues,
-  onSubmit,
-  children,
+  schema,
   watch
-}: FormComponentProps<T>) {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-    watch: hookFormWatch
-  } = useForm<T>({
-    resolver: schema && zodResolver(schema),
-    defaultValues: defaultValues
-  })
+}: {
+  fields: FormComponentProps<T>['fields']
+  schema?: FormComponentProps<T>['schema']
+  defaultValues?: FormComponentProps<T>['defaultValues']
+  watch?: FormComponentProps<T>['watch']
+}) {
+  return forwardRef<FormHandle, Omit<FormComponentProps<T>, OmitedFormProps>>(function Form(
+    {
+      // fields,
+      // schema,
+      // defaultValues,
+      columns = 1,
+      onSubmit,
+      children,
+      // watch,
+      showSubmitButton = true
+    },
+    ref
+  ) {
+    const {
+      handleSubmit,
+      control,
+      formState: { errors },
+      watch: hookFormWatch
+    } = useForm<T>({
+      resolver: schema && zodResolver(schema),
+      defaultValues: defaultValues
+    })
 
-  const watchList = useMemo(() => {
-    return watch?.watchList ?? []
-  }, [watch])
+    const watchList = useMemo(() => {
+      return watch?.watchList ?? []
+    }, [])
 
-  const watchSubscribes = hookFormWatch(watchList)
+    const watchSubscribes = hookFormWatch(watchList)
 
-  useEffect(() => {
-    if (watchSubscribes.length && watch) {
-      watchSubscribes.forEach((field, index) => {
-        watch?.onStateChange({ field: watchList[index], state: field })
-      })
-    }
-  }, [watchSubscribes, watch, watchList])
+    const externalSubmitForm = useCallback(
+      (submit?: (data: T) => void) => {
+        if (submit) {
+          handleSubmit(submit)()
+          return
+        }
 
-  return (
-    <form
-      className={`grid gap-3`}
-      style={{
-        gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
-      }}
-    >
-      {Object.entries(fields).map(([name, field]) => {
-        const { inputType, colSpan, ...restField } = field
-        if (inputType === 'select') {
+        if (onSubmit) {
+          handleSubmit(onSubmit)()
+        }
+      },
+      [handleSubmit, onSubmit]
+    )
+
+    useImperativeHandle(
+      ref,
+      () => ({
+        submitForm: externalSubmitForm
+      }),
+      [externalSubmitForm]
+    )
+
+    useEffect(() => {
+      if (watchSubscribes.length && watch) {
+        watchSubscribes.forEach((field, index) => {
+          watch?.onStateChange({ field: watchList[index], state: field })
+        })
+      }
+    }, [watchSubscribes, watchList])
+
+    return (
+      <form
+        className="grid gap-3"
+        style={{
+          gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
+        }}
+      >
+        {Object.entries(fields).map(([name, field]) => {
+          const { inputType, colSpan, ...restField } = field
+          if (inputType === 'select') {
+            return (
+              <Select
+                key={name}
+                control={control}
+                name={String(name)}
+                label={field.label}
+                options={field.options}
+                {...restField}
+                errorMessage={errors[name]?.message?.toString()}
+                containerProps={{
+                  style: {
+                    gridColumn: `span ${colSpan ?? 1}`
+                  }
+                }}
+              />
+            )
+          }
+
+          if (inputType === 'checkbox') {
+            return <input key={name} type="checkbox" />
+          }
+
           return (
-            <Select
+            <Input
               key={name}
               control={control}
               name={String(name)}
-              label={field.label}
-              options={field.options}
               {...restField}
               errorMessage={errors[name]?.message?.toString()}
               containerProps={{
@@ -65,42 +127,25 @@ export function Form<T extends FieldValues>({
               }}
             />
           )
-        }
+        })}
 
-        if (inputType === 'checkbox') {
-          return <input key={name} type="checkbox" />
-        }
-
-        return (
-          <Input
-            key={name}
-            control={control}
-            name={String(name)}
-            {...restField}
-            errorMessage={errors[name]?.message?.toString()}
-            containerProps={{
-              style: {
-                gridColumn: `span ${colSpan ?? 1}`
+        {children && <div style={{ gridColumn: `span ${columns}` }}>{children}</div>}
+        {showSubmitButton && (
+          <Button
+            type="submit"
+            style={{
+              gridColumn: `span ${columns}`
+            }}
+            onClick={() => {
+              if (onSubmit) {
+                handleSubmit(onSubmit)()
               }
             }}
-          />
-        )
-      })}
-
-      {children && <div style={{ gridColumn: `span ${columns}` }}>{children}</div>}
-      <Button
-        type="submit"
-        style={{
-          gridColumn: `span ${columns}`
-        }}
-        onClick={() => {
-          if (onSubmit) {
-            handleSubmit(onSubmit)()
-          }
-        }}
-      >
-        Submit
-      </Button>
-    </form>
-  )
+          >
+            Submit
+          </Button>
+        )}
+      </form>
+    )
+  })
 }

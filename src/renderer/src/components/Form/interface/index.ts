@@ -16,6 +16,6 @@ export interface FormComponentProps<T extends FieldValues> {
   defaultValues?: DefaultValues<T>
   watch?: {
     watchList: Path<T>[]
-    onStateChange: (data: { field: keyof T; state: unknown }) => void
+    onStateChange: (data: { field: keyof T; state: T[keyof T] }) => void
   }
 }
