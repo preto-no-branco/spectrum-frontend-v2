@@ -8,10 +8,10 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
-import { TableProps } from './interfaces'
+import { TableComponentProps } from './interfaces'
 import { useTable } from './useTable'
 
-export function DataTable<T>({ columns, data }: TableProps<T>) {
+export function DataTable<T>({ columns, data, containerStyle, rowStyle }: TableComponentProps<T>) {
   const { columns: columns_def, data: tanstack_data } = useTable({ data, columns })
 
   const table = useReactTable({
@@ -21,7 +21,7 @@ export function DataTable<T>({ columns, data }: TableProps<T>) {
   })
 
   return (
-    <div className="rounded-md border">
+    <div className={`rounded-md border ${containerStyle}`}>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -41,7 +41,11 @@ export function DataTable<T>({ columns, data }: TableProps<T>) {
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && 'selected'}
+                className={rowStyle}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}

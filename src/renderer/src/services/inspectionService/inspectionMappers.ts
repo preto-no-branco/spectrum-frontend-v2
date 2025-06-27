@@ -1,5 +1,11 @@
 import { ErrorMessageGet, ErrorMessagePost } from '../interfaces'
-import { Inspection, InspectionAPI, InspectionAPIGetById, InspectionAPIGetHistory, InspectionAPIPut } from './interfaces'
+import {
+  Inspection,
+  InspectionAPI,
+  InspectionAPIGetById,
+  InspectionAPIGetHistory,
+  InspectionAPIPut
+} from './interfaces'
 
 export class inspectionMappers {
   // TODO: Apply the translate function from the i18n library
@@ -44,7 +50,7 @@ export class inspectionMappers {
     raioxImage: data.raiox_image,
     spectrumCode: data.spectrum_code,
     status: data.status,
-    updatedAt: data.updated_at,
+    updatedAt: data.updated_at
   })
 
   public static mapDataPutAreas = (data: InspectionAPIPut): InspectionAPIPut => ({

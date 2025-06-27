@@ -70,11 +70,11 @@ export const useInspectionAPI = (): UseInspectionService => {
     return response.data
   }
 
-  const postAreas = async (id:string, data: Area[]): Promise<'inspection-areas-created' | void> => {
-    const response = await InspectionService.postAreas(
-      id,
-      data
-    )
+  const postAreas = async (
+    id: string,
+    data: Area[]
+  ): Promise<'inspection-areas-created' | void> => {
+    const response = await InspectionService.postAreas(id, data)
     if (!response.success) {
       alert(inspectionMappers.translateError[response.error])
       return
@@ -87,11 +87,7 @@ export const useInspectionAPI = (): UseInspectionService => {
     area_id: string,
     data: string
   ): Promise<'inspection-area-updated' | void> => {
-    const response = await InspectionService.putAreas(
-      id,
-      area_id,
-      data
-    )
+    const response = await InspectionService.putAreas(id, area_id, data)
     if (!response.success) {
       alert(inspectionMappers.translateError[response.error])
       return
