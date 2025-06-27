@@ -19,6 +19,7 @@ export type SelectScrollDownButtonProps = ComponentProps<typeof SelectPrimitive.
 export type SelectOption = {
   label: string
   value: string
+  icon?: ReactNode
 }
 
 export type CommonInputProps = {
@@ -56,6 +57,6 @@ export type CustomSelectProps = Select & {
   valueProps?: SelectValueProps
   triggerProps?: SelectTriggerProps
   contentProps?: SelectContentProps
-  itemProps?: SelectItemProps
+  itemProps?: Omit<SelectItemProps, 'value'>
   separatorProps?: SelectSeparatorProps
 }

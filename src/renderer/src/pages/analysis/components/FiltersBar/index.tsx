@@ -1,11 +1,11 @@
+import closeIcon from '@/assets/analysis/closeSidebar.png'
+import openIcon from '@/assets/analysis/openSidebar.png'
 import { ColorFilter } from './ColorFilter'
-import { LinearMap } from './LinearMap'
 import { ComplexFilters } from './ComplexFilters'
 import { FiltersControllers } from './FilterControllers'
 import { ImageAdjustments } from './ImageAdjustments'
+import { LinearMap } from './LinearMap'
 import { COMPLEX_FILTERS } from './constants'
-import openIcon from '@/assets/analysis/openSidebar.png'
-import closeIcon from '@/assets/analysis/closeSidebar.png'
 import { FiltersBarProps } from './interfaces'
 
 export const FiltersBar = ({ inspectionDetailsControls }: FiltersBarProps) => {
