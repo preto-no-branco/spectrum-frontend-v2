@@ -1,9 +1,10 @@
-const Settings = () => {
+import SettingsLayout from '@renderer/pages/settings/components/SettingsLayout'
+import { Outlet } from 'react-router-dom'
+
+export default function Settings() {
   return (
-    <div className="settings-page">
-      <h1>Settings</h1>
-    </div>
+    <SettingsLayout>
+      <Outlet />
+    </SettingsLayout>
   )
 }
-
-export default Settings

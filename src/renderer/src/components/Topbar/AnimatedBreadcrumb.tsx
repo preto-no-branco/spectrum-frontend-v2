@@ -1,5 +1,5 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from '../ui/breadcrumb'
 import { AnimatePresence, motion } from 'framer-motion'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from '../ui/breadcrumb'
 
 const AnimatedBreadcrumb = ({ path }: { path: string | string[] }) => {
   const breadcrumbItems = path || ['Não encontrado']
@@ -9,7 +9,7 @@ const AnimatedBreadcrumb = ({ path }: { path: string | string[] }) => {
 
   return (
     <Breadcrumb className="gap-2 flex items-center">
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="sync">
         {itemsArray.map((item, index) => {
           const delay = index * baseDuration
           return (
@@ -27,7 +27,7 @@ const AnimatedBreadcrumb = ({ path }: { path: string | string[] }) => {
               )}
               <BreadcrumbItem
                 className={`inline-block ${
-                  index === 0 ? 'text-content-primary' : 'text-content-tertiary'
+                  index === itemsArray.length - 1 ? 'text-content-primary' : 'text-content-tertiary'
                 }`}
               >
                 {item}

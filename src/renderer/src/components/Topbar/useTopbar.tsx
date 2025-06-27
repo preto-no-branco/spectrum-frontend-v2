@@ -1,18 +1,13 @@
-import { RoutePaths } from '@renderer/pages/routes'
+import { APP_ROUTES_CONFIGS } from '@renderer/core/configs/appRoutesConfigs'
 import { useLocation } from 'react-router-dom'
 
 export const useTopbar = () => {
   const location = useLocation()
 
-  const routesToNames: Record<RoutePaths, string | string[]> = {
-    '/': 'Home',
-    '/analysis': ['Análise', '8110-20240620-0009'],
-    '/settings': 'Configurações',
-    '/history': 'Histórico'
-  }
+  const translatedPathname = APP_ROUTES_CONFIGS[location.pathname]?.TRANSITION_NAME
 
   return {
     location,
-    routesToNames
+    translatedPathname
   }
 }
