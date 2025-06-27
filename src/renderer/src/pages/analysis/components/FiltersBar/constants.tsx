@@ -1,4 +1,11 @@
-import { InfoIcon } from 'lucide-react'
+import {
+  Eraser,
+  FoldVertical,
+  InfoIcon,
+  ScanSearch,
+  SquareDashedTopSolid,
+  SquareMousePointer
+} from 'lucide-react'
 import { BiBrightnessHalf } from 'react-icons/bi'
 import { filter } from './interfaces'
 
@@ -93,26 +100,27 @@ export const LINEAR_MAPS = [
 
 export const COMPLEX_FILTERS: filter[] = [
   {
-    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
+    icon: <SquareDashedTopSolid className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
+    icon: <SquareMousePointer className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
+    icon: <FoldVertical className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
-    icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
+    icon: <ScanSearch className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'
   },
   {
+    // Daqui pra baixo falta ajustar
     icon: <BiBrightnessHalf className="w-4 h-4 xl:w-5 xl:h-5" />,
     function: () => {},
     name: 'teste'

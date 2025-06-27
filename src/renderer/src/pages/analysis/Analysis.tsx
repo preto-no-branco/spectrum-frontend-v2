@@ -12,6 +12,8 @@ import { BackgroundScreen } from './components/BackgroundScreen'
 import SidebarBody from '@renderer/components/analysis/sidebar/body'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import { MdOpenInNew } from 'react-icons/md'
+import SidebarOpen from '@renderer/components/analysis/sidebar/header/SidebarOpen'
+import SidebarHeader from '@renderer/components/analysis/sidebar/header'
 
 export default function Analysis(): JSX.Element {
   const inspectionDetailsControls = useState(false)
@@ -70,6 +72,7 @@ export default function Analysis(): JSX.Element {
       <FiltersBar inspectionDetailsControls={inspectionDetailsControls} />
       <ResizablePanelGroup direction="horizontal" className="flex w-full h-full">
         <ResizablePanel defaultSize={20} className="min-w-[200px]" hidden={isInspectionDetailsOpen}>
+          <SidebarHeader />
           <SidebarBody activeTab={'details'} isResizing={isResizing} setResizing={setResizing} />
         </ResizablePanel>
         <ResizableHandle withHandle hidden={isInspectionDetailsOpen} />
