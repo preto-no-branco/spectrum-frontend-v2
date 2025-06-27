@@ -6,20 +6,20 @@ import spectrumA from '@/assets/analysis/spectrumA.png'
 import infoCircle from '@/assets/analysis/info-circle.png'
 import checkCircle from '@/assets/analysis/check-circle-filled.png'
 import { useState } from 'react'
+import { cn } from '@renderer/lib/utils'
 
 interface SidebarBodyProps {
   activeTab: 'details' | 'movements'
-  isResizing: React.RefObject<boolean>
-  setResizing: (resizing: boolean) => void
+  className?: string
 }
 
-export default function SidebarBody({ activeTab, isResizing, setResizing }: SidebarBodyProps) {
+export default function SidebarBody({ activeTab, className }: SidebarBodyProps) {
   const [plates, setPlates] = useState<string[]>(['ABC1234', 'XYZ5678'])
   const [containers, setContainers] = useState<string[]>(['12345678912', '98765432100'])
 
   return (
     <>
-      <div className="flex-1 flex h-full flex-col">
+      <div className={cn('flex h-full flex-col', className)}>
         <div
           className="p-5 space-y-4 overflow-y-auto h-full"
           style={{
@@ -115,13 +115,6 @@ export default function SidebarBody({ activeTab, isResizing, setResizing }: Side
           {activeTab === 'movements' && <div className="flex flex-1" />}
         </div>
       </div>
-      <div
-        onMouseDown={() => {
-          isResizing.current = true
-          setResizing(true)
-        }}
-        className="absolute top-0 right-0 h-full w-[5px] cursor-ew-resize z-20"
-      />
     </>
   )
 }

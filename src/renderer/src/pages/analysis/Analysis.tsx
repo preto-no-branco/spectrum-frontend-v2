@@ -1,4 +1,4 @@
-import { JSX, useEffect, useRef, useState } from 'react'
+import { JSX, useEffect, useState } from 'react'
 import cvReadyPromise from '@techstark/opencv-js'
 import { Button } from '@renderer/components/ui/button'
 import { FaSquare } from 'react-icons/fa'
@@ -12,15 +12,14 @@ import { BackgroundScreen } from './components/BackgroundScreen'
 import SidebarBody from '@renderer/components/analysis/sidebar/body'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import { MdOpenInNew } from 'react-icons/md'
-import SidebarOpen from '@renderer/components/analysis/sidebar/header/SidebarOpen'
 import SidebarHeader from '@renderer/components/analysis/sidebar/header'
+import { SidebarHeaderTabs } from '@renderer/components/analysis/sidebar/header/interfaces'
 
 export default function Analysis(): JSX.Element {
   const inspectionDetailsControls = useState(false)
-
   const [isInspectionDetailsOpen] = inspectionDetailsControls
 
-  const [isOnline, setIsOnline] = useState(false)
+  const [activeTab, setActiveTab] = useState<SidebarHeaderTabs>('details')
 
   async function main() {
     const cv = await cvReadyPromise
@@ -33,12 +32,6 @@ export default function Analysis(): JSX.Element {
       console.error('Error initializing OpenCV:', error)
     })
   }, [])
-
-  const isResizing = useRef<boolean>(false)
-
-  const setResizing = (value: boolean) => {
-    isResizing.current = value
-  }
 
   return (
     <div className="flex flex-col h-screen max-h-full items-center bg-background">
@@ -71,9 +64,13 @@ export default function Analysis(): JSX.Element {
       </div>
       <FiltersBar inspectionDetailsControls={inspectionDetailsControls} />
       <ResizablePanelGroup direction="horizontal" className="flex w-full h-full">
-        <ResizablePanel defaultSize={20} className="min-w-[200px]" hidden={isInspectionDetailsOpen}>
-          <SidebarHeader />
-          <SidebarBody activeTab={'details'} isResizing={isResizing} setResizing={setResizing} />
+        <ResizablePanel
+          defaultSize={20}
+          className="min-w-[200px] "
+          hidden={isInspectionDetailsOpen}
+        >
+          <SidebarHeader activeTab={activeTab} setActiveTab={setActiveTab} />
+          <SidebarBody activeTab={activeTab} className="pb-8" />
         </ResizablePanel>
         <ResizableHandle withHandle hidden={isInspectionDetailsOpen} />
         <ResizablePanel minSize={50}>
