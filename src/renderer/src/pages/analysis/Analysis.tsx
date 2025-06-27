@@ -11,12 +11,14 @@ import { BiRadar } from 'react-icons/bi'
 import { BackgroundScreen } from './components/BackgroundScreen'
 import SidebarBody from '@renderer/components/analysis/sidebar/body'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { motion } from 'framer-motion'
+import { MdOpenInNew } from 'react-icons/md'
 
 export default function Analysis(): JSX.Element {
   const inspectionDetailsControls = useState(false)
 
   const [isInspectionDetailsOpen] = inspectionDetailsControls
+
+  const [isOnline, setIsOnline] = useState(false)
 
   async function main() {
     const cv = await cvReadyPromise
@@ -79,6 +81,18 @@ export default function Analysis(): JSX.Element {
           />
         </ResizablePanel>
       </ResizablePanelGroup>
+      <div className="flex justify-between min-h-8 items-center px-7 w-full py-2 bg-background border-t border-background-secondary">
+        <div className="flex items-center gap-2">
+          <div className="rounded-full h-2 w-2 bg-primary" />
+          <p className="text-xs font-semibold">Terminal online - 02:45:00</p>
+        </div>
+        <div className="flex">
+          <div className="flex items-center gap-0.5 text-xs">
+            <MdOpenInNew />
+            <p>Status: 0 pendente (s) | 1 suspeito(s) | 1 não suspeito(s)</p>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
