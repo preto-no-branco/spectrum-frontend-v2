@@ -23,7 +23,7 @@ export const ComplexFilters = ({
             }}
             triggerProps={{
               className:
-                'brightness-150 w-fit text-content-secondary cursor-pointer p-2 rounded hover:bg-background-tertiary transition-colors',
+                'brightness-150 w-fit text-content-secondary cursor-pointer rounded transition-colors',
               onClick: filter.function
             }}
           >
