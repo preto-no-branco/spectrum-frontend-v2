@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 interface TooltipProps extends React.ComponentProps<typeof TooltipPrimitive.Root> {
   label: string
   labelProps?: React.ComponentProps<typeof TooltipPrimitive.Content>
+  triggerProps?: React.ComponentProps<typeof TooltipPrimitive.Trigger>
 }
 
 function TooltipProvider({
@@ -56,10 +57,10 @@ function TooltipContent({
   )
 }
 
-function Tooltip({ children, label, labelProps, ...props }: TooltipProps) {
+function Tooltip({ children, label, labelProps, triggerProps, ...props }: TooltipProps) {
   return (
     <TooltipComponent data-slot="tooltip-component" {...props}>
-      <TooltipTrigger data-slot="tooltip-trigger" asChild>
+      <TooltipTrigger data-slot="tooltip-trigger" asChild {...triggerProps}>
         {children}
       </TooltipTrigger>
       <TooltipContent data-slot="tooltip-content" {...labelProps}>

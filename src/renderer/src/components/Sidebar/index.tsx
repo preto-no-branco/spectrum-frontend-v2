@@ -22,7 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isHidden, items, onHelpClick, onLogou
       )}
 
       <motion.div
-        className="flex-shrink-0 h-full bg-background border-r border-secondary flex flex-col items-center py-2 overflow-hidden"
+        className="flex-shrink-0 h-full bg-background border-r border-border-secondary flex flex-col items-center py-2 overflow-hidden"
         initial={false}
         animate={{ width: open ? sidebarWidth : 0 }}
         transition={{ type: 'tween', duration: 0.2 }}

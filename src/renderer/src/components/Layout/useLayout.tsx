@@ -13,28 +13,28 @@ export const useLayout = () => {
 
   const sidebarItems: SidebarItem[] = [
     {
-      icon: <HomeIcon className="fill-content-tertiary" />,
+      icon: <HomeIcon className="hover:cursor-pointer fill-content-tertiary" />,
       label: 'Home',
       onClick: () => {
         navigate(APP_ROUTES.HOME)
       }
     },
     {
-      icon: <RadarIcon className="fill-content-tertiary" />,
+      icon: <RadarIcon className="hover:cursor-pointer fill-content-tertiary" />,
       label: 'Analysis',
       onClick: () => {
         navigate(APP_ROUTES.ANALYSIS)
       }
     },
     {
-      icon: <ContainerIcon className="fill-content-tertiary" />,
+      icon: <ContainerIcon className="hover:cursor-pointer fill-content-tertiary" />,
       label: 'Histórico',
       onClick: () => {
         navigate(APP_ROUTES.HISTORY)
       }
     },
     {
-      icon: <SettingsIcon className="fill-content-tertiary" />,
+      icon: <SettingsIcon className="hover:cursor-pointer fill-content-tertiary" />,
       label: 'Configurações',
       onClick: () => {
         navigate(APP_ROUTES.SETTINGS.USER)
