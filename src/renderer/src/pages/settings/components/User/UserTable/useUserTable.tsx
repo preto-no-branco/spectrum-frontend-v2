@@ -44,8 +44,8 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
       header: 'Nome completo',
       enableSorting: true,
       enableHiding: true,
-      cell: (props) => {
-        const value = props.row.original.fullName
+      cell: ({ row }) => {
+        const value = row.original.fullName
         const [firstName, lastName] = value.split(' ')
         const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`
         return (
@@ -96,11 +96,13 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
     {
       key: 'actions',
       header: 'Ações',
-      cell(props) {
+      cell({ row }) {
+        const userIsActive = row.original.isActive
+
         return (
           <div className="flex items-center">
             <Tooltip
-              label="Bloquear"
+              label={userIsActive ? 'Bloquear' : 'Desbloquear'}
               labelProps={{
                 side: 'bottom',
                 sideOffset: 3
@@ -110,10 +112,10 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
                 variant="ghost"
                 size="icon"
                 className="size-8"
-                aria-label="Bloquear"
-                onClick={() => onBlock(props.row.original.id, props.row.original.isActive)}
+                aria-label={userIsActive ? 'Bloquear' : 'Desbloquear'}
+                onClick={() => onBlock(row.original.id, userIsActive)}
               >
-                <CircleSlashIcon />
+                <CircleSlashIcon className={userIsActive ? '' : 'text-destructive'} />
               </Button>
             </Tooltip>
             <Tooltip
@@ -128,7 +130,7 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
                 size="icon"
                 className="size-8"
                 aria-label="Editar"
-                onClick={() => onEdit(props.row.original.id)}
+                onClick={() => onEdit(row.original.id)}
               >
                 <EditIcon />
               </Button>

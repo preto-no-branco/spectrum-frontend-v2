@@ -6,38 +6,41 @@ import { ColumnAccess } from './interface'
 
 interface Props {
   onEdit: (id: string) => void
-  onBlock: (id: string, isActive: boolean) => void
+  onDelete: (id: string) => void
 }
 
-export const useAccessTable = (props: Props) => {
-  console.log('🚀 ~ props:', props)
-
+export const useAccessTable = ({ onEdit, onDelete }: Props) => {
   const accessData: ColumnAccess[] = [
     {
+      id: '1',
       profile: 'Qualidade - Inspeção',
       allowedActions: 9,
       connectedUsers: 6,
       createdAt: '2023-01-01'
     },
     {
+      id: '2',
       profile: 'Suporte',
       allowedActions: 12,
       connectedUsers: 5,
       createdAt: '2023-01-01'
     },
     {
+      id: '3',
       profile: 'Administrador',
       allowedActions: 12,
       connectedUsers: 2,
       createdAt: '2023-01-01'
     },
     {
+      id: '4',
       profile: 'Operador',
       allowedActions: 5,
       connectedUsers: 12,
       createdAt: '2023-01-01'
     },
     {
+      id: '5',
       profile: 'Analista Receita Federal',
       allowedActions: 2,
       connectedUsers: 10,
@@ -66,7 +69,7 @@ export const useAccessTable = (props: Props) => {
     {
       key: 'actions',
       header: 'Ações',
-      cell() {
+      cell({ row }) {
         return (
           <div className="flex items-center">
             <Tooltip
@@ -76,7 +79,13 @@ export const useAccessTable = (props: Props) => {
                 sideOffset: 3
               }}
             >
-              <Button variant="ghost" size="icon" className="size-8" aria-label="Excluir">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8"
+                aria-label="Excluir"
+                onClick={() => onDelete(row.original.id)}
+              >
                 <Trash2Icon />
               </Button>
             </Tooltip>
@@ -87,7 +96,13 @@ export const useAccessTable = (props: Props) => {
                 sideOffset: 3
               }}
             >
-              <Button variant="ghost" size="icon" className="size-8" aria-label="Editar">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="size-8"
+                aria-label="Editar"
+                onClick={() => onEdit(row.original.id)}
+              >
                 <EditIcon />
               </Button>
             </Tooltip>

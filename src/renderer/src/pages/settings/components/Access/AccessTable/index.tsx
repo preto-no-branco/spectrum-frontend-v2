@@ -3,12 +3,12 @@ import { ColumnAccess } from './interface'
 import { useAccessTable } from './useAccessTable'
 
 export interface AccessTableProps {
-  onEdit: (userId: string) => void
-  onBlock: (userId: string, isActive: boolean) => void
+  onEdit: (accessId: string) => void
+  onDelete: (accessId: string) => void
 }
 
-export function AccessTable({ onEdit, onBlock }: AccessTableProps) {
-  const { accessColumns, accessData } = useAccessTable({ onEdit, onBlock })
+export function AccessTable({ onEdit, onDelete }: AccessTableProps) {
+  const { accessColumns, accessData } = useAccessTable({ onEdit, onDelete })
 
   return (
     <DataTable<ColumnAccess>

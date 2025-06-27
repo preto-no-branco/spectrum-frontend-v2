@@ -1,10 +1,10 @@
 import { Modal } from '@renderer/components/custom/Modal'
 import { CircleCheck } from 'lucide-react'
 import { UserFormModalProps } from './interface'
-import { useFormModal } from './useFormModal'
+import { useUserFormModal } from './useUserFormModal'
 
 export function UserFormModal({ isOpen, onClose, onSubmit }: UserFormModalProps) {
-  const { UserForm, formRef, passwordRules, handleSubmit } = useFormModal()
+  const { UserForm, formRef, passwordRules, handleSubmit } = useUserFormModal()
 
   return (
     <Modal

@@ -23,16 +23,7 @@ export function createForm<T extends FieldValues>({
   watch?: FormComponentProps<T>['watch']
 }) {
   return forwardRef<FormHandle, Omit<FormComponentProps<T>, OmitedFormProps>>(function Form(
-    {
-      // fields,
-      // schema,
-      // defaultValues,
-      columns = 1,
-      onSubmit,
-      children,
-      // watch,
-      showSubmitButton = true
-    },
+    { columns = 1, onSubmit, children, showSubmitButton = true },
     ref
   ) {
     const {
@@ -90,6 +81,21 @@ export function createForm<T extends FieldValues>({
       >
         {Object.entries(fields).map(([name, field]) => {
           const { inputType, colSpan, ...restField } = field
+
+          if (inputType === 'custom') {
+            const Component = field.component
+            return (
+              <div key={name} style={{ gridColumn: `span ${colSpan ?? 1}` }}>
+                <Component
+                  control={control}
+                  name={String(name)}
+                  {...field}
+                  style={{ gridColumn: `span ${colSpan ?? 1}` }}
+                />
+              </div>
+            )
+          }
+
           if (inputType === 'select') {
             return (
               <Select

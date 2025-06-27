@@ -12,7 +12,7 @@ import {
 } from '@renderer/core/constants/regex'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-export const useFormModal = () => {
+export const useUserFormModal = () => {
   const formRef = useRef<FormHandle>(null)
   const [passwordWatch, setPasswordWatch] = useState('')
 

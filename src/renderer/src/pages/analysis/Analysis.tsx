@@ -1,8 +1,7 @@
-import { useWindowManager } from '@renderer/hooks/useWindowManager'
 import { Button } from '@/components/ui/button'
 
-import { JSX } from 'react'
 import { DataTable } from '@renderer/components/Table'
+import { JSX } from 'react'
 
 import { Columns } from '@renderer/components/Table/interfaces'
 import { ArrowUpDown } from 'lucide-react'
