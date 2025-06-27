@@ -1,4 +1,4 @@
-import { Modal } from '@renderer/components/Modal'
+import { Modal } from '@renderer/components/custom/Modal'
 import { CircleCheck } from 'lucide-react'
 import { UserFormModalProps } from './interface'
 import { useFormModal } from './useFormModal'

@@ -12,6 +12,7 @@ export default function UserSettings() {
     isCreateUserModalOpen,
     handleCreateUser,
     handleEditUser,
+    handleBlockUser,
     onCloseCreateUserModal,
     onSelectFilterChange
   } = useUserSettings()
@@ -34,7 +35,7 @@ export default function UserSettings() {
       </div>
 
       <div className="flex flex-1">
-        <UserTable onEdit={handleEditUser} />
+        <UserTable onEdit={handleEditUser} onBlock={handleBlockUser} />
         <UserFormModal
           isOpen={isCreateUserModalOpen}
           onClose={onCloseCreateUserModal}

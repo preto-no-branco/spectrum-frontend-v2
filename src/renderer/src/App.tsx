@@ -1,11 +1,12 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { Alert } from './components/custom/Alert'
 import Layout from './components/Layout/Layout'
-import { ThemeProvider } from './components/themeProvider'
+import { Providers } from './components/Providers'
 import { routes } from './pages/routes'
 
 function App(): React.JSX.Element {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <Providers>
       <HashRouter>
         <Layout>
           <Routes>
@@ -28,9 +29,10 @@ function App(): React.JSX.Element {
             })}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
+          <Alert />
         </Layout>
       </HashRouter>
-    </ThemeProvider>
+    </Providers>
   )
 }
 
