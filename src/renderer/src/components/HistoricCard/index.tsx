@@ -3,32 +3,121 @@ import { RiBaseStationLine } from 'react-icons/ri'
 import { BiRadar } from 'react-icons/bi'
 import { BsArrowRightSquare } from 'react-icons/bs'
 import { AiOutlineContainer } from 'react-icons/ai'
+import { Container, Plate } from '@renderer/services/inspectionService/childsTypes/interfaces'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@renderer/components/ui/tooltip'
+
+const typeStyleMap: Record<string, string> = {
+  Suspeito: 'text-[#EB4B5B] bg-[#5C0C14]',
+  Inflamável: 'text-[#FF9D3B] bg-[#663504]',
+  Múltiplo: 'text-[#9D8AFE] bg-[#281C54]',
+  Vazio: 'text-[#55A1F2] bg-[#113760]'
+}
+
+const renderListItem = (items: Plate[] | Container[], fallback: string) => {
+  const label = items?.[0]?.recognition ?? fallback
+  const extras = items.length > 1 ? `, + ${items.length - 1}` : ''
+  return (
+    <div className="flex items-center">
+      {label}
+      {extras && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div>{extras}</div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <div className="flex gap-1 text-xs text-[#B3BDC0] w-fit">
+              {items.map((item, index) => (
+                <div key={index} className="flex">
+                  {item.recognition}
+                  {index < items.length - 1 && ','}
+                </div>
+              ))}
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      )}
+    </div>
+  )
+}
+
+const renderType = (inspection: Inspection) => {
+  const types: string[] = []
+  if (inspection.isSuspect) types.push('Suspeito')
+  if (inspection.isFlammable) types.push('Inflamável')
+  if (inspection.isMultiple) types.push('Múltiplo')
+  if (inspection.isEmpty) types.push('Vazio')
+
+  if (!types.length) return null
+
+  return (
+    <div className="flex items-center gap-2 text-xs">
+      <span className={`${typeStyleMap[types[0]]} !font-bold py-1 px-2 rounded-md`}>
+        {types[0]}
+      </span>
+      {types.length > 1 && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <span className={`!font-bold ${typeStyleMap['Inflamável']} p-1 rounded-lg`}>
+              +{types.length - 1}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>
+            <div className="flex gap-1 text-xs w-fit">
+              {types.map((item, index) =>
+                types.indexOf(item) === 0 ? null : (
+                  <div key={index} className="flex">
+                    <span className={`!font-bold ${typeStyleMap[item]} py-1 px-2 rounded-lg`}>
+                      {item}
+                    </span>
+                  </div>
+                )
+              )}
+            </div>
+          </TooltipContent>
+        </Tooltip>
+      )}
+    </div>
+  )
+}
+
+const IconText = ({
+  icon: Icon,
+  children,
+  className = ''
+}: {
+  icon: React.ElementType
+  children: React.ReactNode
+  className?: string
+}) => (
+  <div className={`flex items-center gap-2 ${className}`}>
+    <Icon className="text-2xl text-content-tertiary" />
+    {children}
+  </div>
+)
 
 const HistoricCard = ({ inspectionData }: { inspectionData: Inspection }) => {
   return (
-    <div className="bg-background-secondary flex h-52 w-full p-4 flex-col items-start justify-between gap-5 hover:bg-[#202425] text-xs text-[#B3BDC0]">
-      <div className="flex w-full items-center justify-between">
-        <div className="flex items-center gap-2">
-          <RiBaseStationLine className="text-2xl text-content-tertiary" />
-          {inspectionData.spectrumCode}
-        </div>
+    <div className="bg-background-secondary flex h-52 w-full flex-col justify-between gap-5 p-4 text-xs text-[#B3BDC0] hover:bg-[#202425]">
+      <div className="flex items-center justify-between w-full">
+        <IconText icon={RiBaseStationLine}>{inspectionData.spectrumCode}</IconText>
         <BsArrowRightSquare className="h-4 w-4 text-content-tertiary" />
       </div>
-      <div className="flex w-full items-center justify-between">
-        <div className="flex items-center gap-2 text-sm">
-          <BiRadar className="text-2xl text-content-tertiary bg-transparent" />
-          <div className=" !font-semibold">{inspectionData.caseId}</div>
-        </div>
-        <div>{inspectionData.status}</div>
+
+      <div className="flex items-center justify-between w-full text-sm">
+        <IconText icon={BiRadar} className="!font-semibold">
+          {inspectionData.caseId}
+        </IconText>
+        {renderType(inspectionData)}
       </div>
-      <div className="flex w-full items-center justify-between text-sm">
+
+      <div className="flex items-center justify-between w-full text-sm">
         <div className="flex gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
-            viewBox="0 0 20 20"
             fill="none"
+            viewBox="0 0 20 20"
           >
             <path
               d="M16.4975 3.25C16.6388 3.25 16.7742 3.31585 16.8741 3.43306C16.974 3.55027 17.0301 3.70924 17.0301 3.875V15.125C17.0301 15.2908 16.974 15.4497 16.8741 15.5669C16.7742 15.6842 16.6388 15.75 16.4975 15.75H3.50253C3.36128 15.75 3.22582 15.6842 3.12594 15.5669C3.02606 15.4497 2.96995 15.2908 2.96995 15.125V3.875C2.96995 3.70924 3.02606 3.55027 3.12594 3.43306C3.22582 3.31585 3.36128 3.25 3.50253 3.25H16.4975ZM3.50253 2C3.07878 2 2.67239 2.19754 2.37275 2.54917C2.07312 2.90081 1.90479 3.37772 1.90479 3.875V15.125C1.90479 15.6223 2.07312 16.0992 2.37275 16.4508C2.67239 16.8025 3.07878 17 3.50253 17H16.4975C16.9213 17 17.3277 16.8025 17.6273 16.4508C17.9269 16.0992 18.0953 15.6223 18.0953 15.125V3.875C18.0953 3.37772 17.9269 2.90081 17.6273 2.54917C17.3277 2.19754 16.9213 2 16.4975 2H3.50253Z"
@@ -39,17 +128,16 @@ const HistoricCard = ({ inspectionData }: { inspectionData: Inspection }) => {
               fill="#4E5557"
             />
           </svg>
-          <div>{inspectionData.plates[0]?.recognition + ' , +1' || 'Sem placa'}</div>
+          {renderListItem(inspectionData.plates, 'Sem placa')}
         </div>
-        <div className="flex gap-2">
-          <AiOutlineContainer className="text-xl text-content-tertiary" />
-          <div className="">
-            {inspectionData.containers[0].recognition + ' , +1' || 'Sem conteiner'}
-          </div>
-        </div>
+
+        <IconText icon={AiOutlineContainer}>
+          {renderListItem(inspectionData.containers, 'Sem contêiner')}
+        </IconText>
       </div>
-      <div className="flex w-full items-center justify-between border-t-1 border-border-secondary pt-3 text-content-tertiary">
-        <div>{inspectionData.status || 'Leonardo'}</div>
+
+      <div className="flex items-center justify-between w-full border-t-1 border-border-secondary pt-3 text-content-tertiary">
+        <div>{inspectionData.finished_by_name}</div>
         <div>{inspectionData.createdAt}</div>
       </div>
     </div>

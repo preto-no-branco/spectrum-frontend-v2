@@ -13,29 +13,15 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 
 import { useState } from 'react'
 import { FiSearch, FiDownload, FiChevronDown } from 'react-icons/fi'
-import { BsArrowRightSquare, BsFilter } from 'react-icons/bs'
+import { BsFilter } from 'react-icons/bs'
 import { HiOutlineViewGrid } from 'react-icons/hi'
 import { GrList } from 'react-icons/gr'
 import { CalendarIcon } from 'lucide-react'
 
 import HistoricCard from '@renderer/components/HistoricCard'
 
-import { mockInspections } from '@renderer/mocks/InspectionMockData'
 import { DataTable } from '@renderer/components/Table'
-import { Columns } from '@renderer/components/Table/interfaces'
-
-interface InspectionColumn {
-  caseId: string
-  plates: { recognition: string }[]
-  containers: { recognition: string }[]
-  spectrumCode: string
-  status: string
-  type: string[]
-  finished_by_name: string
-  isEmpty: boolean
-  createdAt: string
-  action: { action: string; user: { name: string } }
-}
+import { useHistory } from './useHistory'
 
 const SearchInput = ({ placeholder }: { placeholder: string }) => (
   <div className="relative w-full max-w-60">
@@ -48,74 +34,7 @@ const History = () => {
   const [open, setOpen] = useState(false)
   const [date, setDate] = useState<Date | undefined>(undefined)
 
-  const filterGroup1 = ['Confirmado', 'Descartado', 'Ignorado']
-  const filterGroup2 = ['Suspeito', 'Inflamável', 'Múltiplo', 'Vazio']
-
-  const columns: Columns<InspectionColumn> = [
-    {
-      key: 'caseId',
-      header: 'ID',
-      render: (value) => <span className="font-semibold">{value}</span>
-    },
-    {
-      key: 'plates',
-      header: 'Placas',
-      render: (value) => (
-        <span className="flex items-center gap-2">
-          {value.length > 0 ? value[0].recognition : 'Sem placa'}
-          {value.length > 1 && <span className="text-muted-foreground">+{value.length - 1}</span>}
-        </span>
-      )
-    },
-    {
-      key: 'containers',
-      header: 'Contêineres',
-      render: (value) => (
-        <span className="flex items-center gap-2">
-          {value.length > 0 ? value[0].recognition : 'Sem contêiner'}
-          {value.length > 1 && <span className="text-muted-foreground">+{value.length - 1}</span>}
-        </span>
-      )
-    },
-    {
-      key: 'spectrumCode',
-      header: 'Spectrum',
-      render: (value) => <span className="font-semibold">{value}</span>
-    },
-    {
-      key: 'status',
-      header: 'Status',
-      render: (value) => <span className="capitalize">{value}</span>
-    },
-    {
-      key: 'type',
-      header: 'Tipo',
-      render: (value) => (
-        <span className={`font-semibold ${value ? 'text-red-500' : 'text-green-500'}`}>
-          {value ? 'Sim' : 'Não'}
-        </span>
-      )
-    },
-    {
-      key: 'finished_by_name',
-      header: 'Operador',
-      render: () => <span>Leonardo</span>
-    },
-    {
-      key: 'createdAt',
-      header: 'Data de Criação',
-      render: (value) => new Date(value).toLocaleDateString()
-    },
-    {
-      key: 'action',
-      header: 'Ação',
-      render: () => (
-        <Button variant="link" className="hover:text-content-secondary text-content-tertiary">
-          <BsArrowRightSquare className="h-4 w-4" />
-        </Button>
-      )
-    }
-  ]
+  const { columns, formatedMockInspections, statusFilter, typesFilter } = useHistory()
 
   return (
     <Tabs defaultValue="grid" className="w-full h-full flex flex-col pt-2">
@@ -139,13 +58,13 @@ const History = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-60">
-                {filterGroup1.map((label) => (
+                {statusFilter.map((label) => (
                   <DropdownMenuCheckboxItem key={label} checked={label === 'Confirmado'}>
                     {label}
                   </DropdownMenuCheckboxItem>
                 ))}
                 <DropdownMenuSeparator />
-                {filterGroup2.map((label) => (
+                {typesFilter.map((label) => (
                   <DropdownMenuCheckboxItem key={label} checked={label === 'Suspeito'}>
                     {label}
                   </DropdownMenuCheckboxItem>
@@ -172,7 +91,6 @@ const History = () => {
               </PopoverContent>
             </Popover>
           </div>
-
           <Button className="w-full max-w-23 font-semibold ml-4">
             <FiSearch className="h-4 w-4" />
             Buscar
@@ -203,12 +121,12 @@ const History = () => {
         value="grid"
         className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 p-4"
       >
-        {mockInspections.map((inspection, index) => (
+        {formatedMockInspections.map((inspection, index) => (
           <HistoricCard inspectionData={inspection} key={index} />
         ))}
       </TabsContent>
       <TabsContent value="list" className="flex flex-col gap-4 p-4 text-[#7B8588]">
-        <DataTable columns={columns} data={mockInspections} />
+        <DataTable columns={columns} data={formatedMockInspections} />
       </TabsContent>
     </Tabs>
   )

@@ -1,7 +1,7 @@
 export enum InspectionStatusEnum {
-  PENDING = 'PENDING',
-  SUSPECT = 'SUSPECT',
-  NON_SUSPECT = 'NON-SUSPECT'
+  FINISHED = 'FINISHED',
+  DISCARDED = 'DISCARDED',
+  IGNORED = 'IGNORED'
 }
 
 export enum ActionEnum {

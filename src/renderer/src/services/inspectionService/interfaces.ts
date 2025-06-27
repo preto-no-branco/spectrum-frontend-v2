@@ -78,14 +78,15 @@ export interface Inspection {
   containers: Container[]
   createdAt?: string
   id: string
-  isEmpty?: boolean
-  isFlammable?: boolean
-  isMultiple?: boolean
-  isSuspect?: boolean
-  plates?: Plate[]
+  isEmpty: boolean
+  isFlammable: boolean
+  isMultiple: boolean
+  isSuspect: boolean
+  plates: Plate[]
   spectrumCode?: string
   status?: InspectionStatusEnum
   wasEdited?: boolean
+  finished_by_name?: string
 }
 
 export interface InspectionAPIGetHistoryParams {

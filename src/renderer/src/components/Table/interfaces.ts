@@ -3,11 +3,14 @@ export interface TableProps<T> {
   columns: Columns<T>
 }
 
-export type Columns<T> = (TableColumn<T> & { key: keyof T })[]
+export type Columns<T> = TableColumn<T>[]
 
-interface TableColumn<T> {
-  key: keyof T
+export interface TableColumn<T> {
+  key?: keyof T
+  id?: string
+
   header: string | (() => React.ReactNode)
-  render?: (value: T[keyof T], row: T, index: number) => React.ReactNode
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  render?: (value: any, row: T, index: number) => React.ReactNode
   width?: string | number
 }
