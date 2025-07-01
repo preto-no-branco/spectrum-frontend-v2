@@ -13,7 +13,13 @@ export interface SwitchAccessGroupProps {
   }[]
 }
 
-export function SwitchAccessGroup({ label, options, control, name }: CustomComponentProps) {
+export function SwitchAccessGroup({
+  label,
+  options,
+  control,
+  name,
+  disabled
+}: CustomComponentProps) {
   return (
     <Controller
       name={name}
@@ -30,6 +36,7 @@ export function SwitchAccessGroup({ label, options, control, name }: CustomCompo
                 >
                   <span className="text-sm text-muted-foreground">{opt.label}</span>
                   <Switch
+                    disabled={disabled}
                     defaultChecked={opt.checked}
                     value={value}
                     onCheckedChange={(checked) => onChange({ ...value, [opt.value]: checked })}

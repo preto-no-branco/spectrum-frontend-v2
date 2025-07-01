@@ -1,8 +1,13 @@
 export type Access = {
   id: string
   profile: string
-  allowedActions: number
-  connectedUsers: number
+  allowedActions: {
+    [key: string]: string[]
+  }
+  connectedUsers: {
+    id: string
+    name: string
+  }[]
   createdAt: string
 }
 

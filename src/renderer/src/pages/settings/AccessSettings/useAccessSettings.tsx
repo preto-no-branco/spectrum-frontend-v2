@@ -23,17 +23,42 @@ export const useAccessSettings = () => {
   }, [])
 
   const handleDeleteAccess = useCallback(
-    (accessId: string) => {
+    (accessId: string, connectedUsers: { id: string; name: string }[] = []) => {
       console.log('🚀 ~ accessId:', accessId)
-      // showAlert({
-      //   ...restToggleBlockUser,
-      //   onConfirm: () => {
-      //     console.log('🚀 ~ userId:', userId, isActive)
-      //   },
-      //   onConfirmProps: {
-      //     className: btnClassName
-      //   }
-      // })
+      const hasUsersWithAccess = connectedUsers.length > 0
+
+      const title = 'Excluir perfil de acesso'
+
+      if (hasUsersWithAccess) {
+        showAlert({
+          title,
+          message:
+            'Para excluir um perfil de acesso é preciso editar o acesso dos seguintes usuários:',
+          contentComponent: (
+            <ul className="flex flex-col gap-1 pl-4">
+              {connectedUsers.map((user) => (
+                <li key={user.id} className="font-bold text-sm list-disc list-outside">
+                  {user.name}
+                </li>
+              ))}
+            </ul>
+          ),
+          onConfirm: () => console.log('Confirmado')
+        })
+
+        return
+      }
+
+      showAlert({
+        title,
+        message:
+          'Este perfil não possui usuários vinculados. A exclusão é permanente e não poderá ser desfeita.',
+        confirmText: 'Excluir',
+        onConfirm: () => console.log('Confirmado'),
+        onConfirmProps: {
+          className: 'bg-destructive text-destructive-foreground hover:bg-destructive/90'
+        }
+      })
     },
     [showAlert]
   )

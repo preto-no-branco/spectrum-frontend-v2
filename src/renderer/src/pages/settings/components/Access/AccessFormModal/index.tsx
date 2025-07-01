@@ -1,10 +1,9 @@
 import { Modal } from '@renderer/components/custom/Modal'
-import { UserFormModalProps } from './interface'
+import { AccessFormModalProps } from './interface'
 import { useAccessFormModal } from './useAccessFormModal'
 
-export function AccessFormModal({ isOpen, onClose, onSubmit }: UserFormModalProps) {
-  console.log('🚀 ~ onSubmit:', onSubmit)
-  const { AccessForm, formRef, handleSubmit } = useAccessFormModal()
+export function AccessFormModal({ isOpen, onClose }: AccessFormModalProps) {
+  const { AccessForm, handleSubmit } = useAccessFormModal()
 
   return (
     <Modal
@@ -16,7 +15,7 @@ export function AccessFormModal({ isOpen, onClose, onSubmit }: UserFormModalProp
       contentProps={{ className: 'w-full' }}
       confirmButtonProps={{ onClick: handleSubmit }}
     >
-      <AccessForm ref={formRef} columns={2} showSubmitButton={false} />
+      <AccessForm columns={2} />
     </Modal>
   )
 }

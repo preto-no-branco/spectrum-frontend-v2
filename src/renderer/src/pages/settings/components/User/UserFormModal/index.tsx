@@ -4,7 +4,7 @@ import { UserFormModalProps } from './interface'
 import { useUserFormModal } from './useUserFormModal'
 
 export function UserFormModal({ isOpen, onClose, onSubmit }: UserFormModalProps) {
-  const { UserForm, formRef, passwordRules, handleSubmit } = useUserFormModal()
+  const { UserForm, passwordRules, handleSubmit } = useUserFormModal()
 
   return (
     <Modal
@@ -16,7 +16,7 @@ export function UserFormModal({ isOpen, onClose, onSubmit }: UserFormModalProps)
       contentProps={{ className: 'w-full' }}
       confirmButtonProps={{ onClick: handleSubmit }}
     >
-      <UserForm ref={formRef} columns={2} showSubmitButton={false} onSubmit={onSubmit}>
+      <UserForm columns={2} showSubmitButton={false} onSubmit={onSubmit}>
         <div className="flex flex-col">
           {passwordRules.map(({ message, isValid }, idx) => {
             const textColor = isValid ? 'text-primary' : 'text-content-tertiary'

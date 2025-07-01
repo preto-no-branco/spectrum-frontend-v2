@@ -6,7 +6,7 @@ import { ColumnAccess } from './interface'
 
 interface Props {
   onEdit: (id: string) => void
-  onDelete: (id: string) => void
+  onDelete: (id: string, connectedUsers: { id: string; name: string }[]) => void
 }
 
 export const useAccessTable = ({ onEdit, onDelete }: Props) => {
@@ -14,36 +14,106 @@ export const useAccessTable = ({ onEdit, onDelete }: Props) => {
     {
       id: '1',
       profile: 'Qualidade - Inspeção',
-      allowedActions: 9,
-      connectedUsers: 6,
+      allowedActions: {
+        inspections: ['analyzer', 'history', 'undo'],
+        analyzers: ['analyzer', 'history', 'undo']
+      },
+      connectedUsers: [],
       createdAt: '2023-01-01'
     },
     {
       id: '2',
       profile: 'Suporte',
-      allowedActions: 12,
-      connectedUsers: 5,
+      allowedActions: {
+        inspections: ['analyzer', 'history', 'undo'],
+        analyzers: ['analyzer', 'history', 'undo'],
+        users: ['view', 'create', 'block']
+      },
+      connectedUsers: [
+        {
+          id: '1',
+          name: 'João'
+        },
+        {
+          id: '2',
+          name: 'Maria'
+        },
+        {
+          id: '3',
+          name: 'Pedro'
+        }
+      ],
       createdAt: '2023-01-01'
     },
     {
       id: '3',
       profile: 'Administrador',
-      allowedActions: 12,
-      connectedUsers: 2,
+      allowedActions: {
+        inspections: ['analyzer', 'history', 'undo'],
+        analyzers: ['analyzer', 'history', 'undo'],
+        users: ['view', 'create', 'block', 'unblock'],
+        analyzer_categories: ['view', 'create', 'update', 'delete'],
+        configurations: ['report', 'edit']
+      },
+      connectedUsers: [
+        {
+          id: '1',
+          name: 'João'
+        },
+        {
+          id: '2',
+          name: 'Maria'
+        },
+        {
+          id: '3',
+          name: 'Pedro'
+        },
+        {
+          id: '4',
+          name: 'Ana'
+        }
+      ],
       createdAt: '2023-01-01'
     },
     {
       id: '4',
       profile: 'Operador',
-      allowedActions: 5,
-      connectedUsers: 12,
+      allowedActions: {
+        inspections: ['analyzer', 'history', 'undo'],
+        analyzers: ['analyzer', 'history', 'undo']
+      },
+      connectedUsers: [],
       createdAt: '2023-01-01'
     },
     {
       id: '5',
       profile: 'Analista Receita Federal',
-      allowedActions: 2,
-      connectedUsers: 10,
+      allowedActions: {
+        inspections: ['analyzer', 'history', 'undo'],
+        analyzers: ['analyzer', 'history', 'undo']
+      },
+      connectedUsers: [
+        {
+          id: '1',
+          name: 'João'
+        },
+        {
+          id: '2',
+          name: 'Maria'
+        },
+        {
+          id: '3',
+          name: 'Pedro'
+        },
+        {
+          id: '4',
+          name: 'Ana'
+        },
+        {
+          id: '5',
+          name: 'Carlos'
+        }
+      ],
       createdAt: '2023-01-01'
     }
   ]
@@ -56,11 +126,20 @@ export const useAccessTable = ({ onEdit, onDelete }: Props) => {
     },
     {
       key: 'allowedActions',
-      header: 'Ações permitidas'
+      header: 'Ações permitidas',
+      cell({ row }) {
+        const allowedActions = row.original.allowedActions
+        const allowedActionsLength = Object.values(allowedActions).flat().length
+
+        return allowedActionsLength
+      }
     },
     {
       key: 'connectedUsers',
-      header: 'Usuários vinculados'
+      header: 'Usuários vinculados',
+      cell({ row }) {
+        return row.original.connectedUsers.length
+      }
     },
     {
       key: 'createdAt',
@@ -84,7 +163,7 @@ export const useAccessTable = ({ onEdit, onDelete }: Props) => {
                 size="icon"
                 className="size-8"
                 aria-label="Excluir"
-                onClick={() => onDelete(row.original.id)}
+                onClick={() => onDelete(row.original.id, row.original.connectedUsers)}
               >
                 <Trash2Icon />
               </Button>

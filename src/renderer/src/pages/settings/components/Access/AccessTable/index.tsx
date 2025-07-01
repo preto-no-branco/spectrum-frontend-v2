@@ -4,7 +4,7 @@ import { useAccessTable } from './useAccessTable'
 
 export interface AccessTableProps {
   onEdit: (accessId: string) => void
-  onDelete: (accessId: string) => void
+  onDelete: (id: string, connectedUsers: { id: string; name: string }[]) => void
 }
 
 export function AccessTable({ onEdit, onDelete }: AccessTableProps) {

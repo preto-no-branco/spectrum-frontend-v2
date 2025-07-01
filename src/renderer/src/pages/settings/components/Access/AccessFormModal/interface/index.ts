@@ -1,10 +1,8 @@
-import { CreateUser } from '@renderer/core/configs/forms/user/registerUserSchema'
-import { User } from '@renderer/pages/settings/components/User/UserTable/interface'
+import { AccessProfileCreate } from '@renderer/core/configs/forms/accessProfiles/accessProfileSchema'
 
-export interface UserFormModalProps {
+export interface AccessFormModalProps {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (data: CreateUser) => void
+  onSubmit: (data: AccessProfileCreate) => void
   // TODO: implement user interface
-  user?: User
 }
