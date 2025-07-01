@@ -9,7 +9,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-row h-screen w-full">
       <Sidebar
-        isHidden={isAnalysisPage || isLayoutDisabled}
+        isDisabled={isLayoutDisabled}
+        isHidden={isAnalysisPage}
         items={sidebarItems}
         onHelpClick={() => console.log('Help not implemented yet')}
         onLogoutClick={() => console.log('Logout not implemented yet')}

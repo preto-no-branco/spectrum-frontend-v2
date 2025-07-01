@@ -1,5 +1,3 @@
-import { ExtractValues } from '@renderer/types/general.types'
-
 export const APP_ROUTES = {
   HOME: '/',
   ANALYSIS: {
@@ -15,6 +13,6 @@ export const APP_ROUTES = {
     CATEGORIES: '/settings/categories',
     INSPECTION_WAYS: '/settings/inspection-ways'
   }
-} as const
+} as const satisfies Record<string, Routes['routes'] | Record<string, Routes['routes']>>
 
-export type AppRouteValues = ExtractValues<typeof APP_ROUTES>
+export type AppRouteValues = Routes['routes']

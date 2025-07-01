@@ -6,7 +6,7 @@ type WindowManager = {
 
 export const useWindowManager = (): WindowManager => {
   const createWindow = (route: AppRouteValues): void => {
-    window.api.createWindow(route)
+    window.api.window.create(route)
   }
 
   return {

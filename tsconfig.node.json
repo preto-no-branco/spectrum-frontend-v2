@@ -6,6 +6,6 @@
     "composite": true,
     "types": ["electron-vite/node"],
     "baseUrl": ".",
-    "paths": { "@/*": ["./src/renderer/src/*"] },
+    "paths": { "@renderer/*": ["./src/renderer/src/*"] }
   }
 }

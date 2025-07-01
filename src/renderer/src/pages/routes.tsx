@@ -1,4 +1,4 @@
-import { APP_ROUTES, AppRouteKeys, AppRouteValues } from '@renderer/core/constants/appRoutes'
+import { APP_ROUTES, AppRouteValues } from '@renderer/core/constants/appRoutes'
 import Analysis from './analysis/Analysis'
 import History from './history/History'
 import Home from './home/Home'
