@@ -1,6 +1,11 @@
+import { ExtractValues } from '@renderer/types/general.types'
+
 export const APP_ROUTES = {
   HOME: '/',
-  ANALYSIS: '/analysis',
+  ANALYSIS: {
+    INITIAL: '/analysis',
+    DETAILS: '/analysis/details'
+  },
   HISTORY: '/history',
   SETTINGS: {
     INITIAL: '/settings',
@@ -11,3 +16,5 @@ export const APP_ROUTES = {
     INSPECTION_WAYS: '/settings/inspection-ways'
   }
 } as const
+
+export type AppRouteValues = ExtractValues<typeof APP_ROUTES>

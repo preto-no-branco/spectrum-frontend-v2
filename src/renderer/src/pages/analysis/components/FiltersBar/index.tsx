@@ -7,9 +7,13 @@ import { ImageAdjustments } from './ImageAdjustments'
 import { LinearMap } from './LinearMap'
 import { COMPLEX_FILTERS } from './constants'
 import { FiltersBarProps } from './interfaces'
+import { SquareSplitHorizontal } from 'lucide-react'
+import { useWindowManager } from '@renderer/hooks/useWindowManager'
 
 export const FiltersBar = ({ inspectionDetailsControls }: FiltersBarProps) => {
   const [isOpen, setIsOpen] = inspectionDetailsControls
+
+  const { createWindow } = useWindowManager()
 
   const handleToggleInspectionDetails = () => {
     setIsOpen((prev) => !prev)
@@ -33,6 +37,11 @@ export const FiltersBar = ({ inspectionDetailsControls }: FiltersBarProps) => {
             aria-label="Abrir sidebar"
           />
         )}
+        <SquareSplitHorizontal
+          className="w-5 hover:cursor-pointer h-5 bg-no-repeat bg-center text-content-secondary"
+          onClick={() => createWindow('/analysis/details')}
+          aria-label="Abrir outra tela"
+        />
         <div className="flex gap-4 items-center">
           <ImageAdjustments />
           <ColorFilter />
