@@ -1,5 +1,4 @@
 import {
-  Eraser,
   FoldVertical,
   InfoIcon,
   ScanSearch,

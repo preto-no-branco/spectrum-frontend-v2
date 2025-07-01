@@ -41,7 +41,7 @@ export default function Analysis(): JSX.Element {
         </Button>
         <div className="flex items-center gap-10">
           <div className="px-3 py-2 flex gap-4">
-            <Badge variant={'blue'}>Simples</Badge>
+            <Badge variant={'outline'}>Simples</Badge>
             <Checkbox label="Suspeito" />
             <Checkbox label="Inflamável" />
             <Checkbox label="Vazio" />

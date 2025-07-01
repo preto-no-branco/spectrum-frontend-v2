@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { X } from 'lucide-react'
 import { Input } from '@renderer/components/ui/input'
 
 interface EditableTagListProps {
@@ -18,12 +17,6 @@ export default function EditableTagList({ values, setValues, placeholder }: Edit
     }
     setNewValue('')
     setIsAdding(false)
-  }
-
-  function handleRemove(index: number) {
-    const newList = [...values]
-    newList.splice(index, 1)
-    setValues(newList)
   }
 
   return (
