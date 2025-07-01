@@ -13,7 +13,7 @@ export default function SidebarOpen({ activeTab, setActiveTab }: SidebarHeaderPr
     <div ref={ref} className="grid grid-cols-2 w-full h-full">
       <button
         onClick={() => setActiveTab('details')}
-        className={`flex items-center justify-center py-1 ${
+        className={`flex items-center justify-center py-1 gap-1 ${
           activeTab === 'details'
             ? 'border-b-[#00B388] border-b-2'
             : 'text-[#B3BDC0] hover:text-white'
