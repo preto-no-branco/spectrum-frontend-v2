@@ -1,8 +1,8 @@
-import { AccessProfileCreate } from '@renderer/core/configs/forms/accessProfiles/accessProfileSchema'
+import { Category } from '@renderer/services/categoryService/interfaces'
 
-export interface AccessFormModalProps {
+export interface CategoriesFormModalProps {
   isOpen: boolean
+  defaultValues?: Category
   onClose: () => void
-  onSubmit: (data: AccessProfileCreate) => void
-  // TODO: implement user interface
+  onSubmit: (data: Category, categoryId?: string) => void
 }

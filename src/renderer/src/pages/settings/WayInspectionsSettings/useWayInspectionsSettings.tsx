@@ -17,18 +17,18 @@ export const useWayInspectionsSettings = () => {
     setIsCreateWayIdentifierModalOpen(true)
   }, [])
 
-  const handleEditWayIdentifier = useCallback((categoryId: string) => {
-    console.log('🚀 ~ categoryId:', categoryId)
+  const handleEditWayIdentifier = useCallback((wayIdentifier: string) => {
+    console.log('🚀 ~ wayIdentifier:', wayIdentifier)
     setIsCreateWayIdentifierModalOpen(true)
   }, [])
 
   const handleDeleteWayIdentifier = useCallback(
-    (categoryId: string) => {
-      console.log('🚀 ~ categoryId:', categoryId)
+    (wayIdentifier: string) => {
+      console.log('🚀 ~ wayIdentifier:', wayIdentifier)
 
-      const title = 'Você deseja excluir esta categoria?'
+      const title = 'Você deseja excluir este identificador?'
       const message =
-        'Esta categoria não poderá mais ser usada nas marcações de áreas. A exclusão é permanente e não poderá ser desfeita.'
+        'Este identificador não poderá mais ser usado. A exclusão é permanente e não poderá ser desfeita.'
 
       showAlert({
         title,

@@ -1,19 +1,24 @@
 import { Modal } from '@renderer/components/custom/Modal'
-import { AccessFormModalProps } from './interface'
+import { CategoriesFormModalProps } from './interface'
 import { useCategoriesFormModal } from './useCategoriesFormModal'
 
-export function CategoriesFormModal({ isOpen, onClose }: AccessFormModalProps) {
-  const { CategoriesForm, handleSubmit } = useCategoriesFormModal()
+export function CategoriesFormModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  defaultValues
+}: CategoriesFormModalProps) {
+  const { CategoriesForm, handleSubmit } = useCategoriesFormModal({ defaultValues })
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Nova categoria de análise"
+      title={`${defaultValues ? 'Editar' : 'Nova'} categoria de análise`}
       cancelText="Cancelar"
-      confirmText="Cadastrar"
+      confirmText={defaultValues ? 'Salvar' : 'Cadastrar'}
       contentProps={{ className: 'w-full' }}
-      confirmButtonProps={{ onClick: handleSubmit }}
+      confirmButtonProps={{ onClick: () => handleSubmit(onSubmit), isLoading: false }}
     >
       <CategoriesForm columns={2} />
     </Modal>
