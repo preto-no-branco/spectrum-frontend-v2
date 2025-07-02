@@ -22,6 +22,12 @@ export class ManageWindowIPC implements BaseIpcService {
       console.log('[ManageWindowIPC] Registering IPC listeners...')
     }
 
+    ipcMain.on('create-window', this.handleCreateWindow.bind(this))
+
+    ipcMain.on('close-window', this.handleCloseWindow.bind(this))
+
+    ipcMain.on('get-window-tree', this.handleGetWindowTree.bind(this))
+
     if (this.debug) {
       console.log('[ManageWindowIPC] IPC listeners registered successfully')
     }
@@ -31,12 +37,6 @@ export class ManageWindowIPC implements BaseIpcService {
     if (this.debug) {
       console.log('[ManageWindowIPC] Registering IPC handlers...')
     }
-
-    ipcMain.handle('create-window', this.handleCreateWindow.bind(this))
-
-    ipcMain.handle('close-window', this.handleCloseWindow.bind(this))
-
-    ipcMain.handle('get-window-tree', this.handleGetWindowTree.bind(this))
 
     if (this.debug) {
       console.log('[ManageWindowIPC] IPC handlers registered successfully')

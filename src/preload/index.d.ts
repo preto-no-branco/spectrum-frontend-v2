@@ -1,5 +1,5 @@
 import { ElectronAPI } from '@electron-toolkit/preload'
-import type { APIs } from './index'
+import type { APIs, AppRoute } from './index'
 
 declare global {
   interface Routes {

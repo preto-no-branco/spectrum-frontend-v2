@@ -45,7 +45,6 @@ export class WindowManager {
       ...options
     })
 
-    // Create window node
     const windowNode: WindowNode = {
       id: windowId,
       window,
@@ -54,28 +53,25 @@ export class WindowManager {
       children: new Set()
     }
 
-    // Add to windows map
     this.windows.set(windowId, windowNode)
 
-    // If there's a parent, add this window as its child
     if (parentId && this.windows.has(parentId)) {
       const parent = this.windows.get(parentId)!
       parent.children.add(windowId)
     }
 
-    // Set up window event handlers
     this.setupWindowEventHandlers(windowId, window)
 
-    // Load the route
+    const formattedRoute = route.startsWith('#') ? route : `#${route}`
+
     if (process.env.NODE_ENV === 'development') {
-      window.loadURL(`http://localhost:5173${route}`)
+      window.loadURL(`http://localhost:5173${formattedRoute}`)
     } else {
       window.loadFile(join(__dirname, '../renderer/index.html'), {
-        hash: route
+        hash: route.replace('#', '') // loadFile expects hash without #
       })
     }
 
-    // Show window when ready
     window.once('ready-to-show', () => {
       window.show()
     })
@@ -84,12 +80,10 @@ export class WindowManager {
   }
 
   private setupWindowEventHandlers(windowId: string, window: BrowserWindow): void {
-    // Handle window close event
     window.on('closed', () => {
       this.cleanupWindow(windowId)
     })
 
-    // Prevent window from closing and handle it properly
     window.on('close', (event) => {
       event.preventDefault()
       this.closeWindow(windowId)
@@ -100,13 +94,11 @@ export class WindowManager {
     const windowNode = this.windows.get(windowId)
     if (!windowNode) return
 
-    // Close all children first (recursive)
     const childrenToClose = Array.from(windowNode.children)
     childrenToClose.forEach((childId) => {
       this.closeWindow(childId)
     })
 
-    // Remove this window from parent's children list
     if (windowNode.parentId) {
       const parent = this.windows.get(windowNode.parentId)
       if (parent) {
@@ -114,13 +106,11 @@ export class WindowManager {
       }
     }
 
-    // Close the actual window
     if (!windowNode.window.isDestroyed()) {
       windowNode.window.removeAllListeners()
       windowNode.window.destroy()
     }
 
-    // Clean up from our tracking
     this.cleanupWindow(windowId)
   }
 

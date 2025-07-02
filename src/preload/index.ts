@@ -44,8 +44,10 @@ export type APIs = {
 // Custom APIs for renderer
 const api = {
   sharedStateGetItem: (key: string) => ipcRenderer.invoke('shared-state-get-item', key),
-  sharedStateSetItem: (key: string, value: string) =>
-    ipcRenderer.send('shared-state-set-item', key, value),
+  sharedStateSetItem: (key: string, value: string) => {
+    console.log('kKEYYYYYYYY: ', key)
+    ipcRenderer.send('shared-state-set-item', key, value)
+  },
   sharedStateUpdated: (callback: (key: string, value: string) => void) => {
     ipcRenderer.on('shared-state-updated', (_, key, value) => {
       callback(key, value)
