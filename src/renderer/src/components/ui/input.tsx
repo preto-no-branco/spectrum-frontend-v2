@@ -44,9 +44,6 @@ function RenderInput({
           id={name}
           type={type}
           data-slot="input"
-          onInvalid={() => {
-            console.log('invalid')
-          }}
           className={cn(
             'file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30',
             'flex h-full w-full min-w-0 bg-transparent px-3 py-1 text-base outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',

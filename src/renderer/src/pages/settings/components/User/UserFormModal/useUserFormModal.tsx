@@ -1,4 +1,4 @@
-import { FormHandle, createForm } from '@renderer/components/custom/Form'
+import { useForm } from '@renderer/components/custom/Form'
 import { registerUserForm } from '@renderer/core/configs/forms/user/registerUserForm'
 import {
   CreateUser,
@@ -10,10 +10,9 @@ import {
   atLeastOneSpecialCharacter,
   atLeastOneUppercase
 } from '@renderer/core/constants/regex'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-export const useFormModal = () => {
-  const formRef = useRef<FormHandle>(null)
+export const useUserFormModal = () => {
   const [passwordWatch, setPasswordWatch] = useState('')
 
   const passwordRules = useMemo(() => {
@@ -37,41 +36,37 @@ export const useFormModal = () => {
     ]
   }, [passwordWatch])
 
-  const UserForm = useMemo(() => {
-    return createForm<CreateUser>({
-      fields: registerUserForm,
-      schema: registerUserSchema,
-      watch: {
-        watchList: ['password'],
-        onStateChange: ({ state }) => {
-          setPasswordWatch(state ?? '')
-        }
-      },
-      defaultValues: {
-        accessLevel: 'user',
-        position: 'Operador',
-        fullName: 'Felipe',
-        username: 'felipe.d'
-      }
-    })
-  }, [])
+  const { Form: UserForm, submitForm } = useForm<CreateUser>({
+    fields: registerUserForm,
+    schema: registerUserSchema,
+    // watch: {
+    //   watchList: ['password'],
+    //   onStateChange: ({ state }) => {
+    //     setPasswordWatch(state ?? '')
+    //   }
+    // },
+    defaultValues: {
+      accessLevel: 'user',
+      position: 'Operador',
+      fullName: 'Felipe',
+      username: 'felipe.d'
+    }
+  })
 
   const handleSubmit = useCallback(() => {
-    const { current: form } = formRef
-    form?.submitForm((data) => {
+    submitForm((data) => {
       console.log(data)
     })
-  }, [formRef])
+  }, [submitForm])
 
   useEffect(() => {
     return () => {
       setPasswordWatch('')
     }
-  }, [passwordWatch, formRef])
+  }, [passwordWatch])
 
   return {
     UserForm,
-    formRef,
     passwordRules,
     handleSubmit
   }

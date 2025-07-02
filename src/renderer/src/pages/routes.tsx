@@ -2,12 +2,12 @@ import { APP_ROUTES } from '@renderer/core/constants/appRoutes'
 import Analysis from './analysis/Analysis'
 import History from './history/History'
 import Home from './home/Home'
+import Settings from './settings'
 import AccessSettings from './settings/AccessSettings'
 import CategoriesSettings from './settings/CategoriesSettings'
-import InspectionsSettings from './settings/InspectionsSettings'
-import Settings from './settings/Settings'
 import SystemSettings from './settings/SystemSettings'
 import UserSettings from './settings/UserSettings'
+import InspectionsSettings from './settings/WayInspectionsSettings'
 
 export const routes = [
   {

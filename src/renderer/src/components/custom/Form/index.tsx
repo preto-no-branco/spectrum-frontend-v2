@@ -2,54 +2,43 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@renderer/components/ui/button'
 import { Input } from '@renderer/components/ui/input'
 import { Select } from '@renderer/components/ui/select'
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
+import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from 'react'
+import { FieldValues, Path, PathValue, useForm as useHookForm } from 'react-hook-form'
 import { FormComponentProps } from './interface'
 
 type OmitedFormProps = 'schema' | 'defaultValues' | 'control' | 'fields' | 'watch'
-export type FormHandle = {
+export type FormHandle<T = FieldValues> = {
   submitForm: (submit?: (data: FieldValues) => void) => void
+  resetForm: () => void
+  getValues: () => FieldValues
+  setValue: (name: Path<T>, value: PathValue<T, Path<T>>) => void
 }
 
-export function createForm<T extends FieldValues>({
+function createFormFields<T extends FieldValues>({
   fields,
   defaultValues,
-  schema,
-  watch
+  schema
 }: {
   fields: FormComponentProps<T>['fields']
   schema?: FormComponentProps<T>['schema']
   defaultValues?: FormComponentProps<T>['defaultValues']
-  watch?: FormComponentProps<T>['watch']
 }) {
-  return forwardRef<FormHandle, Omit<FormComponentProps<T>, OmitedFormProps>>(function Form(
-    {
-      // fields,
-      // schema,
-      // defaultValues,
-      columns = 1,
-      onSubmit,
-      children,
-      // watch,
-      showSubmitButton = true
-    },
+  return forwardRef<FormHandle<T>, Omit<FormComponentProps<T>, OmitedFormProps>>(function Form(
+    { columns = 1, onSubmit, children, showSubmitButton = false },
     ref
   ) {
     const {
       handleSubmit,
       control,
       formState: { errors },
-      watch: hookFormWatch
-    } = useForm<T>({
+      // watch: hookFormWatch,
+      reset,
+      setValue,
+      getValues
+    } = useHookForm<T>({
       resolver: schema && zodResolver(schema),
       defaultValues: defaultValues
     })
-
-    const watchList = useMemo(() => {
-      return watch?.watchList ?? []
-    }, [])
-
-    const watchSubscribes = hookFormWatch(watchList)
 
     const externalSubmitForm = useCallback(
       (submit?: (data: T) => void) => {
@@ -68,18 +57,19 @@ export function createForm<T extends FieldValues>({
     useImperativeHandle(
       ref,
       () => ({
-        submitForm: externalSubmitForm
+        submitForm: externalSubmitForm,
+        resetForm: () => {
+          reset()
+        },
+        getValues: () => {
+          return getValues()
+        },
+        setValue: (name: Path<T>, value: PathValue<T, Path<T>>) => {
+          setValue(name, value)
+        }
       }),
-      [externalSubmitForm]
+      [externalSubmitForm, reset, setValue, getValues]
     )
-
-    useEffect(() => {
-      if (watchSubscribes.length && watch) {
-        watchSubscribes.forEach((field, index) => {
-          watch?.onStateChange({ field: watchList[index], state: field })
-        })
-      }
-    }, [watchSubscribes, watchList])
 
     return (
       <form
@@ -90,6 +80,21 @@ export function createForm<T extends FieldValues>({
       >
         {Object.entries(fields).map(([name, field]) => {
           const { inputType, colSpan, ...restField } = field
+
+          if (inputType === 'custom') {
+            const Component = field.component
+            return (
+              <div key={name} style={{ gridColumn: `span ${colSpan ?? 1}` }}>
+                <Component
+                  control={control}
+                  name={String(name)}
+                  {...field}
+                  style={{ gridColumn: `span ${colSpan ?? 1}` }}
+                />
+              </div>
+            )
+          }
+
           if (inputType === 'select') {
             return (
               <Select
@@ -148,4 +153,29 @@ export function createForm<T extends FieldValues>({
       </form>
     )
   })
+}
+
+export function useForm<T extends FieldValues>(props: {
+  fields: FormComponentProps<T>['fields']
+  schema?: FormComponentProps<T>['schema']
+  defaultValues?: FormComponentProps<T>['defaultValues']
+}) {
+  const formRef = useRef<FormHandle<T>>(null)
+
+  const FormComponent = useMemo(() => {
+    return createFormFields<T>({
+      fields: props.fields,
+      schema: props.schema,
+      defaultValues: props.defaultValues
+    })
+  }, [props.fields, props.schema, props.defaultValues])
+
+  return {
+    Form: (formProps: Omit<FormComponentProps<T>, OmitedFormProps>) => (
+      <FormComponent ref={formRef} {...formProps} />
+    ),
+    submitForm: (submit?: (data: FieldValues) => void) => formRef.current?.submitForm(submit),
+    resetForm: () => formRef.current?.resetForm(),
+    getValues: () => formRef.current?.getValues()
+  }
 }

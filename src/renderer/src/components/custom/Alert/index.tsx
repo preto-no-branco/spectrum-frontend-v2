@@ -21,6 +21,7 @@ export function Alert() {
     cancelText,
     confirmText,
     contentProps,
+    contentComponent,
     headerProps,
     titleProps,
     messageProps,
@@ -46,6 +47,7 @@ export function Alert() {
         <AlertDialogHeader {...headerProps}>
           <AlertDialogTitle {...titleProps}>{title}</AlertDialogTitle>
           <AlertDialogDescription {...messageProps}>{message}</AlertDialogDescription>
+          {contentComponent}
         </AlertDialogHeader>
         <AlertDialogFooter {...footerProps}>
           {showCancelButton && (

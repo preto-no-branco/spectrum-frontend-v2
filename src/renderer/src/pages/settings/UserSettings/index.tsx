@@ -1,8 +1,8 @@
 import { Button } from '@renderer/components/ui/button'
 import { Input } from '@renderer/components/ui/input'
 import { Select } from '@renderer/components/ui/select'
-import { UserFormModal } from '@renderer/pages/settings/components/UserFormModal'
-import { UserTable } from '@renderer/pages/settings/components/UserTable'
+import { UserFormModal } from '@renderer/pages/settings/components/user/UserFormModal'
+import { UserTable } from '@renderer/pages/settings/components/user/UserTable'
 import { ListFilter, Search } from 'lucide-react'
 import { useUserSettings } from './useUserSettings'
 
