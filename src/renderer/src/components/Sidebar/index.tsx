@@ -5,7 +5,13 @@ import { useSidebar } from './useSidebar'
 import SidebarOpen from './SidebarOpen'
 import SidebarClosed from './SidebarClosed'
 
-const Sidebar: React.FC<SidebarProps> = ({ isHidden, items, onHelpClick, onLogoutClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  isDisabled = false,
+  isHidden,
+  items,
+  onHelpClick,
+  onLogoutClick
+}) => {
   const {
     open,
     sidebarWidth,
@@ -14,6 +20,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isHidden, items, onHelpClick, onLogou
     handleMouseLeave,
     handleEdgeHover
   } = useSidebar({ isHidden })
+
+  if (isDisabled) {
+    return <></>
+  }
 
   return (
     <>

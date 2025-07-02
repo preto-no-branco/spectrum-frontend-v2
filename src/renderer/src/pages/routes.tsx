@@ -1,4 +1,4 @@
-import { APP_ROUTES } from '@renderer/core/constants/appRoutes'
+import { APP_ROUTES, AppRouteValues } from '@renderer/core/constants/appRoutes'
 import Analysis from './analysis/Analysis'
 import History from './history/History'
 import Home from './home/Home'
@@ -8,8 +8,16 @@ import InspectionsSettings from './settings/InspectionsSettings'
 import Settings from './settings/Settings'
 import SystemSettings from './settings/SystemSettings'
 import UserSettings from './settings/UserSettings'
+import { AnalysisDetails } from './analysis/AnalysisDetails'
 
-export const routes = [
+type Routes = {
+  id: string
+  path: AppRouteValues
+  element: React.ReactNode
+  children?: Routes[]
+}
+
+export const routes: Routes[] = [
   {
     id: 'home',
     path: APP_ROUTES.HOME,
@@ -17,8 +25,13 @@ export const routes = [
   },
   {
     id: 'analysis',
-    path: APP_ROUTES.ANALYSIS,
+    path: APP_ROUTES.ANALYSIS.INITIAL,
     element: <Analysis />
+  },
+  {
+    id: 'analysis-details',
+    path: APP_ROUTES.ANALYSIS.DETAILS,
+    element: <AnalysisDetails />
   },
   {
     id: 'settings',

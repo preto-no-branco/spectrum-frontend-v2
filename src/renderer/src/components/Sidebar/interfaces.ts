@@ -13,6 +13,7 @@ export interface SidebarItem {
 
 export interface SidebarProps {
   isHidden: boolean
+  isDisabled: boolean
   items: SidebarItem[]
   onHelpClick: () => void
   onLogoutClick: () => void

@@ -9,7 +9,11 @@ import SettingsIcon from '../icons/SettingsIcon'
 export const useLayout = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const isAnalysisPage = location.pathname === APP_ROUTES.ANALYSIS
+  const isAnalysisPage = location.pathname === APP_ROUTES.ANALYSIS.INITIAL
+
+  const disableLayoutPages: Set<string> = new Set(APP_ROUTES.ANALYSIS.DETAILS)
+
+  const isLayoutDisabled = !disableLayoutPages.has(location.pathname)
 
   const sidebarItems: SidebarItem[] = [
     {
@@ -23,7 +27,7 @@ export const useLayout = () => {
       icon: <RadarIcon className="hover:cursor-pointer fill-content-tertiary" />,
       label: 'Analysis',
       onClick: () => {
-        navigate(APP_ROUTES.ANALYSIS)
+        navigate(APP_ROUTES.ANALYSIS.INITIAL)
       }
     },
     {
@@ -44,6 +48,7 @@ export const useLayout = () => {
 
   return {
     isAnalysisPage,
-    sidebarItems
+    sidebarItems,
+    isLayoutDisabled
   }
 }

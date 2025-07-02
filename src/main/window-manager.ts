@@ -1,81 +1,150 @@
-import { BrowserWindow, shell } from 'electron'
-import { join } from 'path'
-import { is } from '@electron-toolkit/utils'
+import { BrowserWindow } from 'electron'
+import path, { join } from 'path'
+import {
+  CreateWindowOptions,
+  RendererRoutes,
+  WindowNode,
+  WindowTreeNode
+} from 'src/preload/windowManager/interface'
 import icon from '../../resources/icon.png?asset'
 
-type WindowInfo = {
-  id: number
-  order: number
-  route: string
-  window: BrowserWindow
-}
-
 export class WindowManager {
-  private windows: WindowInfo[] = []
-  private windowOrder = 0
+  private windows: Map<string, WindowNode> = new Map()
+  private windowIdCounter = 0
 
-  constructor(private preloadPath: string) {}
+  private generateWindowId(): string {
+    return `window_${++this.windowIdCounter}_${Date.now()}`
+  }
 
-  public createWindow(initialRoute = '/'): BrowserWindow {
-    console.log('[WindowManager] Creating window with initial route:', initialRoute)
+  public getWindowIdByBrowserWindow(browserWindow: BrowserWindow): string | undefined {
+    for (const [id, node] of this.windows) {
+      if (node.window === browserWindow) {
+        return id
+      }
+    }
+    return undefined
+  }
 
-    const win = new BrowserWindow({
+  public createWindow(
+    route: RendererRoutes,
+    parentId?: string,
+    options?: CreateWindowOptions
+  ): string {
+    const windowId = this.generateWindowId()
+
+    const window = new BrowserWindow({
       width: 900,
       height: 670,
       show: false,
       autoHideMenuBar: true,
       ...(process.platform === 'linux' ? { icon } : {}),
       webPreferences: {
-        preload: this.preloadPath,
-        sandbox: false
-      }
+        sandbox: false,
+        preload: path.join(__dirname, '../preload/index.js')
+      },
+      ...options
     })
 
-    const order = this.windowOrder++
-    const cleanedRoute = initialRoute.replace(/^\//, '') // remove leading slash
+    const windowNode: WindowNode = {
+      id: windowId,
+      window,
+      route,
+      parentId,
+      children: new Set()
+    }
 
-    if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
-      // In development, load from dev server, using hash-based routing
-      win.loadURL(`${process.env['ELECTRON_RENDERER_URL']}#/${cleanedRoute}`)
+    this.windows.set(windowId, windowNode)
+
+    if (parentId && this.windows.has(parentId)) {
+      const parent = this.windows.get(parentId)!
+      parent.children.add(windowId)
+    }
+
+    this.setupWindowEventHandlers(windowId, window)
+
+    const formattedRoute = route.startsWith('#') ? route : `#${route}`
+
+    if (process.env.NODE_ENV === 'development') {
+      window.loadURL(`http://localhost:5173${formattedRoute}`)
     } else {
-      // In production, load the local index.html with a hash fragment
-      win.loadFile(join(__dirname, '../renderer/index.html'), {
-        hash: cleanedRoute
+      window.loadFile(join(__dirname, '../renderer/index.html'), {
+        hash: route.replace('#', '') // loadFile expects hash without #
       })
     }
 
-    win.webContents.setWindowOpenHandler((details) => {
-      shell.openExternal(details.url)
-      return { action: 'deny' }
+    window.once('ready-to-show', () => {
+      window.show()
     })
 
-    win.on('ready-to-show', () => win.show())
+    return windowId
+  }
 
-    win.on('closed', () => {
-      this.windows = this.windows.filter((w) => w.window !== win)
+  private setupWindowEventHandlers(windowId: string, window: BrowserWindow): void {
+    window.on('closed', () => {
+      this.cleanupWindow(windowId)
     })
 
-    this.windows.push({
-      id: win.id,
-      order,
-      route: initialRoute,
-      window: win
+    window.on('close', (event) => {
+      event.preventDefault()
+      this.closeWindow(windowId)
+    })
+  }
+
+  public closeWindow(windowId: string): void {
+    const windowNode = this.windows.get(windowId)
+    if (!windowNode) return
+
+    const childrenToClose = Array.from(windowNode.children)
+    childrenToClose.forEach((childId) => {
+      this.closeWindow(childId)
     })
 
-    return win
+    if (windowNode.parentId) {
+      const parent = this.windows.get(windowNode.parentId)
+      if (parent) {
+        parent.children.delete(windowId)
+      }
+    }
+
+    if (!windowNode.window.isDestroyed()) {
+      windowNode.window.removeAllListeners()
+      windowNode.window.destroy()
+    }
+
+    this.cleanupWindow(windowId)
   }
 
-  public getAllWindows(): WindowInfo[] {
-    return this.windows
+  private cleanupWindow(windowId: string): void {
+    this.windows.delete(windowId)
   }
 
-  public getWindowById(id: number): WindowInfo | undefined {
-    return this.windows.find((w) => w.id === id)
+  public getWindowTree(): WindowTreeNode {
+    const tree: WindowTreeNode = {}
+
+    for (const [id, node] of this.windows) {
+      tree[id] = {
+        id: node.id,
+        route: node.route,
+        parentId: node.parentId,
+        children: node.children
+      }
+    }
+
+    return tree
   }
 
-  public duplicateWindow(sourceId: number): BrowserWindow | undefined {
-    const original = this.getWindowById(sourceId)
-    if (!original) return undefined
-    return this.createWindow(original.route)
+  public getRootWindows(): string[] {
+    return Array.from(this.windows.values())
+      .filter((node) => !node.parentId)
+      .map((node) => node.id)
+  }
+
+  public getChildWindows(parentId: string): string[] {
+    const parent = this.windows.get(parentId)
+    return parent ? Array.from(parent.children) : []
+  }
+
+  public getNodeByWindowId(windowId: string): WindowNode | undefined {
+    return this.windows.get(windowId)
   }
 }
