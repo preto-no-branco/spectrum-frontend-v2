@@ -1,7 +1,13 @@
-import * as React from 'react'
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
+import * as React from 'react'
 
 import { cn } from '@/lib/utils'
+
+interface TooltipProps extends React.ComponentProps<typeof TooltipPrimitive.Root> {
+  label: string
+  labelProps?: React.ComponentProps<typeof TooltipPrimitive.Content>
+  triggerProps?: React.ComponentProps<typeof TooltipPrimitive.Trigger>
+}
 
 function TooltipProvider({
   delayDuration = 0,
@@ -16,7 +22,7 @@ function TooltipProvider({
   )
 }
 
-function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+function TooltipComponent({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
   return (
     <TooltipProvider>
       <TooltipPrimitive.Root data-slot="tooltip" {...props} />
@@ -51,4 +57,17 @@ function TooltipContent({
   )
 }
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+function Tooltip({ children, label, labelProps, triggerProps, ...props }: TooltipProps) {
+  return (
+    <TooltipComponent data-slot="tooltip-component" {...props}>
+      <TooltipTrigger data-slot="tooltip-trigger" asChild {...triggerProps}>
+        {children}
+      </TooltipTrigger>
+      <TooltipContent data-slot="tooltip-content" {...labelProps}>
+        {label}
+      </TooltipContent>
+    </TooltipComponent>
+  )
+}
+
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger }

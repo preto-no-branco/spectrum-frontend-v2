@@ -1,16 +1,10 @@
-import * as React from 'react'
+import { cn } from '@/lib/utils'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from '@/lib/utils'
+import * as React from 'react'
 
 // Imports do shadcn Tooltip
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent
-  // caso queira arrow:
-  // TooltipArrow,
-} from '@/components/ui/tooltip'
+import { Tooltip } from '@/components/ui/tooltip'
 
 const buttonVariants = cva(
   "inline-flex hover:cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
@@ -66,11 +60,14 @@ function Button({
 
   if (tooltipText) {
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>{buttonElement}</TooltipTrigger>
-        <TooltipContent sideOffset={10} side={tooltipPosition}>
-          {tooltipText}
-        </TooltipContent>
+      <Tooltip
+        label={tooltipText}
+        labelProps={{
+          side: tooltipPosition,
+          sideOffset: 10
+        }}
+      >
+        {buttonElement}
       </Tooltip>
     )
   }

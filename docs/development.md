@@ -34,29 +34,29 @@ Para permitir a comunicação entre o processo principal (Main) e as janelas Ren
 
 #### IpcFactory e BaseIpcService
 
-* **`BaseIpcService`**:
+- **`BaseIpcService`**:
 
-  * Define métodos obrigatórios para qualquer serviço IPC, garantindo que todas as rotas sigam o mesmo contrato.
-  * Contém plataformas para registro de *listeners* (eventos sem resposta) e *handlers* (requisições que retornam dados).
+  - Define métodos obrigatórios para qualquer serviço IPC, garantindo que todas as rotas sigam o mesmo contrato.
+  - Contém plataformas para registro de _listeners_ (eventos sem resposta) e _handlers_ (requisições que retornam dados).
 
-* **`IpcFactory`**:
+- **`IpcFactory`**:
 
-  * Responsável por criar instâncias de classes que implementam `BaseIpcService`.
-  * No arquivo `index.ts` do backend, a função `createIPCHandlers()` itera sobre todas as classes registradas, chamando `IpcFactory.create()` para instanciá-las e registrar suas rotas junto ao Electron.
-  * Permite adicionar novas rotas apenas criando uma classe que implemente `BaseIpcService` e registrando-a no processo de *build* de IPCs.
+  - Responsável por criar instâncias de classes que implementam `BaseIpcService`.
+  - No arquivo `index.ts` do backend, a função `createIPCHandlers()` itera sobre todas as classes registradas, chamando `IpcFactory.create()` para instanciá-las e registrar suas rotas junto ao Electron.
+  - Permite adicionar novas rotas apenas criando uma classe que implemente `BaseIpcService` e registrando-a no processo de _build_ de IPCs.
 
 #### Registro de Listeners e Handlers
 
-* Cada classe que implementa `BaseIpcService` deve:
+- Cada classe que implementa `BaseIpcService` deve:
 
-  1. Declarar suas **rotas de *listeners***, que recebem eventos do frontend sem necessidade de retorno (ex.: notificações).
-  2. Declarar suas **rotas de *handlers***, que executam alguma lógica e retornam uma resposta ao frontend (ex.: consultas a banco de dados).
+  1. Declarar suas **rotas de _listeners_**, que recebem eventos do frontend sem necessidade de retorno (ex.: notificações).
+  2. Declarar suas **rotas de _handlers_**, que executam alguma lógica e retornam uma resposta ao frontend (ex.: consultas a banco de dados).
 
-* A função `registerIpcListeners()` mapeia as rotas de *listeners* usando `ipcMain.on(...)`.
+- A função `registerIpcListeners()` mapeia as rotas de _listeners_ usando `ipcMain.on(...)`.
 
-* A função `registerIpcHandlers()` mapeia as rotas de *handlers* usando `ipcMain.handle(...)`.
+- A função `registerIpcHandlers()` mapeia as rotas de _handlers_ usando `ipcMain.handle(...)`.
 
-* Ao criar uma nova rota, basta:
+- Ao criar uma nova rota, basta:
 
   1. Adicionar um método na classe de serviço que escute ou atenda a um canal específico.
   2. Chamar, no construtor ou em método de inicialização, `registerIpcListeners()` e/ou `registerIpcHandlers()`.
@@ -64,17 +64,17 @@ Para permitir a comunicação entre o processo principal (Main) e as janelas Ren
 
 #### Debug e Logging
 
-* Todas as classes que implementam `BaseIpcService` devem oferecer um **modo DEBUG**, que:
+- Todas as classes que implementam `BaseIpcService` devem oferecer um **modo DEBUG**, que:
 
-  * Registra logs detalhados ao receber chamadas IPC e ao finalizar o processamento.
-  * Facilita o diagnóstico de problemas, mostrando os parâmetros recebidos, rotas acionadas e respostas enviadas.
-  * Pode ser habilitado por meio de uma flag de ambiente ou configuração global no `Main` do Electron.
+  - Registra logs detalhados ao receber chamadas IPC e ao finalizar o processamento.
+  - Facilita o diagnóstico de problemas, mostrando os parâmetros recebidos, rotas acionadas e respostas enviadas.
+  - Pode ser habilitado por meio de uma flag de ambiente ou configuração global no `Main` do Electron.
 
-* Exemplo de boas práticas de logging no modo DEBUG:
+- Exemplo de boas práticas de logging no modo DEBUG:
 
-  * Prefixar cada mensagem com o nome da classe e do método.
-  * Incluir timestamps ou contadores básicos para rastrear a ordem de eventos.
-  * Tratar erros com `_catch_` para evitar falhas silenciosas.
+  - Prefixar cada mensagem com o nome da classe e do método.
+  - Incluir timestamps ou contadores básicos para rastrear a ordem de eventos.
+  - Tratar erros com `_catch_` para evitar falhas silenciosas.
 
 ---
 
@@ -84,22 +84,22 @@ Em aplicações que precisam manipular múltiplas janelas (abrir, duplicar, fech
 
 #### WindowManager
 
-* A classe **`WindowManager`** é responsável por:
+- A classe **`WindowManager`** é responsável por:
 
-  * Criar novas janelas a partir de rotas definidas no frontend.
-  * Rastrear instâncias abertas para permitir, por exemplo, reabertura ou bring-to-front.
-  * Controlar configurações padrão de cada janela (tamanho, ações do menu, propriedades de segurança).
+  - Criar novas janelas a partir de rotas definidas no frontend.
+  - Rastrear instâncias abertas para permitir, por exemplo, reabertura ou bring-to-front.
+  - Controlar configurações padrão de cada janela (tamanho, ações do menu, propriedades de segurança).
 
-* Em vez de usar diretamente `new BrowserWindow(...)`, todo fluxo deve ser executado por meio de `WindowManager`, que encapsula a criação, duplicação ou fechamento de janelas.
+- Em vez de usar diretamente `new BrowserWindow(...)`, todo fluxo deve ser executado por meio de `WindowManager`, que encapsula a criação, duplicação ou fechamento de janelas.
 
 #### Integração com o Frontend
 
-* No frontend React, disponibilizamos um hook chamado `useWindowManager` que:
+- No frontend React, disponibilizamos um hook chamado `useWindowManager` que:
 
-  * Expõe a função `createWindow(route: string)`.
-  * Executa internamente `window.api.createWindow(route)`, roteando a criação de janelas ao processo principal.
+  - Expõe a função `createWindow(route: string)`.
+  - Executa internamente `window.api.createWindow(route)`, roteando a criação de janelas ao processo principal.
 
-* Esse padrão garante que o frontend não precise conhecer detalhes da API IPC para abrir janelas, bastando invocar `createWindow('/rota-exemplo')`.
+- Esse padrão garante que o frontend não precise conhecer detalhes da API IPC para abrir janelas, bastando invocar `createWindow('/rota-exemplo')`.
 
 ---
 
@@ -107,37 +107,37 @@ Em aplicações que precisam manipular múltiplas janelas (abrir, duplicar, fech
 
 ### Conceito e Motivação
 
-* O **SharedState** permite compartilhar dados entre diferentes janelas do Electron.
+- O **SharedState** permite compartilhar dados entre diferentes janelas do Electron.
 
-* O funcionamento interno é similar ao `localStorage` do navegador, porém:
+- O funcionamento interno é similar ao `localStorage` do navegador, porém:
 
-  * Armazena apenas **strings** (portanto, objetos complexos devem ser serializados em JSON).
-  * Opera via IPC, notificando o processo principal sobre alterações, que repassa o evento para todas as janelas registradas.
+  - Armazena apenas **strings** (portanto, objetos complexos devem ser serializados em JSON).
+  - Opera via IPC, notificando o processo principal sobre alterações, que repassa o evento para todas as janelas registradas.
 
-* Isso simplifica cenários como:
+- Isso simplifica cenários como:
 
-  * Sincronizar configurações do usuário em tempo real.
-  * Manter um “estado global” para temas, preferências ou dados temporários.
-  * Evitar a necessidade de propagar manualmente eventos de uma janela para outra.
+  - Sincronizar configurações do usuário em tempo real.
+  - Manter um “estado global” para temas, preferências ou dados temporários.
+  - Evitar a necessidade de propagar manualmente eventos de uma janela para outra.
 
 ### Funcionamento Geral
 
 1. **Leitura Inicial**
 
-   * Ao montar um componente que usa SharedState, o hook chama `sharedStateGetItem(key)` no Main.
-   * Se não existir valor para a chave, o hook grava `initialValue` convertido para string JSON em `sharedStateSetItem(key, rawString)`.
-   * Caso exista um valor, a string é desserializada e atualiza o estado local do componente.
+   - Ao montar um componente que usa SharedState, o hook chama `sharedStateGetItem(key)` no Main.
+   - Se não existir valor para a chave, o hook grava `initialValue` convertido para string JSON em `sharedStateSetItem(key, rawString)`.
+   - Caso exista um valor, a string é desserializada e atualiza o estado local do componente.
 
 2. **Escuta de Atualizações**
 
-   * O processo Main, ao receber uma nova gravação de SharedState, emite um evento `shared-state-updated` para todas as janelas.
-   * Cada hook que se inscreveu para a mesma `key` recebe a notificação com `(key, rawValue)`.
-   * O hook converte `rawValue` para o tipo original e atualiza o estado React.
+   - O processo Main, ao receber uma nova gravação de SharedState, emite um evento `shared-state-updated` para todas as janelas.
+   - Cada hook que se inscreveu para a mesma `key` recebe a notificação com `(key, rawValue)`.
+   - O hook converte `rawValue` para o tipo original e atualiza o estado React.
 
 3. **Gravações de Estado**
 
-   * Quando o hook chama `setSharedValue(newValue)`, converte `newValue` para JSON e envia ao Main via `sharedStateSetItem(key, rawString)`.
-   * O estado local do componente é atualizado imediatamente, antes mesmo da confirmação do IPC, garantindo sensação de reatividade.
+   - Quando o hook chama `setSharedValue(newValue)`, converte `newValue` para JSON e envia ao Main via `sharedStateSetItem(key, rawString)`.
+   - O estado local do componente é atualizado imediatamente, antes mesmo da confirmação do IPC, garantindo sensação de reatividade.
 
 ---
 
@@ -145,18 +145,18 @@ Em aplicações que precisam manipular múltiplas janelas (abrir, duplicar, fech
 
 Embora a implementação completa não seja mostrada aqui, o hook segue estes princípios:
 
-* **Assinatura**
+- **Assinatura**
 
   ```ts
   useSharedState<T>(key: string, initialValue: T): [T, (newValue: T) => void]
   ```
 
-* **Comportamentos Principais**
+- **Comportamentos Principais**
 
-  * Inicia com o valor recuperado de `sharedStateGetItem(key)` ou com `initialValue`.
-  * Registra listener de `shared-state-updated` apenas uma vez, ignorando valores de outras chaves.
-  * Lida com erros de parsing JSON e serialização, exibindo warnings no console.
-  * Atualiza o estado local antes de disparar o IPC de gravação.
+  - Inicia com o valor recuperado de `sharedStateGetItem(key)` ou com `initialValue`.
+  - Registra listener de `shared-state-updated` apenas uma vez, ignorando valores de outras chaves.
+  - Lida com erros de parsing JSON e serialização, exibindo warnings no console.
+  - Atualiza o estado local antes de disparar o IPC de gravação.
 
 ---
 
@@ -164,22 +164,22 @@ Embora a implementação completa não seja mostrada aqui, o hook segue estes pr
 
 O hook `useWindowManager` é extremamente simples:
 
-* **Assinatura**
+- **Assinatura**
 
   ```ts
   useWindowManager(): { createWindow: (route: string) => void }
   ```
 
-* **Responsabilidade**
+- **Responsabilidade**
 
-  * Encapsula a chamada a `window.api.createWindow(route)`.
-  * Permite que componentes React solicitem a criação de janelas sem acessar diretamente objetos do Electron ou IPC.
+  - Encapsula a chamada a `window.api.createWindow(route)`.
+  - Permite que componentes React solicitem a criação de janelas sem acessar diretamente objetos do Electron ou IPC.
 
-* **Fluxo Interno**
+- **Fluxo Interno**
 
-  * Ao chamar `useWindowManager()`, retorna um objeto `{ createWindow }`.
-  * Quando `createWindow` é invocado com uma rota (por exemplo, `/settings`), o hook faz `window.api.createWindow('/settings')`.
-  * No processo Main, existe um listener que responde a essa chamada e, através do `WindowManager`, abre a nova janela com o conteúdo adequado.
+  - Ao chamar `useWindowManager()`, retorna um objeto `{ createWindow }`.
+  - Quando `createWindow` é invocado com uma rota (por exemplo, `/settings`), o hook faz `window.api.createWindow('/settings')`.
+  - No processo Main, existe um listener que responde a essa chamada e, através do `WindowManager`, abre a nova janela com o conteúdo adequado.
 
 ---
 
@@ -214,9 +214,7 @@ export function MeuDashboard() {
       <button onClick={alternarTema}>
         Alternar para tema {tema === 'claro' ? 'escuro' : 'claro'}
       </button>
-      <button onClick={abrirConfig}>
-        Abrir Configurações em nova janela
-      </button>
+      <button onClick={abrirConfig}>Abrir Configurações em nova janela</button>
     </div>
   )
 }

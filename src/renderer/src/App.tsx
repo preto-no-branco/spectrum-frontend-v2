@@ -1,22 +1,38 @@
-import { Routes, Route, Navigate, HashRouter } from 'react-router-dom'
-import { ThemeProvider } from './components/themeProvider'
-import { routes } from './pages/routes'
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { Alert } from './components/custom/Alert'
 import Layout from './components/Layout/Layout'
+import { Providers } from './components/Providers'
+import { routes } from './pages/routes'
 
 function App(): React.JSX.Element {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <Providers>
       <HashRouter>
         <Layout>
           <Routes>
-            {routes.map((route) => (
-              <Route key={route.path} path={route.path} element={route.element} />
-            ))}
+            {routes.map((route) => {
+              if (route.children) {
+                return (
+                  <Route key={route.id} path={route.path} element={route.element}>
+                    {route.children.map((childRoute) => (
+                      <Route
+                        key={childRoute.id}
+                        path={childRoute.path}
+                        element={childRoute.element}
+                      />
+                    ))}
+                  </Route>
+                )
+              }
+
+              return <Route key={route.id} path={route.path} element={route.element} />
+            })}
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
+          <Alert />
         </Layout>
       </HashRouter>
-    </ThemeProvider>
+    </Providers>
   )
 }
 
