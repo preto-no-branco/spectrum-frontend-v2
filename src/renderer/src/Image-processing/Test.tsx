@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useOpenCV } from './contexts/OpenCVContext'
 import ImageProcessing, { ColorMapType } from '.'
+import imageForTest from '../assets/xray3.png'
+import { EffectStep } from './pipeline/steps/effects'
+import { LinearMapStep } from './pipeline/steps/linearMap'
 import { ColorMapStep } from './pipeline/steps/colorMap'
-import imageForTest from '../assets/xray2.jpeg'
 
 const ImageProcessingTest: React.FC = () => {
   const { cv } = useOpenCV()
@@ -19,8 +21,11 @@ const ImageProcessingTest: React.FC = () => {
 
   useEffect(() => {
     const processImage = () => {
-      if (!processorRef.current) return
-      processorRef.current.colorMapStep(selectedColorMap, new ColorMapStep(cv!))
+      if (!processorRef.current || !processedCanvasRef.current) return
+      processorRef.current.linearMapStep('gammaMap2', new LinearMapStep(cv!))
+      processorRef.current.effectStep(['edgeDetection'], new EffectStep(cv!))
+      processorRef.current.colorMapStep('electric', new ColorMapStep(cv!))
+
       processorRef.current.processImage()
     }
 

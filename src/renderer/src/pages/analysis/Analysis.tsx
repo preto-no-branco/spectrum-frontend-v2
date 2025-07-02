@@ -7,7 +7,6 @@ import { Badge } from '@renderer/components/ui/badge'
 import { Checkbox } from '@renderer/components/ui/checkbox'
 import { FiltersBar } from './components/FiltersBar'
 import { OpenCVProvider } from '@renderer/Image-processing/contexts/OpenCVContext'
-import InvertImage from '@renderer/Image-processing/Test'
 
 export default function Analysis(): JSX.Element {
   return (
@@ -37,7 +36,6 @@ export default function Analysis(): JSX.Element {
         </div>
         <FiltersBar />
       </div>
-      <InvertImage />
     </OpenCVProvider>
   )
 }

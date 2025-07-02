@@ -1,14 +1,8 @@
 import { Mat, CV } from '@techstark/opencv-js'
 import { Pipeline } from './pipeline'
 import { PipelineStep } from './interfaces/pipeline'
+import { m16UC1to8UC1 } from './utils'
 
-export enum NonLinearMap {
-  Linear = 'linearMap',
-  Sigmoid1 = 'sigmoidMap1',
-  Sigmoid2 = 'sigmoidMap2',
-  Gamma1 = 'gammaMap1',
-  Gamma2 = 'gammaMap2'
-}
 export enum ColorMap {
   none = '',
   velocityGreen = 'velocity-green',
@@ -38,6 +32,16 @@ export enum Effect {
 }
 
 export type EffectType = keyof typeof Effect | ''
+
+export enum NonLinearMap {
+  linearMap = 'linearMap',
+  sigmoidMap1 = 'sigmoidMap1',
+  sigmoidMap2 = 'sigmoidMap2',
+  gammaMap1 = 'gammaMap1',
+  gammaMap2 = 'gammaMap2'
+}
+
+export type NonLinearMapType = keyof typeof NonLinearMap
 
 export default class ImageProcessing {
   private cv: CV
@@ -71,6 +75,29 @@ export default class ImageProcessing {
     )
     if (!updated) {
       this.pipeline.addStep(step, colorMap)
+    }
+  }
+
+  public effectStep(effectStack: EffectType[], step: PipelineStep<Mat, EffectType[]>): void {
+    const updated = this.pipeline.updateStepIfExists(
+      (s) => s.constructor.name === step.constructor.name,
+      effectStack
+    )
+    if (!updated) {
+      this.pipeline.addStep(step, effectStack)
+    }
+  }
+
+  public linearMapStep(
+    selectedMap: NonLinearMapType,
+    step: PipelineStep<Mat, NonLinearMapType>
+  ): void {
+    const updated = this.pipeline.updateStepIfExists(
+      (s) => s.constructor.name === step.constructor.name,
+      selectedMap
+    )
+    if (!updated) {
+      this.pipeline.addStep(step, selectedMap)
     }
   }
 
@@ -128,11 +155,7 @@ export default class ImageProcessing {
 
     switch (mat.type()) {
       case cv.CV_16UC1: {
-        const tmp8 = new cv.Mat()
-        mat.convertTo(tmp8, cv.CV_8U)
-        disp = new cv.Mat()
-        cv.cvtColor(tmp8, disp, cv.COLOR_GRAY2RGBA)
-        tmp8.delete()
+        disp = m16UC1to8UC1(mat, cv)
         break
       }
       case cv.CV_8UC1: {

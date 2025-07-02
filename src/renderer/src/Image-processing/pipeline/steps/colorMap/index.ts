@@ -2,6 +2,9 @@ import { PipelineStep } from '../../../interfaces/pipeline'
 import createColormap from 'colormap'
 import { Mat, CV } from '@techstark/opencv-js'
 import { ColorMapType } from '../../..'
+import { m16UC1to8UC1 } from '@renderer/Image-processing/utils'
+
+// TODO: Implement hardcoded colormaps ou cache colormaps
 
 export class ColorMapStep implements PipelineStep<Mat, ColorMapType> {
   private cv: CV
@@ -13,8 +16,7 @@ export class ColorMapStep implements PipelineStep<Mat, ColorMapType> {
   apply(input: Mat, colorMap: ColorMapType): Mat {
     const { cv } = this
     if (input.type() !== cv.CV_8UC1) {
-      const tmp8 = new cv.Mat()
-      input.convertTo(tmp8, cv.CV_8U)
+      const tmp8 = m16UC1to8UC1(input, cv)
       cv.cvtColor(tmp8, input, cv.COLOR_GRAY2RGBA)
       tmp8.delete()
     }
