@@ -1,17 +1,23 @@
+import { CustomSwitchLayout } from '@renderer/components/custom/switch/CustomSwitchLayout'
 import { Label } from '@renderer/components/ui/label'
 import { Switch } from '@renderer/components/ui/switch'
 import { CustomComponentProps } from '@renderer/core/@types/components/form'
 import { Controller } from 'react-hook-form'
-import { SwitchAccessLayout } from './SwitchAccessLayout'
 
-export function SwitchAllAccess({ control, name, label, options }: CustomComponentProps) {
+export function CustomRowSwitch({
+  control,
+  name,
+  label,
+  options,
+  placeholder
+}: CustomComponentProps) {
   return (
     <Controller
       name={name || ''}
       control={control}
       render={({ field: { value, onChange } }) => {
         return (
-          <SwitchAccessLayout>
+          <CustomSwitchLayout>
             <div className="flex w-full justify-between items-center">
               <Label className="text-sm font-medium">{label}</Label>
               {options?.map((opt) => (
@@ -23,10 +29,8 @@ export function SwitchAllAccess({ control, name, label, options }: CustomCompone
                 />
               ))}
             </div>
-            <span className="text-sm text-muted-foreground">
-              Conceder todas as permissões disponíveis.
-            </span>
-          </SwitchAccessLayout>
+            <span className="text-sm text-muted-foreground">{placeholder}</span>
+          </CustomSwitchLayout>
         )
       }}
     />

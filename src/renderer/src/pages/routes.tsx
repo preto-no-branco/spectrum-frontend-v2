@@ -5,9 +5,9 @@ import Home from './home/Home'
 import Settings from './settings'
 import AccessSettings from './settings/AccessSettings'
 import CategoriesSettings from './settings/CategoriesSettings'
-import InspectionsSettings from './settings/InspectionsSettings'
 import SystemSettings from './settings/SystemSettings'
 import UserSettings from './settings/UserSettings'
+import InspectionsSettings from './settings/WayInspectionsSettings'
 
 export const routes = [
   {

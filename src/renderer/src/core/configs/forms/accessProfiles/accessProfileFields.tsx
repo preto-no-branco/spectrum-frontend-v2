@@ -1,6 +1,6 @@
+import { CustomColumnSwitch } from '@renderer/components/custom/switch/CustomColumnSwitch'
+import { CustomRowSwitch } from '@renderer/components/custom/switch/CustomRowSwitch'
 import { FormField } from '@renderer/core/@types/components/form'
-import { SwitchAccessGroup } from '@renderer/pages/settings/components/Access/AccessFormModal/components/SwitchAccessGroup'
-import { SwitchAllAccess } from '@renderer/pages/settings/components/Access/AccessFormModal/components/SwittchAllAccess'
 import { AccessProfileCreate } from './accessProfileSchema'
 
 export const accessProfileFields: FormField<AccessProfileCreate> = {
@@ -14,7 +14,7 @@ export const accessProfileFields: FormField<AccessProfileCreate> = {
     colSpan: 2,
     label: 'Permitir tudo',
     options: [{ label: 'Permitir tudo', value: 'all' }],
-    component: (props) => <SwitchAllAccess {...props} />
+    component: CustomRowSwitch
   },
   inspections: {
     inputType: 'custom',
@@ -25,9 +25,7 @@ export const accessProfileFields: FormField<AccessProfileCreate> = {
       { label: 'Visualizar histórico', value: 'history' },
       { label: 'Desfazer análise', value: 'undo' }
     ],
-    component: (props) => {
-      return <SwitchAccessGroup {...props} />
-    }
+    component: CustomColumnSwitch
   },
   analyzers: {
     inputType: 'custom',
@@ -38,7 +36,7 @@ export const accessProfileFields: FormField<AccessProfileCreate> = {
       { label: 'Visualizar histórico', value: 'history' },
       { label: 'Desfazer análise', value: 'undo' }
     ],
-    component: (props) => <SwitchAccessGroup {...props} />
+    component: CustomColumnSwitch
   },
   users: {
     inputType: 'custom',
@@ -51,7 +49,7 @@ export const accessProfileFields: FormField<AccessProfileCreate> = {
       { label: 'Bloquear', value: 'block' },
       { label: 'Desbloquear', value: 'unblock' }
     ],
-    component: (props) => <SwitchAccessGroup {...props} />
+    component: CustomColumnSwitch
   },
   analyzer_categories: {
     inputType: 'custom',
@@ -63,7 +61,7 @@ export const accessProfileFields: FormField<AccessProfileCreate> = {
       { label: 'Editar', value: 'update' },
       { label: 'Excluir', value: 'delete' }
     ],
-    component: (props) => <SwitchAccessGroup {...props} />
+    component: CustomColumnSwitch
   },
   configurations: {
     inputType: 'custom',
@@ -73,6 +71,6 @@ export const accessProfileFields: FormField<AccessProfileCreate> = {
       { label: 'Emissão de relatórios', value: 'report' },
       { label: 'Editar', value: 'update' }
     ],
-    component: (props) => <SwitchAccessGroup {...props} />
+    component: CustomColumnSwitch
   }
 }

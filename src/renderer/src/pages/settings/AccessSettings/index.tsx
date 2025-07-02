@@ -1,7 +1,7 @@
 import { Button } from '@renderer/components/ui/button'
 import { Input } from '@renderer/components/ui/input'
-import { AccessFormModal } from '@renderer/pages/settings/components/Access/AccessFormModal'
-import { AccessTable } from '@renderer/pages/settings/components/Access/AccessTable'
+import { AccessFormModal } from '@renderer/pages/settings/components/access/AccessFormModal'
+import { AccessTable } from '@renderer/pages/settings/components/access/AccessTable'
 import { Search } from 'lucide-react'
 import { useAccessSettings } from './useAccessSettings'
 

@@ -1,8 +1,8 @@
+import { CustomSwitchLayout } from '@renderer/components/custom/switch/CustomSwitchLayout'
 import { Label } from '@renderer/components/ui/label'
 import { Switch } from '@renderer/components/ui/switch'
 import { CustomComponentProps } from '@renderer/core/@types/components/form'
 import { Controller } from 'react-hook-form'
-import { SwitchAccessLayout } from './SwitchAccessLayout'
 
 export interface SwitchAccessGroupProps {
   label: string
@@ -13,7 +13,7 @@ export interface SwitchAccessGroupProps {
   }[]
 }
 
-export function SwitchAccessGroup({
+export function CustomColumnSwitch({
   label,
   options,
   control,
@@ -26,7 +26,7 @@ export function SwitchAccessGroup({
       control={control}
       render={({ field: { value, onChange } }) => {
         return (
-          <SwitchAccessLayout>
+          <CustomSwitchLayout>
             <Label className="text-sm font-medium">{label}</Label>
             <div className="flex flex-col gap-1">
               {options?.map((opt) => (
@@ -44,7 +44,7 @@ export function SwitchAccessGroup({
                 </div>
               ))}
             </div>
-          </SwitchAccessLayout>
+          </CustomSwitchLayout>
         )
       }}
     />
