@@ -92,7 +92,6 @@ export default function Analysis(): JSX.Element {
             <p>Status: 0 pendente (s) | 1 suspeito(s) | 1 não suspeito(s)</p>
           </div>
         </div>
-        <FiltersBar />
       </div>
     </div>
   )
