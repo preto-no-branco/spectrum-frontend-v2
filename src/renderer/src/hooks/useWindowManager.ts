@@ -1,10 +1,13 @@
+import { AppRouteValues } from '@renderer/core/constants/appRoutes'
+import { BrowserWindowConstructorOptions } from 'electron/utility'
+
 type WindowManager = {
-  createWindow: (route: string) => void
+  createWindow: (route: AppRouteValues) => void
 }
 
 export const useWindowManager = (): WindowManager => {
-  const createWindow = (route: string): void => {
-    window.api.createWindow(route)
+  const createWindow = (route: AppRouteValues, options?: BrowserWindowConstructorOptions): void => {
+    window.api.window.create(route, options)
   }
 
   return {

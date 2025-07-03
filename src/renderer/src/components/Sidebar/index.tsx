@@ -5,7 +5,13 @@ import SidebarClosed from './SidebarClosed'
 import SidebarOpen from './SidebarOpen'
 import { useSidebar } from './useSidebar'
 
-const Sidebar: React.FC<SidebarProps> = ({ isHidden, items, onHelpClick, onLogoutClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({
+  isDisabled = false,
+  isHidden,
+  items,
+  onHelpClick,
+  onLogoutClick
+}) => {
   const {
     open,
     sidebarWidth,
@@ -15,6 +21,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isHidden, items, onHelpClick, onLogou
     handleEdgeHover
   } = useSidebar({ isHidden })
 
+  if (isDisabled) {
+    return <></>
+  }
+
   return (
     <>
       {isHidden && !open && (
@@ -22,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isHidden, items, onHelpClick, onLogou
       )}
 
       <motion.div
-        className="flex-shrink-0 h-full bg-background border-r border-secondary flex flex-col items-center py-2 overflow-hidden"
+        className="flex-shrink-0 h-full bg-background border-r border-border-secondary flex flex-col items-center py-2 overflow-hidden"
         initial={false}
         animate={{ width: open ? sidebarWidth : 0 }}
         transition={{ type: 'tween', duration: 0.2 }}

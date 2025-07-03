@@ -9,32 +9,36 @@ import SettingsIcon from '../icons/SettingsIcon'
 export const useLayout = () => {
   const navigate = useNavigate()
   const location = useLocation()
-  const isAnalysisPage = location.pathname === APP_ROUTES.ANALYSIS
+  const isAnalysisPage = location.pathname === APP_ROUTES.ANALYSIS.INITIAL
+
+  const disableLayoutPages: Set<string> = new Set([APP_ROUTES.ANALYSIS.DETAILS])
+
+  const isLayoutDisabled = disableLayoutPages.has(location.pathname)
 
   const sidebarItems: SidebarItem[] = [
     {
-      icon: <HomeIcon className="fill-content-tertiary" />,
+      icon: <HomeIcon className="hover:cursor-pointer fill-content-tertiary" />,
       label: 'Home',
       onClick: () => {
         navigate(APP_ROUTES.HOME)
       }
     },
     {
-      icon: <RadarIcon className="fill-content-tertiary" />,
+      icon: <RadarIcon className="hover:cursor-pointer fill-content-tertiary" />,
       label: 'Analysis',
       onClick: () => {
-        navigate(APP_ROUTES.ANALYSIS)
+        navigate(APP_ROUTES.ANALYSIS.INITIAL)
       }
     },
     {
-      icon: <ContainerIcon className="fill-content-tertiary" />,
+      icon: <ContainerIcon className="hover:cursor-pointer fill-content-tertiary" />,
       label: 'Histórico',
       onClick: () => {
         navigate(APP_ROUTES.HISTORY)
       }
     },
     {
-      icon: <SettingsIcon className="fill-content-tertiary" />,
+      icon: <SettingsIcon className="hover:cursor-pointer fill-content-tertiary" />,
       label: 'Configurações',
       onClick: () => {
         navigate(APP_ROUTES.SETTINGS.USER)
@@ -44,6 +48,7 @@ export const useLayout = () => {
 
   return {
     isAnalysisPage,
-    sidebarItems
+    sidebarItems,
+    isLayoutDisabled
   }
 }

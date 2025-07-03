@@ -146,6 +146,7 @@ function SelectScrollDownButton({ className, ...props }: SelectScrollDownButtonP
 
 function RenderSelect({
   options,
+  name,
   label,
   placeholder,
   leftIcon,
@@ -168,7 +169,11 @@ function RenderSelect({
       className={cn('flex flex-col gap-2 pb-6 relative', containerClassName)}
       {...restContainerProps}
     >
-      {showExternalLabel && label && <Label {...labelProps} /* htmlFor={name} */>{label}</Label>}
+      {showExternalLabel && label && (
+        <Label {...labelProps} htmlFor={name}>
+          {label}
+        </Label>
+      )}
       <SelectCn {...props}>
         <SelectTrigger {...triggerProps} className="w-full">
           {leftIcon && <SelectPrimitive.Icon>{leftIcon}</SelectPrimitive.Icon>}
@@ -180,6 +185,7 @@ function RenderSelect({
             {label && <SelectLabel>{label}</SelectLabel>}
             {options.map((option) => (
               <SelectItem key={option.value} value={option.value} {...itemProps}>
+                {option.icon && option.icon}
                 {option.label}
               </SelectItem>
             ))}
@@ -211,6 +217,7 @@ function Select({ control, name, ...props }: CustomSelectProps) {
 
 export {
   Select,
+  SelectCn,
   SelectContent,
   SelectGroup,
   SelectItem,

@@ -1,4 +1,4 @@
-import { HashRouter, Navigate, Route, Routes } from 'react-router-dom'
+import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { Alert } from './components/custom/Alert'
 import Layout from './components/Layout/Layout'
 import { Providers } from './components/Providers'

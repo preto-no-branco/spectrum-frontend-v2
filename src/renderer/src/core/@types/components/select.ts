@@ -20,6 +20,7 @@ export type SelectOption = {
   label: string
   value: string
   checked?: boolean
+  icon?: ReactNode
 }
 
 export type CommonInputProps = {
@@ -57,6 +58,6 @@ export type CustomSelectProps = Select & {
   valueProps?: SelectValueProps
   triggerProps?: SelectTriggerProps
   contentProps?: SelectContentProps
-  itemProps?: SelectItemProps
+  itemProps?: Omit<SelectItemProps, 'value'>
   separatorProps?: SelectSeparatorProps
 }

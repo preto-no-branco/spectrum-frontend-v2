@@ -1,6 +1,9 @@
 export const APP_ROUTES = {
   HOME: '/',
-  ANALYSIS: '/analysis',
+  ANALYSIS: {
+    INITIAL: '/analysis',
+    DETAILS: '/analysis/details'
+  },
   HISTORY: '/history',
   SETTINGS: {
     INITIAL: '/settings',
@@ -10,4 +13,6 @@ export const APP_ROUTES = {
     CATEGORIES: '/settings/categories',
     INSPECTION_WAYS: '/settings/inspection-ways'
   }
-} as const
+} as const satisfies Record<string, Routes['routes'] | Record<string, Routes['routes']>>
+
+export type AppRouteValues = Routes['routes']
