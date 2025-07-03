@@ -1,11 +1,21 @@
 import { useAlertDialog } from '@renderer/hooks/useAlertDialog'
-import { useCallback, useState } from 'react'
+import { User } from '@renderer/services/userService/interfaces'
+import { useUserAPI } from '@renderer/services/userService/useUserAPI'
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
 
 export const useUserSettings = () => {
+  const { get, post, put, toggleStatus } = useUserAPI()
   const { showAlert } = useAlertDialog()
+
+  const [userFilter, setUserFilter] = useState({
+    searchTerm: '',
+    filter: 'all'
+  })
+  const [usersData, setUsersData] = useState<User[]>([])
+  const [userToEdit, setUserToEdit] = useState<User | null>(null)
   const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false)
 
-  const userFilters = [
+  const statusFilters = [
     {
       label: 'Todos os usuários',
       value: 'all'
@@ -20,24 +30,146 @@ export const useUserSettings = () => {
     }
   ]
 
+  const filteredUsers = useMemo(() => {
+    return usersData.filter((user) => {
+      const nameLowerCase = user.name.toLowerCase()
+      const userNameLowerCase = user.username.toLowerCase()
+      const searchTermLowerCase = userFilter.searchTerm.toLowerCase()
+
+      const isNameMatch = nameLowerCase.includes(searchTermLowerCase)
+      const isUserNameMatch = userNameLowerCase.includes(searchTermLowerCase)
+
+      if (userFilter.filter === 'all') {
+        return isNameMatch || isUserNameMatch
+      }
+
+      const isActiveMatch = userFilter.filter === 'active' ? user.active : true
+      const isInactiveMatch = userFilter.filter === 'inactive' ? user.active : true
+
+      return (
+        (isActiveMatch && (isNameMatch || isUserNameMatch)) ||
+        (isInactiveMatch && (isNameMatch || isUserNameMatch))
+      )
+    })
+  }, [userFilter, usersData])
+
+  const fetchUsers = useCallback(async () => {
+    const data = await get()
+
+    if (data) {
+      setUsersData(data)
+    }
+  }, [get])
+
+  const onSearchTermChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setUserFilter({
+        ...userFilter,
+        searchTerm: event.target.value
+      })
+    },
+    [userFilter]
+  )
+
   const onCloseCreateUserModal = useCallback(() => {
     setIsCreateUserModalOpen(false)
+
+    setTimeout(() => {
+      setUserToEdit(null)
+    }, 300)
   }, [])
 
-  const onSelectFilterChange = useCallback((value: string) => {
-    console.log(value)
-  }, [])
-
-  const handleCreateUser = useCallback(() => {
+  const onOpenCreateUserModal = useCallback(() => {
     setIsCreateUserModalOpen(true)
   }, [])
 
-  const handleEditUser = useCallback((userId: string) => {
-    console.log('🚀 ~ userId:', userId)
-    setIsCreateUserModalOpen(true)
-  }, [])
+  const onSelectFilterChange = useCallback(
+    (value: string) => {
+      setUserFilter({
+        ...userFilter,
+        filter: value
+      })
+    },
+    [userFilter]
+  )
 
-  const handleBlockUser = useCallback(
+  const createUser = useCallback(
+    async (data: User) => {
+      // applyCategoryChanges({ data })
+      const result = await post(data)
+
+      if (result === 'user-created') {
+        onCloseCreateUserModal()
+
+        fetchUsers()
+        return
+      }
+
+      // TODO: implement toast
+      // applyCategoryChanges({ remove: true, data })
+    },
+    [post, onCloseCreateUserModal, fetchUsers]
+  )
+
+  const updateUser = useCallback(
+    async (id: string, data: User) => {
+      const result = await put(id, {
+        ...data,
+        password: 'Crocoatus4022'
+      })
+
+      if (result) {
+        // applyCategoryChanges({
+        //   data: {
+        //     ...data,
+        //     id
+        //   }
+        // })
+        onCloseCreateUserModal()
+      }
+
+      fetchUsers()
+    },
+    [put, onCloseCreateUserModal, fetchUsers]
+  )
+
+  const toggleUserStatus = useCallback(
+    async (id: string) => {
+      const result = await toggleStatus(id)
+
+      if (result) {
+        fetchUsers()
+
+        return
+      }
+
+      // TODO: implement toast
+    },
+    [toggleStatus, fetchUsers]
+  )
+
+  const handleEditUser = useCallback(
+    (user: User) => {
+      setUserToEdit(user)
+      onOpenCreateUserModal()
+    },
+    [onOpenCreateUserModal, setUserToEdit]
+  )
+
+  const handleSubmit = useCallback(
+    async (data: User, id?: string) => {
+      if (id) {
+        await updateUser(id, data)
+
+        return
+      }
+
+      await createUser(data)
+    },
+    [createUser, updateUser]
+  )
+
+  const handleToggleActiveUser = useCallback(
     (userId: string, isActive: boolean) => {
       const toggleBlockUser = {
         true: {
@@ -60,22 +192,31 @@ export const useUserSettings = () => {
       showAlert({
         ...restToggleBlockUser,
         onConfirm: () => {
-          console.log('🚀 ~ userId:', userId, isActive)
+          toggleUserStatus(userId)
         },
         onConfirmProps: {
           className: btnClassName
         }
       })
     },
-    [showAlert]
+    [showAlert, toggleUserStatus]
   )
 
+  useEffect(() => {
+    fetchUsers()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return {
-    userFilters,
+    statusFilters,
+    userToEdit,
+    filteredUsers,
     isCreateUserModalOpen,
-    handleCreateUser,
+    handleSubmit,
     handleEditUser,
-    handleBlockUser,
+    handleToggleActiveUser,
+    onSearchTermChange,
+    onOpenCreateUserModal,
     onSelectFilterChange,
     onCloseCreateUserModal
   }

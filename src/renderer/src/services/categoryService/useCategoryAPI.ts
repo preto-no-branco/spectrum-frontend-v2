@@ -1,14 +1,15 @@
 import CategoryService from '.'
-import { Category, CategoryAPIPut, UseCategoryService } from './interfaces'
 import { categoryMappers } from './categoryMappers'
+import { Category, CategoryAPIPut, UseCategoryService } from './interfaces'
 
 export const useCategoryAPI = (): UseCategoryService => {
   const get = async (): Promise<Category[] | void> => {
     const categories = await CategoryService.getCategories((data) => {
       return data.map((category) => categoryMappers.mapDataGet(category))
     })
+
     if (!categories.success) {
-      alert(categoryMappers.translateError[categories.error])
+      // alert(categoryMappers.translateError[categories.error])
       return
     } else {
       return categories.data

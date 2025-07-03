@@ -2,12 +2,12 @@ import { FormField } from '@renderer/core/@types/components/form'
 import { CreateUser } from './registerUserSchema'
 
 const positionsOptions = [
-  { label: 'Administrador', value: 'admin' },
+  { label: 'Administrador', value: 'ADMIN' },
   { label: 'Usuário', value: 'user' }
 ]
 
 export const registerUserForm: FormField<CreateUser> = {
-  fullName: {
+  name: {
     label: 'Nome completo',
     placeholder: 'Digite o nome do usuário'
   },
@@ -15,17 +15,19 @@ export const registerUserForm: FormField<CreateUser> = {
     label: 'Nome de usuário',
     placeholder: 'Ex: joao.silva'
   },
-  position: {
-    label: 'Cargo',
-    placeholder: 'Ex: Operador'
+  spectrums: {
+    label: 'Spectrum',
+    inputType: 'select',
+    placeholder: 'Selecione o Spectrum',
+    options: [{ label: 'Spectrum 1', value: '0000' }]
   },
-  accessLevel: {
+  role: {
     label: 'Nível de acesso',
     inputType: 'select',
     placeholder: 'Selecione o nível',
     options: positionsOptions
   },
-  id: {
+  personalIdentification: {
     label: 'Identificador',
     placeholder: 'Código único do usuário',
     colSpan: 2

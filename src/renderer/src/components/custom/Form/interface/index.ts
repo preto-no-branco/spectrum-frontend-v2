@@ -1,5 +1,5 @@
 import { FormField } from '@renderer/core/@types/components/form'
-import { ReactNode } from 'react'
+import { HTMLAttributes, ReactNode } from 'react'
 import { Control, DefaultValues, FieldValues, Path } from 'react-hook-form'
 import { ZodTypeAny } from 'zod'
 
@@ -14,6 +14,7 @@ export interface FormComponentProps<T extends FieldValues> {
   isLoading?: boolean
   isDisabled?: boolean
   defaultValues?: DefaultValues<T>
+  containerProps?: HTMLAttributes<HTMLFormElement>
   watch?: {
     watchList: Path<T>[]
     onStateChange: (data: { field: keyof T; state: T[keyof T] }) => void

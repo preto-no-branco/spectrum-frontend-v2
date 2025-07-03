@@ -1,9 +1,9 @@
-import React from 'react'
 import { motion } from 'framer-motion'
+import React from 'react'
 import { SidebarProps } from './interfaces'
-import { useSidebar } from './useSidebar'
-import SidebarOpen from './SidebarOpen'
 import SidebarClosed from './SidebarClosed'
+import SidebarOpen from './SidebarOpen'
+import { useSidebar } from './useSidebar'
 
 const Sidebar: React.FC<SidebarProps> = ({
   isDisabled = false,

@@ -1,55 +1,46 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@renderer/components/ui/button'
 import { Input } from '@renderer/components/ui/input'
+import { RadioGroup } from '@renderer/components/ui/radio-group'
 import { Select } from '@renderer/components/ui/select'
-import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo } from 'react'
-import { FieldValues, useForm } from 'react-hook-form'
+import { Textarea } from '@renderer/components/ui/textarea'
+import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from 'react'
+import { FieldValues, Path, PathValue, useForm as useHookForm } from 'react-hook-form'
 import { FormComponentProps } from './interface'
 
 type OmitedFormProps = 'schema' | 'defaultValues' | 'control' | 'fields' | 'watch'
-export type FormHandle = {
-  submitForm: (submit?: (data: FieldValues) => void) => void
+export type FormHandle<T = FieldValues> = {
+  submitForm: (submit?: (data: T) => void) => void
+  resetForm: () => void
+  getValues: () => FieldValues
+  setValue: (name: Path<T>, value: PathValue<T, Path<T>>) => void
 }
 
-export function createForm<T extends FieldValues>({
+function createFormFields<T extends FieldValues>({
   fields,
   defaultValues,
-  schema,
-  watch
+  schema
 }: {
   fields: FormComponentProps<T>['fields']
   schema?: FormComponentProps<T>['schema']
   defaultValues?: FormComponentProps<T>['defaultValues']
-  watch?: FormComponentProps<T>['watch']
 }) {
-  return forwardRef<FormHandle, Omit<FormComponentProps<T>, OmitedFormProps>>(function Form(
-    {
-      // fields,
-      // schema,
-      // defaultValues,
-      columns = 1,
-      onSubmit,
-      children,
-      // watch,
-      showSubmitButton = true
-    },
+  return forwardRef<FormHandle<T>, Omit<FormComponentProps<T>, OmitedFormProps>>(function Form(
+    { columns = 1, onSubmit, children, showSubmitButton = false, containerProps },
     ref
   ) {
     const {
       handleSubmit,
       control,
       formState: { errors },
-      watch: hookFormWatch
-    } = useForm<T>({
+      // watch: hookFormWatch,
+      reset,
+      setValue,
+      getValues
+    } = useHookForm<T>({
       resolver: schema && zodResolver(schema),
       defaultValues: defaultValues
     })
-
-    const watchList = useMemo(() => {
-      return watch?.watchList ?? []
-    }, [])
-
-    const watchSubscribes = hookFormWatch(watchList)
 
     const externalSubmitForm = useCallback(
       (submit?: (data: T) => void) => {
@@ -68,28 +59,67 @@ export function createForm<T extends FieldValues>({
     useImperativeHandle(
       ref,
       () => ({
-        submitForm: externalSubmitForm
+        submitForm: externalSubmitForm,
+        resetForm: () => {
+          reset()
+        },
+        getValues: () => {
+          return getValues()
+        },
+        setValue: (name: Path<T>, value: PathValue<T, Path<T>>) => {
+          setValue(name, value)
+        }
       }),
-      [externalSubmitForm]
+      [externalSubmitForm, reset, setValue, getValues]
     )
 
-    useEffect(() => {
-      if (watchSubscribes.length && watch) {
-        watchSubscribes.forEach((field, index) => {
-          watch?.onStateChange({ field: watchList[index], state: field })
-        })
-      }
-    }, [watchSubscribes, watchList])
+    const { className: containerClassName, ...restContainerProps } = containerProps || {}
 
     return (
       <form
-        className="grid gap-3"
+        className={`grid gap-3 ${containerClassName}`}
         style={{
           gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
         }}
+        {...restContainerProps}
       >
         {Object.entries(fields).map(([name, field]) => {
           const { inputType, colSpan, ...restField } = field
+
+          if (inputType === 'custom') {
+            const Component = field.component
+            return (
+              <div key={name} style={{ gridColumn: `span ${colSpan ?? 1}` }}>
+                <Component
+                  control={control}
+                  name={String(name)}
+                  {...field}
+                  style={{ gridColumn: `span ${colSpan ?? 1}` }}
+                />
+              </div>
+            )
+          }
+
+          if (inputType === 'radio') {
+            return (
+              <RadioGroup
+                key={name}
+                control={control}
+                name={String(name)}
+                label={field.label}
+                options={field.options}
+                {...restField}
+                errorMessage={errors[name]?.message?.toString()}
+                containerProps={{
+                  style: {
+                    gridColumn: `span ${colSpan ?? 1}`
+                  },
+                  ...(restField?.containerProps || {})
+                }}
+              />
+            )
+          }
+
           if (inputType === 'select') {
             return (
               <Select
@@ -103,7 +133,8 @@ export function createForm<T extends FieldValues>({
                 containerProps={{
                   style: {
                     gridColumn: `span ${colSpan ?? 1}`
-                  }
+                  },
+                  ...(restField?.containerProps || {})
                 }}
               />
             )
@@ -111,6 +142,24 @@ export function createForm<T extends FieldValues>({
 
           if (inputType === 'checkbox') {
             return <input key={name} type="checkbox" />
+          }
+
+          if (inputType === 'textarea') {
+            return (
+              <Textarea
+                key={name}
+                control={control}
+                name={String(name)}
+                {...restField}
+                errorMessage={errors[name]?.message?.toString()}
+                containerProps={{
+                  style: {
+                    gridColumn: `span ${colSpan ?? 1}`
+                  },
+                  ...(restField?.containerProps || {})
+                }}
+              />
+            )
           }
 
           return (
@@ -123,7 +172,8 @@ export function createForm<T extends FieldValues>({
               containerProps={{
                 style: {
                   gridColumn: `span ${colSpan ?? 1}`
-                }
+                },
+                ...(restField?.containerProps || {})
               }}
             />
           )
@@ -148,4 +198,29 @@ export function createForm<T extends FieldValues>({
       </form>
     )
   })
+}
+
+export function useForm<T extends FieldValues>(props: {
+  fields: FormComponentProps<T>['fields']
+  schema?: FormComponentProps<T>['schema']
+  defaultValues?: FormComponentProps<T>['defaultValues']
+}) {
+  const formRef = useRef<FormHandle<T>>(null)
+
+  const FormComponent = useMemo(() => {
+    return createFormFields<T>({
+      fields: props.fields,
+      schema: props.schema,
+      defaultValues: props.defaultValues
+    })
+  }, [props.fields, props.schema, props.defaultValues])
+
+  return {
+    Form: (formProps: Omit<FormComponentProps<T>, OmitedFormProps>) => (
+      <FormComponent ref={formRef} {...formProps} />
+    ),
+    submitForm: (submit?: (data: T) => void) => formRef.current?.submitForm(submit),
+    resetForm: () => formRef.current?.resetForm(),
+    getValues: () => formRef.current?.getValues()
+  }
 }

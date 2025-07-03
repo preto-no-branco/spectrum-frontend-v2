@@ -21,7 +21,8 @@ export class userMappers {
     personalIdentification: data.personal_identification,
     role: data.role,
     spectrums: data.spectrums,
-    username: data.username
+    username: data.username,
+    active: data.active
   })
 
   public static mapDataPost = (data: User): UserAPIPost => ({
@@ -30,7 +31,8 @@ export class userMappers {
     personal_identification: data.personalIdentification,
     role: data.role,
     spectrums: data.spectrums,
-    username: data.username
+    username: data.username,
+    active: data.active !== undefined ? data.active : true
   })
 
   public static mapDataUpdatePassword = (data: {

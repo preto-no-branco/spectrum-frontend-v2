@@ -3,6 +3,7 @@ import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import * as React from 'react'
 
+import { Loader2Icon } from 'lucide-react'
 // Imports do shadcn Tooltip
 import { Tooltip } from '@/components/ui/tooltip'
 
@@ -35,7 +36,6 @@ const buttonVariants = cva(
     }
   }
 )
-
 type TooltipPosition = 'top' | 'right' | 'bottom' | 'left'
 
 interface ButtonProps extends React.ComponentProps<'button'>, VariantProps<typeof buttonVariants> {
@@ -44,7 +44,7 @@ interface ButtonProps extends React.ComponentProps<'button'>, VariantProps<typeo
   tooltipPosition?: TooltipPosition
 }
 
-function Button({
+function RenderButton({
   className,
   variant,
   size,
@@ -73,6 +73,40 @@ function Button({
   }
 
   return buttonElement
+}
+
+function Button({
+  className,
+  variant,
+  size,
+  isLoading,
+  children,
+  disabled,
+  asChild = false,
+  ...props
+}: React.ComponentProps<'button'> &
+  VariantProps<typeof buttonVariants> & {
+    asChild?: boolean
+  } & { isLoading?: boolean }) {
+  return (
+    <RenderButton
+      className={className}
+      variant={variant}
+      size={size}
+      asChild={asChild}
+      disabled={disabled || isLoading}
+      {...props}
+    >
+      {isLoading ? (
+        <>
+          <Loader2Icon className="animate-spin" />
+          Aguarde
+        </>
+      ) : (
+        children
+      )}
+    </RenderButton>
+  )
 }
 
 export { Button, buttonVariants }

@@ -1,7 +1,12 @@
 import { api } from '@renderer/utils/api'
+import {
+  callback,
+  ErrorMessageGet,
+  ErrorMessagePatch,
+  ErrorMessagePost,
+  ResponseAsync
+} from '../interfaces'
 import { UserAPI, UserAPIPost, UserAPIPut, UserAPIUpdatePassword } from './interfaces'
-import { ErrorMessageGet, ErrorMessagePatch, ErrorMessagePost } from '../interfaces'
-import { callback, ResponseAsync } from '../interfaces'
 
 export default class UserService {
   static async getUsers<MappedResponse>(
@@ -58,6 +63,7 @@ export default class UserService {
         data: 'user-created'
       }
     } catch (error) {
+      console.log('🚀 ~ error:', error)
       if (error instanceof Error && error.message.includes('409')) {
         return {
           success: false,
@@ -75,7 +81,7 @@ export default class UserService {
     id: string
   ): ResponseAsync<'user-block-status-updated', ErrorMessagePost> {
     try {
-      await api.post<{ message: string }>(`/users/status/${id}`)
+      await api.patch<{ message: string }>(`/users/status/${id}`)
       return {
         success: true,
         data: 'user-block-status-updated'

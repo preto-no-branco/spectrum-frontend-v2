@@ -19,6 +19,7 @@ export type SelectScrollDownButtonProps = ComponentProps<typeof SelectPrimitive.
 export type SelectOption = {
   label: string
   value: string
+  checked?: boolean
   icon?: ReactNode
 }
 

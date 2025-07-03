@@ -17,12 +17,16 @@ type AlertFooterProps = ComponentProps<typeof AlertDialogFooter>
 type AlertCancelProps = ComponentProps<typeof AlertDialogCancel>
 type AlertActionProps = ComponentProps<typeof AlertDialogAction>
 
-export interface IAlertConfig {
+export interface AlertConfig {
   title: string
-  message: string
   showCancelButton?: boolean
   cancelText?: string
   confirmText?: string
+
+  message: string
+  messageProps?: AlertMessageProps
+
+  contentComponent?: React.ReactNode
 
   onCancel?: () => void
   onConfirm?: () => void
@@ -30,15 +34,14 @@ export interface IAlertConfig {
   contentProps?: AlertContentProps
   headerProps?: AlertHeaderProps
   titleProps?: AlertTitleProps
-  messageProps?: AlertMessageProps
   footerProps?: AlertFooterProps
   onCancelProps?: AlertCancelProps
   onConfirmProps?: AlertActionProps
 }
 
 export interface IAlertContext {
-  alertConfig: IAlertConfig | null
+  alertConfig: AlertConfig | null
   isAlertOpen: boolean
-  showAlert: (config: IAlertConfig) => void
+  showAlert: (config: AlertConfig) => void
   onCloseAlert: () => void
 }
