@@ -3,20 +3,26 @@ import { CircleCheck } from 'lucide-react'
 import { UserFormModalProps } from './interface'
 import { useUserFormModal } from './useUserFormModal'
 
-export function UserFormModal({ isOpen, onClose, onSubmit }: UserFormModalProps) {
-  const { UserForm, passwordRules, handleSubmit } = useUserFormModal()
+export function UserFormModal({ isOpen, user, onClose, onSubmit }: UserFormModalProps) {
+  const { UserForm, passwordRules, handleSubmit } = useUserFormModal({ defaultValues: user })
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Cadastrar usuário"
+      title={user ? 'Editar usuário' : 'Novo usuário'}
       cancelText="Cancelar"
-      confirmText="Cadastrar"
+      confirmText={user ? 'Salvar' : 'Cadastrar'}
       contentProps={{ className: 'w-full' }}
-      confirmButtonProps={{ onClick: handleSubmit }}
+      confirmButtonProps={{
+        onClick: () => {
+          handleSubmit((data) => {
+            onSubmit(data, user?.id)
+          })
+        }
+      }}
     >
-      <UserForm columns={2} showSubmitButton={false} onSubmit={onSubmit}>
+      <UserForm columns={2} showSubmitButton={false}>
         <div className="flex flex-col">
           {passwordRules.map(({ message, isValid }, idx) => {
             const textColor = isValid ? 'text-primary' : 'text-content-tertiary'

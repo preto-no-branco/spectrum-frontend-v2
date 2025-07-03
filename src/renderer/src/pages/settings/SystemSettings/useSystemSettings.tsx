@@ -1,4 +1,7 @@
 import { useForm } from '@renderer/components/custom/Form'
+import { SystemSettings } from '@renderer/services/systemSettingsService/interfaces'
+import { useSystemSettingsAPI } from '@renderer/services/systemSettingsService/useSystemSettingsAPI'
+import { useCallback, useEffect, useState } from 'react'
 
 export type IntegrationServer = {
   server: string
@@ -8,6 +11,16 @@ export type IntegrationServer = {
 }
 
 export const useSystemSettings = () => {
+  const { get } = useSystemSettingsAPI()
+  const [systemConfigs, setSystemConfigs] = useState<SystemSettings[]>([])
+
+  const fetchSystemConfigs = useCallback(async () => {
+    const data = await get()
+    console.log('🚀 ~ data:', data)
+
+    if (data) setSystemConfigs(data)
+  }, [get])
+
   const { Form: IntegrationServerForm } = useForm<IntegrationServer>({
     fields: {
       server: {
@@ -67,6 +80,12 @@ export const useSystemSettings = () => {
       }
     }
   })
+
+  useEffect(() => {
+    fetchSystemConfigs()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return {
     IntegrationServerForm,
     InspectionWindowForm,

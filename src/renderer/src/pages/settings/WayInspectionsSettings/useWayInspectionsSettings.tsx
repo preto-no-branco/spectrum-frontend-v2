@@ -1,8 +1,11 @@
 import { useAlertDialog } from '@renderer/hooks/useAlertDialog'
-import { useCallback, useState } from 'react'
+import { useInspectionAPI } from '@renderer/services/inspectionService/useInspectionAPI'
+import { useCallback, useEffect, useState } from 'react'
 
 export const useWayInspectionsSettings = () => {
+  const { getHistory } = useInspectionAPI()
   const { showAlert } = useAlertDialog()
+  // const [wayInspections, setWayInspections] = useState<Inspection[]>([])
   const [isCreateWayIdentifierModalOpen, setIsCreateWayIdentifierModalOpen] = useState(false)
 
   const onCloseCreateWayIdentifierModal = useCallback(() => {
@@ -12,6 +15,15 @@ export const useWayInspectionsSettings = () => {
   const onSelectFilterChange = useCallback((value: string) => {
     console.log(value)
   }, [])
+
+  const fetchWayInspections = useCallback(async () => {
+    try {
+      // const data = await getHistory({})
+      // if (data) setWayInspections(data)
+    } catch {
+      console.log('error')
+    }
+  }, [getHistory])
 
   const handleCreateWayIdentifier = useCallback(() => {
     setIsCreateWayIdentifierModalOpen(true)
@@ -42,6 +54,10 @@ export const useWayInspectionsSettings = () => {
     },
     [showAlert]
   )
+
+  useEffect(() => {
+    fetchWayInspections()
+  }, [])
 
   return {
     isCreateWayIdentifierModalOpen,

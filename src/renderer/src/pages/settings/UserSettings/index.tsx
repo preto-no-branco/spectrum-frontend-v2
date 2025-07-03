@@ -8,11 +8,15 @@ import { useUserSettings } from './useUserSettings'
 
 export default function UserSettings() {
   const {
-    userFilters,
+    statusFilters,
+    userToEdit,
+    filteredUsers,
     isCreateUserModalOpen,
-    handleCreateUser,
+    handleSubmit,
     handleEditUser,
-    handleBlockUser,
+    handleToggleActiveUser,
+    onSearchTermChange,
+    onOpenCreateUserModal,
     onCloseCreateUserModal,
     onSelectFilterChange
   } = useUserSettings()
@@ -21,25 +25,35 @@ export default function UserSettings() {
     <div className="flex flex-col flex-1 w-full gap-3">
       <div className="flex w-full justify-between">
         <div className="flex gap-3">
-          <Input type="search" placeholder="Pesquisar" leftIcon={<Search size={16} />} />
+          <Input
+            type="search"
+            placeholder="Pesquisar"
+            leftIcon={<Search size={16} />}
+            onChange={onSearchTermChange}
+          />
           <Select
             label="Todos os usuários"
             showExternalLabel={false}
             placeholder="Todos os usuários"
             leftIcon={<ListFilter size={16} />}
-            options={userFilters}
+            options={statusFilters}
             onValueChange={onSelectFilterChange}
           />
         </div>
-        <Button onClick={handleCreateUser}>Cadastrar usuário</Button>
+        <Button onClick={onOpenCreateUserModal}>Cadastrar usuário</Button>
       </div>
 
       <div className="flex flex-1">
-        <UserTable onEdit={handleEditUser} onBlock={handleBlockUser} />
+        <UserTable
+          usersData={filteredUsers}
+          onEdit={handleEditUser}
+          onToggleActive={handleToggleActiveUser}
+        />
         <UserFormModal
           isOpen={isCreateUserModalOpen}
+          user={userToEdit ? { ...userToEdit, spectrums: [...userToEdit.spectrums] } : undefined}
           onClose={onCloseCreateUserModal}
-          onSubmit={() => console.log('submit')}
+          onSubmit={handleSubmit}
         />
       </div>
     </div>
