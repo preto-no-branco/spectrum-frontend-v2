@@ -9,7 +9,7 @@ export const useSystemSettingsAPI = (): UseSystemSettingsService => {
     })
 
     if (!permissions.success) {
-      alert(systemSettingsMappers.translateError[permissions.error])
+      // alert(systemSettingsMappers.translateError[permissions.error])
       return
     }
 

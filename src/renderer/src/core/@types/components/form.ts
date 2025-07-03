@@ -2,7 +2,14 @@ import { ReactNode } from 'react'
 import { CommonInputProps, InputPropsWithControl } from './input'
 import { SelectOption } from './select'
 
-export type FormInputType = 'input' | 'select' | 'checkbox' | 'date' | 'custom'
+export type FormInputType =
+  | 'input'
+  | 'select'
+  | 'textarea'
+  | 'checkbox'
+  | 'radio'
+  | 'date'
+  | 'custom'
 
 export type CustomComponentProps = InputPropsWithControl & {
   options?: SelectOption[]
@@ -17,13 +24,13 @@ export type CustomFormInput = {
 
 type InputWithOptions = {
   colSpan?: number
-  inputType: 'select'
+  inputType: 'select' | 'radio'
   options: SelectOption[]
 }
 
 type InputWithoutOptions = {
   colSpan?: number
-  inputType?: Exclude<FormInputType, 'select' | 'custom'>
+  inputType?: Exclude<FormInputType, 'select' | 'custom' | 'radio'>
   options?: never
   showExternalLabel?: boolean
 }

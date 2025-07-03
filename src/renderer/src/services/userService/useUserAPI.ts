@@ -83,7 +83,6 @@ export const useUserAPI = (): UseUserService => {
   }
 
   const put = async (id: string, user: User): Promise<UserAPIPut | void> => {
-    console.log('🚀 ~ user:', user)
     const response = await UserService.putUser(id, userMappers.mapDataPost(user), (response) => {
       return userMappers.mapDataPut(response.id)
     })

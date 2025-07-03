@@ -24,17 +24,25 @@ export const useSystemSettings = () => {
   const { Form: IntegrationServerForm } = useForm<IntegrationServer>({
     fields: {
       server: {
-        label: 'Servidor'
+        label: 'Servidor',
+        placeholder: 'Endereço do servidor'
       },
       webHookUrl: {
         label: 'URL do Webhook',
         placeholder: 'Digite a URL'
       },
       webhookToken: {
-        label: 'Token do Webhook'
+        inputType: 'textarea',
+        label: 'Token do Webhook',
+        placeholder: 'Digite o token do Webhook'
       },
       webhookType: {
-        label: 'Formato do Webhook'
+        inputType: 'radio',
+        label: 'Formato do Webhook',
+        options: [
+          { label: 'V1', value: 'v1' },
+          { label: 'V2', value: 'v2' }
+        ]
       }
     }
   })

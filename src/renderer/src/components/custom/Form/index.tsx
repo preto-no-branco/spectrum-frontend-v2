@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@renderer/components/ui/button'
 import { Input } from '@renderer/components/ui/input'
+import { RadioGroup } from '@renderer/components/ui/radio-group'
 import { Select } from '@renderer/components/ui/select'
+import { Textarea } from '@renderer/components/ui/textarea'
 import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from 'react'
 import { FieldValues, Path, PathValue, useForm as useHookForm } from 'react-hook-form'
 import { FormComponentProps } from './interface'
@@ -98,6 +100,26 @@ function createFormFields<T extends FieldValues>({
             )
           }
 
+          if (inputType === 'radio') {
+            return (
+              <RadioGroup
+                key={name}
+                control={control}
+                name={String(name)}
+                label={field.label}
+                options={field.options}
+                {...restField}
+                errorMessage={errors[name]?.message?.toString()}
+                containerProps={{
+                  style: {
+                    gridColumn: `span ${colSpan ?? 1}`
+                  },
+                  ...(restField?.containerProps || {})
+                }}
+              />
+            )
+          }
+
           if (inputType === 'select') {
             return (
               <Select
@@ -120,6 +142,24 @@ function createFormFields<T extends FieldValues>({
 
           if (inputType === 'checkbox') {
             return <input key={name} type="checkbox" />
+          }
+
+          if (inputType === 'textarea') {
+            return (
+              <Textarea
+                key={name}
+                control={control}
+                name={String(name)}
+                {...restField}
+                errorMessage={errors[name]?.message?.toString()}
+                containerProps={{
+                  style: {
+                    gridColumn: `span ${colSpan ?? 1}`
+                  },
+                  ...(restField?.containerProps || {})
+                }}
+              />
+            )
           }
 
           return (
