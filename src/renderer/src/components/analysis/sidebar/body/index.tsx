@@ -112,7 +112,7 @@ export default function SidebarBody({ activeTab, className }: SidebarBodyProps) 
             </>
           )}
 
-          {activeTab === 'movements' && <div className="flex flex-1" />}
+          {activeTab === 'movements' && <div className="flex flex-1">movements</div>}
         </div>
       </div>
     </>

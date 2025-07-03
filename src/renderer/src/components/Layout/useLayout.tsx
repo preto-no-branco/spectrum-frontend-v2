@@ -11,9 +11,9 @@ export const useLayout = () => {
   const location = useLocation()
   const isAnalysisPage = location.pathname === APP_ROUTES.ANALYSIS.INITIAL
 
-  const disableLayoutPages: Set<string> = new Set(APP_ROUTES.ANALYSIS.DETAILS)
+  const disableLayoutPages: Set<string> = new Set([APP_ROUTES.ANALYSIS.DETAILS])
 
-  const isLayoutDisabled = !disableLayoutPages.has(location.pathname)
+  const isLayoutDisabled = disableLayoutPages.has(location.pathname)
 
   const sidebarItems: SidebarItem[] = [
     {
