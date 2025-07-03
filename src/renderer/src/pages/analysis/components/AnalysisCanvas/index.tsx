@@ -8,6 +8,7 @@ import { EffectStep } from '@renderer/Image-processing/pipeline/steps/effects'
 import { useStore } from '@tanstack/react-store'
 import { effectsStore } from '../../stores/effectsStore'
 import { ColorMapStep } from '@renderer/Image-processing/pipeline/steps/colorMap'
+import Tags from './Tags'
 
 const AnalysisCanvas: React.FC = () => {
   const { cv } = useOpenCV()
@@ -23,6 +24,8 @@ const AnalysisCanvas: React.FC = () => {
   )
   const processedCanvasRef = useRef<HTMLCanvasElement>(null)
   const processorRef = useRef<ImageProcessing | null>(null)
+
+  const [zoomState, setZoomState] = React.useState(1)
 
   useEffect(() => {
     if (!cv || !processedCanvasRef.current) return
@@ -47,29 +50,42 @@ const AnalysisCanvas: React.FC = () => {
   return (
     <div className="text-center h-full w-full">
       <div className="flex gap-6 justify-center h-full">
-        <div className="flex-1 h-full bg-white ">
+        <div className="relative flex-1 h-full bg-white ">
           <TransformWrapper
             disablePadding
             minScale={0.8}
             maxScale={8}
             initialScale={1}
             doubleClick={{ disabled: true }}
+            onZoom={(e) => {
+              setZoomState(e.state.scale)
+            }}
           >
-            <TransformComponent
-              wrapperProps={{
-                onPointerDown: preventRightClick
-              }}
-            >
-              <div className="p-8 bg-white h-[85vh] w-full flex items-center justify-center">
-                <canvas
-                  style={{
-                    filter: `contrast(${contrast * 100}%) brightness(${exposure * 100}%)`
+            {({ zoomIn, zoomOut, resetTransform }) => (
+              <>
+                <TransformComponent
+                  wrapperProps={{
+                    onPointerDown: preventRightClick
                   }}
-                  ref={processedCanvasRef}
-                  className="w-full h-auto bg-white"
+                >
+                  <div className="p-8 bg-white h-[85vh] w-full flex items-center justify-center">
+                    <canvas
+                      style={{
+                        filter: `contrast(${contrast * 100}%) brightness(${exposure * 100}%)`
+                      }}
+                      ref={processedCanvasRef}
+                      className="w-full h-auto bg-white"
+                    />
+                  </div>
+                </TransformComponent>
+                <Tags
+                  zoomIn={zoomIn}
+                  zoomOut={zoomOut}
+                  resetTransform={resetTransform}
+                  zoomState={(zoomState * 100).toFixed(0)}
                 />
-              </div>
-            </TransformComponent>
+              </>
+            )}
           </TransformWrapper>
         </div>
       </div>
