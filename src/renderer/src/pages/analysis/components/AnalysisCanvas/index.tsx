@@ -8,6 +8,7 @@ import { EffectStep } from '@renderer/Image-processing/pipeline/steps/effects'
 import { useStore } from '@tanstack/react-store'
 import { effectsStore } from '../../stores/effectsStore'
 import { ColorMapStep } from '@renderer/Image-processing/pipeline/steps/colorMap'
+import CanvasMiniMap from './MiniMap'
 import Tags from './Tags'
 
 const AnalysisCanvas: React.FC = () => {
@@ -63,6 +64,7 @@ const AnalysisCanvas: React.FC = () => {
           >
             {({ zoomIn, zoomOut, resetTransform }) => (
               <>
+              <CanvasMiniMap image={imageForTest} />
                 <TransformComponent
                   wrapperProps={{
                     onPointerDown: preventRightClick
@@ -79,6 +81,7 @@ const AnalysisCanvas: React.FC = () => {
                   </div>
                 </TransformComponent>
                 <Tags
+                  mode={"MOVE"}
                   zoomIn={zoomIn}
                   zoomOut={zoomOut}
                   resetTransform={resetTransform}
