@@ -7,6 +7,7 @@ export const useUserAPI = (): UseUserService => {
     const teste = await UserService.getUsers((data) => {
       return data.map((user) => userMappers.mapDataGet(user))
     })
+
     if (!teste.success) {
       // TODO: Use a equivalent of chakra's toast in shadcn/ui
       // (ShadCN UI (built on top of Radix UI and Tailwind) does not provide a built-in "toast"

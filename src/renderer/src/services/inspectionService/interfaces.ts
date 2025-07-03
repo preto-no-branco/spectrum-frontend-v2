@@ -12,7 +12,7 @@ export interface InspectionAPI {
   is_multiple: boolean
   is_suspect: boolean
   plates: Plate[]
-  spectrum_code: string
+  spectrum_name: string
   status: InspectionStatusEnum
   was_edited: boolean
   bottom_image: string
@@ -26,6 +26,7 @@ export interface InspectionAPI {
   areas: Area[]
   mask_image: string
   tiff_image: string
+  finished_by_name?: string
 }
 
 export interface InspectionAPIGetHistory
@@ -39,7 +40,12 @@ export interface InspectionAPIGetHistory
     | 'radiation'
     | 'raiox_image'
     | 'updated_at'
-  > {}
+    | 'plates'
+    | 'containers'
+  > {
+  plates: string[]
+  containers: string[]
+}
 
 export interface InspectionAPIGetById
   extends Omit<
@@ -56,7 +62,7 @@ export interface InspectionAPIPostAreas extends Pick<InspectionAPI, 'containers'
 export interface InspectionAPIPut extends Pick<InspectionAPI, 'id' | 'area_id'> {}
 
 export interface UseInspectionService {
-  getHistory: (params: InspectionAPIGetHistoryParams) => Promise<Inspection[] | void>
+  getHistory: (params: InspectionAPIGetHistoryParams) => Promise<InspectionHistory[] | void>
   getReport: (params: InspectionAPIGetReportParams) => Promise<'inspection-report-generated' | void>
   getById: (id: string) => Promise<Inspection | void>
   postNewProperties: (id: string, data: KeyValue[]) => Promise<'inspection-properties-added' | void>
@@ -83,10 +89,15 @@ export interface Inspection {
   isMultiple: boolean
   isSuspect: boolean
   plates: Plate[]
-  spectrumCode?: string
+  spectrumName?: string
   status?: InspectionStatusEnum
   wasEdited?: boolean
-  finished_by_name?: string
+  finishedByName?: string
+}
+
+export interface InspectionHistory extends Omit<Inspection, 'containers' | 'plates'> {
+  containers: string[]
+  plates: string[]
 }
 
 export interface InspectionAPIGetHistoryParams {

@@ -1,10 +1,10 @@
 import { ErrorMessageGet, ErrorMessagePost } from '../interfaces'
 import {
   Inspection,
-  InspectionAPI,
   InspectionAPIGetById,
   InspectionAPIGetHistory,
-  InspectionAPIPut
+  InspectionAPIPut,
+  InspectionHistory
 } from './interfaces'
 
 export class inspectionMappers {
@@ -20,7 +20,7 @@ export class inspectionMappers {
     conflict: 'Conflito de dados',
     not_implemented: 'Funcionalidade não implementada'
   }
-  public static mapDataGetHistory = (data: InspectionAPIGetHistory): Inspection => ({
+  public static mapDataGetHistory = (data: InspectionAPIGetHistory): InspectionHistory => ({
     id: data.id,
     caseId: data.case_id,
     containers: data.containers,
@@ -30,9 +30,10 @@ export class inspectionMappers {
     isMultiple: data.is_multiple,
     isSuspect: data.is_suspect,
     plates: data.plates,
-    spectrumCode: data.spectrum_code,
+    spectrumName: data.spectrum_name,
     status: data.status,
-    wasEdited: data.was_edited
+    wasEdited: data.was_edited,
+    finishedByName: data.finished_by_name
   })
 
   public static mapDataGetById = (data: InspectionAPIGetById): Inspection => ({
@@ -48,7 +49,7 @@ export class inspectionMappers {
     properties: data.properties,
     radiation: data.radiation,
     raioxImage: data.raiox_image,
-    spectrumCode: data.spectrum_code,
+    spectrumName: data.spectrum_name,
     status: data.status,
     updatedAt: data.updated_at
   })

@@ -3,21 +3,25 @@ import {
   Inspection,
   InspectionAPIGetHistoryParams,
   InspectionAPIGetReportParams,
+  InspectionHistory,
   UseInspectionService
 } from './interfaces'
 import { inspectionMappers } from './inspectionMappers'
 import DownloadFileHandler from '@renderer/utils/downloadFileHandler'
 import { Area, KeyValue } from './childsTypes/interfaces'
+import { toast } from 'sonner'
 
 export const useInspectionAPI = (): UseInspectionService => {
   const getHistory = async (
     params: InspectionAPIGetHistoryParams
-  ): Promise<Inspection[] | void> => {
+  ): Promise<InspectionHistory[] | void> => {
     const inspections = await InspectionService.getHistory(params, (data) => {
       return data.map((inspection) => inspectionMappers.mapDataGetHistory(inspection))
     })
     if (!inspections.success) {
-      alert(inspectionMappers.translateError[inspections.error])
+      toast.error('Error', {
+        description: inspectionMappers.translateError[inspections.error]
+      })
       return
     }
     return inspections.data

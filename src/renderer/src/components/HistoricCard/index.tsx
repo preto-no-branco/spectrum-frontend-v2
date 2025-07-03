@@ -1,10 +1,10 @@
-import { Inspection } from '@renderer/services/inspectionService/interfaces'
+import { InspectionHistory } from '@renderer/services/inspectionService/interfaces'
 import { RiBaseStationLine } from 'react-icons/ri'
 import { BiRadar } from 'react-icons/bi'
 import { BsArrowRightSquare } from 'react-icons/bs'
 import { AiOutlineContainer } from 'react-icons/ai'
-import { Container, Plate } from '@renderer/services/inspectionService/childsTypes/interfaces'
 import { Tooltip, TooltipTrigger, TooltipContent } from '@renderer/components/ui/tooltip'
+import { Button } from '../ui/button'
 
 const typeStyleMap: Record<string, string> = {
   Suspeito: 'text-[#EB4B5B] bg-[#5C0C14]',
@@ -13,8 +13,9 @@ const typeStyleMap: Record<string, string> = {
   Vazio: 'text-[#55A1F2] bg-[#113760]'
 }
 
-const renderListItem = (items: Plate[] | Container[], fallback: string) => {
-  const label = items?.[0]?.recognition ?? fallback
+const renderListItem = (items: string[], fallback: string) => {
+  if (!items.length) return fallback
+  const label = items[0]
   const extras = items.length > 1 ? `, + ${items.length - 1}` : ''
   return (
     <div className="flex items-center">
@@ -26,10 +27,10 @@ const renderListItem = (items: Plate[] | Container[], fallback: string) => {
           </TooltipTrigger>
           <TooltipContent>
             <div className="flex gap-1 text-xs text-[#B3BDC0] w-fit">
-              {items.map((item, index) => (
+              {items.slice(1).map((item, index) => (
                 <div key={index} className="flex">
-                  {item.recognition}
-                  {index < items.length - 1 && ','}
+                  {item}
+                  {index < items.length - 2 && ','}
                 </div>
               ))}
             </div>
@@ -40,7 +41,7 @@ const renderListItem = (items: Plate[] | Container[], fallback: string) => {
   )
 }
 
-const renderType = (inspection: Inspection) => {
+const renderType = (inspection: InspectionHistory) => {
   const types: string[] = []
   if (inspection.isSuspect) types.push('Suspeito')
   if (inspection.isFlammable) types.push('Inflamável')
@@ -95,22 +96,22 @@ const IconText = ({
   </div>
 )
 
-const HistoricCard = ({ inspectionData }: { inspectionData: Inspection }) => {
+const HistoricCard = ({ inspectionData }: { inspectionData: InspectionHistory }) => {
   return (
     <div className="bg-background-secondary flex h-52 w-full flex-col justify-between gap-5 p-4 text-xs text-[#B3BDC0] hover:bg-[#202425]">
       <div className="flex items-center justify-between w-full">
-        <IconText icon={RiBaseStationLine}>{inspectionData.spectrumCode}</IconText>
-        <BsArrowRightSquare className="h-4 w-4 text-content-tertiary" />
+        <IconText icon={RiBaseStationLine}>{inspectionData.spectrumName}</IconText>
+        <Button variant="link" className="hover:text-content-secondary text-content-tertiary !p-0">
+          <BsArrowRightSquare className="h-4 w-4" />
+        </Button>
       </div>
-
       <div className="flex items-center justify-between w-full text-sm">
         <IconText icon={BiRadar} className="!font-semibold">
           {inspectionData.caseId}
         </IconText>
         {renderType(inspectionData)}
       </div>
-
-      <div className="flex items-center justify-between w-full text-sm">
+      <div className="flex items-center justify-between w-full max-w-full text-sm">
         <div className="flex gap-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -130,15 +131,17 @@ const HistoricCard = ({ inspectionData }: { inspectionData: Inspection }) => {
           </svg>
           {renderListItem(inspectionData.plates, 'Sem placa')}
         </div>
-
         <IconText icon={AiOutlineContainer}>
           {renderListItem(inspectionData.containers, 'Sem contêiner')}
         </IconText>
       </div>
-
       <div className="flex items-center justify-between w-full border-t-1 border-border-secondary pt-3 text-content-tertiary">
-        <div>{inspectionData.finished_by_name}</div>
-        <div>{inspectionData.createdAt}</div>
+        <div>{inspectionData.finishedByName}</div>
+        <div>
+          {inspectionData.createdAt
+            ? new Date(inspectionData.createdAt).toLocaleString()
+            : 'Data desconhecida'}
+        </div>
       </div>
     </div>
   )

@@ -5,8 +5,6 @@ import {
   InspectionAPIGetHistory,
   InspectionAPIGetHistoryParams,
   InspectionAPIGetReportParams,
-  InspectionAPIPostAreas,
-  InspectionAPIPostProperties,
   InspectionAPIPut
 } from './interfaces'
 import { ErrorMessageGet, ErrorMessagePatch, ErrorMessagePost } from '../interfaces'
