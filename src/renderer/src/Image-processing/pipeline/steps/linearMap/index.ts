@@ -1,7 +1,7 @@
 import { PipelineStep } from '../../../interfaces/pipeline'
 import { Mat, CV } from '@techstark/opencv-js'
-import { NonLinearMapType } from '../../..'
 import { gammaMapping, sigmoidMapping } from './effects'
+import { NonLinearMapType } from '@renderer/Image-processing/types/effects.types'
 /**
  * LinearMapStep applies non-linear mappings to a CV_16UC1 image.
  * It supports various mappings such as sigmoid and gamma.

@@ -1,14 +1,18 @@
 import { Tooltip } from '@renderer/components/ui/tooltip'
 import { cn } from '@renderer/lib/utils'
-import { filter } from './interfaces'
+import { filter } from '../interfaces'
+import { useComplexFilters } from './useComplexFilters'
+import { EffectType } from '@renderer/Image-processing/types/effects.types'
 
 export const ComplexFilters = ({
   filters,
   className
 }: {
-  filters: filter[]
+  filters: filter<EffectType>[]
   className?: string
 }) => {
+  const { addToEffectStack } = useComplexFilters()
+
   return (
     <div className={cn('flex gap-2', className)}>
       {filters.map((filter) => {
@@ -24,7 +28,7 @@ export const ComplexFilters = ({
             triggerProps={{
               className:
                 'brightness-150 w-fit text-content-secondary cursor-pointer rounded transition-colors',
-              onClick: filter.function
+              onClick: () => addToEffectStack(filter.value)
             }}
           >
             {filter.icon}

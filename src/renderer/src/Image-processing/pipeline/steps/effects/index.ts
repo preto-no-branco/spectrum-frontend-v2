@@ -1,6 +1,5 @@
 import { PipelineStep } from '../../../interfaces/pipeline'
 import { Mat, CV } from '@techstark/opencv-js'
-import { EffectType } from '../../..'
 import { convertTo16UC1 } from '@renderer/Image-processing/utils'
 import {
   denseObject,
@@ -13,6 +12,7 @@ import {
   sharpen,
   smooth
 } from './effects'
+import { EffectType } from '@renderer/Image-processing/types/effects.types'
 
 /**
  * EffectStep applies a series of image processing effects to a 16-bit grayscale image.

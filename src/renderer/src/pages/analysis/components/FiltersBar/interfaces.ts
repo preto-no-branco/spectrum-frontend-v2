@@ -1,11 +1,12 @@
-export type filter = {
+export type filter<T = string> = {
   icon: React.ReactNode
   name: string
-  function: () => void
+  function: () => void,
+  value: T
 }
 
 export type filterControllersProps = {
-  handleUndo: () => void
+  handleReset: () => void
   handleBackwards: () => void
   handleForwards: () => void
 }

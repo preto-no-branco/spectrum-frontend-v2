@@ -2,47 +2,7 @@ import { Mat, CV } from '@techstark/opencv-js'
 import { Pipeline } from './pipeline'
 import { PipelineStep } from './interfaces/pipeline'
 import { m16UC1to8UC1 } from './utils'
-
-export enum ColorMap {
-  none = '',
-  velocityGreen = 'velocity-green',
-  velocityBlue = 'velocity-blue',
-  phase = 'phase',
-  oxygen = 'oxygen',
-  magma = 'magma',
-  electric = 'electric',
-  copper = 'copper',
-  hot = 'hot',
-  rainbow = 'rainbow',
-  freesurfaceBlue = 'freesurface-blue'
-}
-
-export type ColorMapType = keyof typeof ColorMap | ''
-
-export enum Effect {
-  emboss = 'emboss',
-  denseObject = 'denseObject',
-  edgeDetection = 'edgeDetection',
-  sharpen = 'sharpen',
-  smooth = 'smooth',
-  noiseReduction = 'noiseReduction',
-  invert = 'invert',
-  edgeEnhancement = 'edgeEnhancement',
-  logarithmEnhancement = 'logarithmEnhancement'
-}
-
-export type EffectType = keyof typeof Effect | ''
-
-export enum NonLinearMap {
-  linearMap = 'linearMap',
-  sigmoidMap1 = 'sigmoidMap1',
-  sigmoidMap2 = 'sigmoidMap2',
-  gammaMap1 = 'gammaMap1',
-  gammaMap2 = 'gammaMap2'
-}
-
-export type NonLinearMapType = keyof typeof NonLinearMap
-
+import { ColorMapType, EffectType, NonLinearMapType } from './types/effects.types'
 export default class ImageProcessing {
   private cv: CV
   private pipeline: Pipeline<Mat>

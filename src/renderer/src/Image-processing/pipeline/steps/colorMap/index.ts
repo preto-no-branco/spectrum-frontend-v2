@@ -1,8 +1,8 @@
 import { PipelineStep } from '../../../interfaces/pipeline'
 import createColormap from 'colormap'
 import { Mat, CV } from '@techstark/opencv-js'
-import { ColorMapType } from '../../..'
 import { m16UC1to8UC1 } from '@renderer/Image-processing/utils'
+import { ColorMapType } from '@renderer/Image-processing/types/effects.types'
 
 // TODO: Implement hardcoded colormaps ou cache colormaps
 
@@ -20,8 +20,8 @@ export class ColorMapStep implements PipelineStep<Mat, ColorMapType> {
       cv.cvtColor(tmp8, input, cv.COLOR_GRAY2RGBA)
       tmp8.delete()
     }
-    if (colorMap === '') {
-      return input
+    if (colorMap === 'gray') {
+      return input.clone()
     }
     const gradientColors = createColormap({
       colormap: colorMap,

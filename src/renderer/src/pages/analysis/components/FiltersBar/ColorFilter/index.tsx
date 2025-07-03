@@ -1,10 +1,14 @@
+import React from 'react'
 import { Select } from '@renderer/components/ui/select'
-import { colorFilters } from './constants'
+import { colorFilters } from '../constants'
+import { useColorFilter } from './useColorFilter'
 
-export const ColorFilter = () => {
+export const ColorFilter: React.FC = () => {
+  const { colorMap, handleChange } = useColorFilter()
   return (
     <Select
-      // size="sm"
+      value={colorMap}
+      onValueChange={handleChange}
       className="text-content-secondary"
       placeholder="Selecione Filtro"
       showExternalLabel={false}

@@ -5,15 +5,17 @@ import { useState } from 'react'
 import { BiBrightnessHalf } from 'react-icons/bi'
 import { FiChevronDown } from 'react-icons/fi'
 import { RiContrastFill } from 'react-icons/ri'
+import { useImageAdjustments } from './useImageAdjustments'
 
 export const ImageAdjustments = () => {
+  const { contrast, exposure, updateContrast, updateExposure } = useImageAdjustments()
   const [open, setOpen] = useState(false)
-  const [contrastSliderValue, setContrastSliderValue] = useState<number[]>([50])
-  const [expositionSliderValue, setExpositionSliderValue] = useState<number[]>([50])
 
-  const handleOpenChange = () => {
-    setOpen((prev) => !prev)
-  }
+  const handleOpenChange = () => setOpen((prev) => !prev)
+
+  // Helpers para mapear valores 0-100 <-> 0.0-2.0
+  const sliderToReal = (value: number) => value / 50
+  const realToSlider = (value: number) => value * 50
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
@@ -29,13 +31,15 @@ export const ImageAdjustments = () => {
           />
         </div>
       </PopoverTrigger>
+
       <PopoverContent align="start" sideOffset={20} className="flex flex-col gap-3">
+        {/* Contraste */}
         <div className="grid grid-cols-5">
           <div className="flex items-center gap-1 col-span-2">
             <RiContrastFill
               className="text-content-tertiary"
               style={{
-                filter: `contrast(${Math.max(0.5, contrastSliderValue[0] / 50)})`,
+                filter: `contrast(${contrast})`,
                 transition: 'filter 0.3s ease-in-out'
               }}
             />
@@ -43,21 +47,25 @@ export const ImageAdjustments = () => {
           </div>
           <div className="flex items-center gap-2 col-span-3">
             <Slider
-              value={contrastSliderValue}
+              value={[realToSlider(contrast)]}
               className="hover:cursor-grab"
-              onValueChange={setContrastSliderValue}
+              onValueChange={([value]) => {
+                updateContrast(sliderToReal(value))
+              }}
               max={100}
-              min={1}
+              min={0}
             />
-            <p className="text-xs text-content-primary">{contrastSliderValue}</p>
+            <p className="text-xs text-content-primary">{contrast.toFixed(2)}</p>
           </div>
         </div>
+
+        {/* Exposição */}
         <div className="grid grid-cols-5">
           <div className="flex items-center gap-1 col-span-2">
             <BiBrightnessHalf
               style={{
-                filter: `brightness(${Math.max(0.5, expositionSliderValue[0] / 50)})`, // Ensure a minimum brightness of 0.5
-                transition: 'filter 0.3s ease-in-out' // Smooth transition for brightness changes
+                filter: `brightness(${exposure})`,
+                transition: 'filter 0.3s ease-in-out'
               }}
               className="text-content-tertiary"
             />
@@ -65,13 +73,15 @@ export const ImageAdjustments = () => {
           </div>
           <div className="flex items-center gap-2 col-span-3">
             <Slider
-              value={expositionSliderValue}
+              value={[realToSlider(exposure)]}
               className="hover:cursor-grab"
-              onValueChange={setExpositionSliderValue}
+              onValueChange={([value]) => {
+                updateExposure(sliderToReal(value))
+              }}
               max={100}
-              min={1}
+              min={0}
             />
-            <p className="text-xs text-content-primary">{expositionSliderValue}</p>
+            <p className="text-xs text-content-primary">{exposure.toFixed(2)}</p>
           </div>
         </div>
       </PopoverContent>

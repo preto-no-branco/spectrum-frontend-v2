@@ -16,9 +16,9 @@ export type SelectSeparatorProps = ComponentProps<typeof SelectPrimitive.Separat
 export type SelectScrollUpButtonProps = ComponentProps<typeof SelectPrimitive.ScrollUpButton>
 export type SelectScrollDownButtonProps = ComponentProps<typeof SelectPrimitive.ScrollDownButton>
 
-export type SelectOption = {
+export type SelectOption<T = string> = {
   label: string
-  value: string
+  value: T
   icon?: ReactNode
 }
 

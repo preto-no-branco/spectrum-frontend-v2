@@ -1,9 +1,13 @@
 import { Select } from '@renderer/components/ui/select'
-import { LINEAR_MAPS } from './constants'
+import { LINEAR_MAPS } from '../constants'
+import { useLinearMap } from './useLinearMap'
 
 export const LinearMap = () => {
+  const { linearMap, handleChange } = useLinearMap()
   return (
     <Select
+      value={linearMap}
+      onValueChange={handleChange}
       className="text-content-secondary"
       placeholder="Selecione Mapa"
       showExternalLabel={false}

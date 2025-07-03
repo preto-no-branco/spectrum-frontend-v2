@@ -1,20 +1,17 @@
 import closeIcon from '@/assets/analysis/closeSidebar.png'
 import openIcon from '@/assets/analysis/openSidebar.png'
-import { ColorFilter } from './ColorFilter'
 import { ComplexFilters } from './ComplexFilters'
 import { FiltersControllers } from './FilterControllers'
 import { ImageAdjustments } from './ImageAdjustments'
 import { LinearMap } from './LinearMap'
 import { COMPLEX_FILTERS } from './constants'
 import { FiltersBarProps } from './interfaces'
+import { ColorFilter } from './ColorFilter'
+import { useFiltersBar } from './useFiltersBar'
 
 export const FiltersBar = ({ inspectionDetailsControls }: FiltersBarProps) => {
-  const [isOpen, setIsOpen] = inspectionDetailsControls
-
-  const handleToggleInspectionDetails = () => {
-    setIsOpen((prev) => !prev)
-  }
-
+  const { resetEffects, handleToggleInspectionDetails, isOpen, undo } =
+    useFiltersBar(inspectionDetailsControls)
   return (
     <div className="bg-background border-b border-border-secondary w-full px-6 py-2 flex justify-between items-center">
       <div className="flex justify-between items-center w-full gap-4">
@@ -41,9 +38,9 @@ export const FiltersBar = ({ inspectionDetailsControls }: FiltersBarProps) => {
         <ComplexFilters filters={COMPLEX_FILTERS} />
         <FiltersControllers
           controllers={{
-            handleBackwards: () => {},
+            handleBackwards: undo,
             handleForwards: () => {},
-            handleUndo: () => {}
+            handleReset: resetEffects
           }}
         />
       </div>
