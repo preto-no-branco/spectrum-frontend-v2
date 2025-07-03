@@ -165,7 +165,7 @@ function RenderSelect({
 
   return (
     <div
-      className={`flex flex-col gap-2 pb-6 relative ${containerClassName}`}
+      className={cn('flex flex-col gap-2 pb-6 relative', containerClassName)}
       {...restContainerProps}
     >
       {showExternalLabel && label && <Label {...labelProps} /* htmlFor={name} */>{label}</Label>}

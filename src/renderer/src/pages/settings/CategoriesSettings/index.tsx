@@ -7,10 +7,14 @@ import { useCategoriesSettings } from './useCategoriesSettings'
 
 export default function CategoriesSettings() {
   const {
-    handleEditCategory,
-    handleDeleteCategory,
-    handleCreateCategory,
+    categoriesData,
+    categoryToEdit,
     isCreateCategoryModalOpen,
+    handleToggleActive,
+    handleEditCategory,
+    handleSubmitCategory,
+    onSearchTermChange,
+    onOpenCreateCategoryModal,
     onCloseCreateCategoryModal
   } = useCategoriesSettings()
 
@@ -18,17 +22,27 @@ export default function CategoriesSettings() {
     <div className="flex flex-col flex-1 w-full gap-3">
       <div className="flex w-full justify-between">
         <div className="flex gap-3">
-          <Input type="search" placeholder="Pesquisar" leftIcon={<Search size={16} />} />
+          <Input
+            type="search"
+            placeholder="Pesquisar"
+            leftIcon={<Search size={16} />}
+            onChange={onSearchTermChange}
+          />
         </div>
-        <Button onClick={handleCreateCategory}>Cadastrar categoria</Button>
+        <Button onClick={onOpenCreateCategoryModal}>Cadastrar categoria</Button>
       </div>
 
       <div className="flex flex-1">
-        <CategoriesTable onEdit={handleEditCategory} onDelete={handleDeleteCategory} />
+        <CategoriesTable
+          categoriesData={categoriesData}
+          onEdit={handleEditCategory}
+          toggleActive={handleToggleActive}
+        />
         <CategoriesFormModal
           isOpen={isCreateCategoryModalOpen}
+          defaultValues={categoryToEdit || undefined}
           onClose={onCloseCreateCategoryModal}
-          onSubmit={() => console.log('submit')}
+          onSubmit={handleSubmitCategory}
         />
       </div>
     </div>

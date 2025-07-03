@@ -19,7 +19,7 @@ function RenderInput({
   const { className: containerClassName, ...restContainerProps } = containerProps || {}
   return (
     <div
-      className={`flex flex-col gap-2 pb-6 relative ${containerClassName}`}
+      className={cn('flex flex-col gap-2 pb-6 relative', containerClassName)}
       {...restContainerProps}
     >
       {label && (

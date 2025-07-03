@@ -4,50 +4,19 @@ import { Badge } from '@renderer/components/ui/badge'
 import { Button } from '@renderer/components/ui/button'
 import { Tooltip } from '@renderer/components/ui/tooltip'
 import { CircleSlashIcon, EditIcon } from 'lucide-react'
-import { ColumnUser } from './interface'
+import { ColumnUser, UserTableProps } from './interface'
 
-interface Props {
-  onEdit: (id: string) => void
-  onBlock: (id: string, isActive: boolean) => void
-}
-
-export const useUserTable = ({ onEdit, onBlock }: Props) => {
-  const usersData: ColumnUser[] = [
-    {
-      id: '6690',
-      fullName: 'Lúcia Barreto',
-      username: 'lucia.barreto',
-      status: 'active',
-      position: 'Operador',
-      accessLevel: 'admin',
-      email: 'mail@gmail.com',
-      lastAccess: '2023-01-01',
-      actions: '',
-      isActive: true
-    },
-    {
-      id: '6790',
-      fullName: 'Renato Almeida',
-      username: 'renato.almeida',
-      status: 'active',
-      position: 'Operador',
-      accessLevel: 'suport',
-      email: 'mail@mail.com',
-      lastAccess: '2023-01-01',
-      actions: '',
-      isActive: false
-    }
-  ]
+export const useUserTable = ({ onEdit, onToggleActive }: Omit<UserTableProps, 'usersData'>) => {
   const usersColumns: Columns<ColumnUser> = [
     {
-      key: 'fullName',
+      key: 'name',
       header: 'Nome completo',
       enableSorting: true,
       enableHiding: true,
       cell: ({ row }) => {
-        const value = row.original.fullName
+        const value = row.original.name
         const [firstName, lastName] = value.split(' ')
-        const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`
+        const initials = `${firstName.charAt(0)}${lastName ? lastName.charAt(0) : ''}`
         return (
           <div className="flex items-center gap-3">
             <Avatar className="w-8 h-8 border-border-secondary border">
@@ -64,40 +33,45 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
       key: 'username',
       header: 'Nome de usuário'
     },
+    // {
+    //   key: 'position',
+    //   header: 'Cargo'
+    // },
     {
-      key: 'position',
-      header: 'Cargo'
-    },
-    {
-      key: 'accessLevel',
+      key: 'role',
       header: 'Perfil de acesso'
     },
     {
-      key: 'id',
+      key: 'personalIdentification',
       header: 'Identificador'
     },
     {
-      key: 'status',
+      key: 'active',
       header: 'Status',
       render: (value) => (
         <Badge variant="outline" className="bg-background-tertiary">
-          {value}
+          {value ? 'Ativo' : 'Inativo'}
         </Badge>
       )
     },
     {
-      key: 'lastAccess',
-      header: 'Ultimo acesso'
+      key: 'lastLogin',
+      header: 'Ultimo acesso',
+      cell({ row }) {
+        const lastLogin = row.original.lastLogin
+        if (!lastLogin) {
+          return 'N/A'
+        }
+
+        return new Date(lastLogin).toLocaleDateString('pt-BR')
+      }
     },
-    {
-      key: 'email',
-      header: 'Email'
-    },
+
     {
       key: 'actions',
       header: 'Ações',
       cell({ row }) {
-        const userIsActive = row.original.isActive
+        const userIsActive = row.original.active
 
         return (
           <div className="flex items-center">
@@ -113,7 +87,7 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
                 size="icon"
                 className="size-8"
                 aria-label={userIsActive ? 'Bloquear' : 'Desbloquear'}
-                onClick={() => onBlock(row.original.id, userIsActive)}
+                onClick={() => onToggleActive(row.original.id || '', userIsActive || false)}
               >
                 <CircleSlashIcon className={userIsActive ? '' : 'text-destructive'} />
               </Button>
@@ -130,7 +104,7 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
                 size="icon"
                 className="size-8"
                 aria-label="Editar"
-                onClick={() => onEdit(row.original.id)}
+                onClick={() => onEdit(row.original)}
               >
                 <EditIcon />
               </Button>
@@ -141,7 +115,6 @@ export const useUserTable = ({ onEdit, onBlock }: Props) => {
     }
   ]
   return {
-    usersColumns,
-    usersData
+    usersColumns
   }
 }

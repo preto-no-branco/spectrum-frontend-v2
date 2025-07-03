@@ -1,14 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@renderer/components/ui/button'
 import { Input } from '@renderer/components/ui/input'
+import { RadioGroup } from '@renderer/components/ui/radio-group'
 import { Select } from '@renderer/components/ui/select'
+import { Textarea } from '@renderer/components/ui/textarea'
 import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from 'react'
 import { FieldValues, Path, PathValue, useForm as useHookForm } from 'react-hook-form'
 import { FormComponentProps } from './interface'
 
 type OmitedFormProps = 'schema' | 'defaultValues' | 'control' | 'fields' | 'watch'
 export type FormHandle<T = FieldValues> = {
-  submitForm: (submit?: (data: FieldValues) => void) => void
+  submitForm: (submit?: (data: T) => void) => void
   resetForm: () => void
   getValues: () => FieldValues
   setValue: (name: Path<T>, value: PathValue<T, Path<T>>) => void
@@ -24,7 +26,7 @@ function createFormFields<T extends FieldValues>({
   defaultValues?: FormComponentProps<T>['defaultValues']
 }) {
   return forwardRef<FormHandle<T>, Omit<FormComponentProps<T>, OmitedFormProps>>(function Form(
-    { columns = 1, onSubmit, children, showSubmitButton = false },
+    { columns = 1, onSubmit, children, showSubmitButton = false, containerProps },
     ref
   ) {
     const {
@@ -71,12 +73,15 @@ function createFormFields<T extends FieldValues>({
       [externalSubmitForm, reset, setValue, getValues]
     )
 
+    const { className: containerClassName, ...restContainerProps } = containerProps || {}
+
     return (
       <form
-        className="grid gap-3"
+        className={`grid gap-3 ${containerClassName}`}
         style={{
           gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
         }}
+        {...restContainerProps}
       >
         {Object.entries(fields).map(([name, field]) => {
           const { inputType, colSpan, ...restField } = field
@@ -95,6 +100,26 @@ function createFormFields<T extends FieldValues>({
             )
           }
 
+          if (inputType === 'radio') {
+            return (
+              <RadioGroup
+                key={name}
+                control={control}
+                name={String(name)}
+                label={field.label}
+                options={field.options}
+                {...restField}
+                errorMessage={errors[name]?.message?.toString()}
+                containerProps={{
+                  style: {
+                    gridColumn: `span ${colSpan ?? 1}`
+                  },
+                  ...(restField?.containerProps || {})
+                }}
+              />
+            )
+          }
+
           if (inputType === 'select') {
             return (
               <Select
@@ -108,7 +133,8 @@ function createFormFields<T extends FieldValues>({
                 containerProps={{
                   style: {
                     gridColumn: `span ${colSpan ?? 1}`
-                  }
+                  },
+                  ...(restField?.containerProps || {})
                 }}
               />
             )
@@ -116,6 +142,24 @@ function createFormFields<T extends FieldValues>({
 
           if (inputType === 'checkbox') {
             return <input key={name} type="checkbox" />
+          }
+
+          if (inputType === 'textarea') {
+            return (
+              <Textarea
+                key={name}
+                control={control}
+                name={String(name)}
+                {...restField}
+                errorMessage={errors[name]?.message?.toString()}
+                containerProps={{
+                  style: {
+                    gridColumn: `span ${colSpan ?? 1}`
+                  },
+                  ...(restField?.containerProps || {})
+                }}
+              />
+            )
           }
 
           return (
@@ -128,7 +172,8 @@ function createFormFields<T extends FieldValues>({
               containerProps={{
                 style: {
                   gridColumn: `span ${colSpan ?? 1}`
-                }
+                },
+                ...(restField?.containerProps || {})
               }}
             />
           )
@@ -174,7 +219,7 @@ export function useForm<T extends FieldValues>(props: {
     Form: (formProps: Omit<FormComponentProps<T>, OmitedFormProps>) => (
       <FormComponent ref={formRef} {...formProps} />
     ),
-    submitForm: (submit?: (data: FieldValues) => void) => formRef.current?.submitForm(submit),
+    submitForm: (submit?: (data: T) => void) => formRef.current?.submitForm(submit),
     resetForm: () => formRef.current?.resetForm(),
     getValues: () => formRef.current?.getValues()
   }

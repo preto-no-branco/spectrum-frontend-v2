@@ -10,9 +10,10 @@ import {
   atLeastOneSpecialCharacter,
   atLeastOneUppercase
 } from '@renderer/core/constants/regex'
+import { User } from '@renderer/services/userService/interfaces'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-export const useUserFormModal = () => {
+export const useUserFormModal = ({ defaultValues }: { defaultValues?: User }) => {
   const [passwordWatch, setPasswordWatch] = useState('')
 
   const passwordRules = useMemo(() => {
@@ -38,7 +39,7 @@ export const useUserFormModal = () => {
 
   const { Form: UserForm, submitForm } = useForm<CreateUser>({
     fields: registerUserForm,
-    schema: registerUserSchema,
+    schema: registerUserSchema(Boolean(defaultValues)),
     // watch: {
     //   watchList: ['password'],
     //   onStateChange: ({ state }) => {
@@ -46,18 +47,31 @@ export const useUserFormModal = () => {
     //   }
     // },
     defaultValues: {
-      accessLevel: 'user',
-      position: 'Operador',
-      fullName: 'Felipe',
-      username: 'felipe.d'
+      role: defaultValues?.role ?? 'user',
+      name: defaultValues?.name ?? '',
+      spectrums: defaultValues?.spectrums[0] ?? '',
+      username: defaultValues?.username ?? '',
+      password: defaultValues?.password ?? '',
+      confirmPassword: defaultValues?.password ?? '',
+      personalIdentification: defaultValues?.personalIdentification ?? ''
     }
   })
 
-  const handleSubmit = useCallback(() => {
-    submitForm((data) => {
-      console.log(data)
-    })
-  }, [submitForm])
+  const handleSubmit = useCallback(
+    (calback: (data: Omit<User, 'id'>) => void) => {
+      submitForm((data) => {
+        calback({
+          role: data.role,
+          name: data.name,
+          username: data.username,
+          password: data.password,
+          personalIdentification: data.personalIdentification,
+          spectrums: [data.spectrums]
+        })
+      })
+    },
+    [submitForm]
+  )
 
   useEffect(() => {
     return () => {

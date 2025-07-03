@@ -1,10 +1,8 @@
-import { CreateUser } from '@renderer/core/configs/forms/user/registerUserSchema'
-import { User } from '@renderer/pages/settings/components/user/UserTable/interface'
+import { User } from '@renderer/services/userService/interfaces'
 
 export interface UserFormModalProps {
+  user?: User
   isOpen: boolean
   onClose: () => void
-  onSubmit: (data: CreateUser) => void
-  // TODO: implement user interface
-  user?: User
+  onSubmit: (data: Omit<User, 'id'>, id?: string) => void
 }

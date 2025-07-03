@@ -1,15 +1,11 @@
-export type User = {
-  id: string
-  fullName: string
-  username: string
-  status: 'active' | 'inactive'
-  position: string
-  accessLevel: 'admin' | 'user' | 'suport' | 'operator' | 'analyst'
-  email: string
-  lastAccess: string
-  isActive: boolean
-}
+import { User } from '@renderer/services/userService/interfaces'
 
 export type ColumnUser = User & {
-  actions: string
+  actions?: string
+}
+
+export interface UserTableProps {
+  usersData: User[]
+  onEdit: (user: User) => void
+  onToggleActive: (userId: string, isActive: boolean) => void
 }

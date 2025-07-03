@@ -1,14 +1,9 @@
 import { DataTable } from '@renderer/components/Table'
-import { ColumnUser } from './interface'
+import { ColumnUser, UserTableProps } from './interface'
 import { useUserTable } from './useUserTable'
 
-export interface UserTableProps {
-  onEdit: (userId: string) => void
-  onBlock: (userId: string, isActive: boolean) => void
-}
-
-export function UserTable({ onEdit, onBlock }: UserTableProps) {
-  const { usersColumns, usersData } = useUserTable({ onEdit, onBlock })
+export function UserTable({ onEdit, onToggleActive, usersData }: UserTableProps) {
+  const { usersColumns } = useUserTable({ onEdit, onToggleActive })
 
   return (
     <DataTable<ColumnUser>

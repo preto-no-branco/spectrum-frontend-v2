@@ -73,7 +73,7 @@ export const useUserAPI = (): UseUserService => {
     }
   }
 
-  const postById = async (id: string): Promise<'user-block-status-updated' | void> => {
+  const toggleStatus = async (id: string): Promise<'user-block-status-updated' | void> => {
     const response = await UserService.postUserStatus(id)
     if (!response.success) {
       alert(userMappers.translateError[response.error])
@@ -112,7 +112,7 @@ export const useUserAPI = (): UseUserService => {
     get,
     getById,
     post,
-    postById,
+    toggleStatus,
     put,
     updatePassword
   }

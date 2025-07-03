@@ -1,12 +1,13 @@
 import { api } from '@renderer/utils/api'
-import { CategoryAPI, CategoryAPIPost, CategoryAPIPut } from './interfaces'
 import {
+  callback,
   ErrorMessageDelete,
   ErrorMessageGet,
   ErrorMessagePatch,
-  ErrorMessagePost
+  ErrorMessagePost,
+  ResponseAsync
 } from '../interfaces'
-import { callback, ResponseAsync } from '../interfaces'
+import { CategoryAPI, CategoryAPIPost, CategoryAPIPut } from './interfaces'
 
 export default class CategoryService {
   static async getCategories<MappedResponse>(
@@ -64,7 +65,7 @@ export default class CategoryService {
         success: true,
         data: 'category-created'
       }
-    } catch (error) {
+    } catch {
       return {
         success: false,
         error: 'server_error'
