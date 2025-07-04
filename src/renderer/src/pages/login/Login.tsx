@@ -55,24 +55,20 @@ const Login = () => {
   }
 
   const getFieldClassName = (fieldName: string) => {
-    const baseClasses = 'dark:bg-background pr-10'
-
     // Add error styling if field has errors
     if (errors[fieldName as keyof typeof errors]) {
-      return cn(baseClasses, 'border-red-500 focus:border-red-500')
+      return cn('border-red-500 focus:border-red-500')
     }
 
     // Add success styling for server field when connection is successful
     if (fieldName === 'server' && statusState.status === 'success') {
-      return cn(baseClasses, 'border-green-500 focus:border-green-500')
+      return cn('border-green-500 focus:border-green-500')
     }
 
     // Add loading styling for server field when testing
     if (fieldName === 'server' && statusState.status === 'testing') {
-      return cn(baseClasses, 'border-blue-500 focus:border-blue-500')
+      return cn('border-blue-500 focus:border-blue-500')
     }
-
-    return cn(baseClasses)
   }
 
   return (
@@ -99,42 +95,29 @@ const Login = () => {
 
                   return (
                     <div key={field.name} className="space-y-1">
-                      <Controller
+                      <Input
                         name={field.name}
+                        label={field.label}
                         control={control}
-                        render={({ field: controlledField }) => (
-                          <Input
-                            id={controlledField.name}
-                            label={field.label}
-                            rightIcon={
-                              FieldIcon ? (
-                                <div
-                                  onClick={getFieldOnClick(field.name)}
-                                  className={cn(
-                                    'cursor-pointer',
-                                    field.name === 'password' &&
-                                      'hover:opacity-70 transition-opacity'
-                                  )}
-                                >
-                                  <FieldIcon />
-                                </div>
-                              ) : undefined
-                            }
-                            type={getFieldType(field)}
-                            className={getFieldClassName(field.name)}
-                            disabled={isFieldDisabled(field.name)}
-                            placeholder={field.placeholder}
-                            {...controlledField}
-                          />
-                        )}
+                        rightIcon={
+                          FieldIcon ? (
+                            <div
+                              onClick={getFieldOnClick(field.name)}
+                              className={cn(
+                                'cursor-pointer',
+                                field.name === 'password' && 'hover:opacity-70 transition-opacity'
+                              )}
+                            >
+                              <FieldIcon />
+                            </div>
+                          ) : undefined
+                        }
+                        type={getFieldType(field)}
+                        className={getFieldClassName(field.name)}
+                        disabled={isFieldDisabled(field.name)}
+                        placeholder={field.placeholder}
+                        errorMessage={errors[field.name as keyof typeof errors]?.message}
                       />
-
-                      {/* Only show form validation errors, not server status messages */}
-                      {errors[field.name as keyof typeof errors] && (
-                        <p className="text-sm text-red-500 px-1">
-                          {errors[field.name as keyof typeof errors]?.message}
-                        </p>
-                      )}
                     </div>
                   )
                 })}

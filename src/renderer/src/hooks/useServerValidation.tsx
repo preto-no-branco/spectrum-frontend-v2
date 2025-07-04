@@ -3,6 +3,10 @@ import { useDebounce } from '@renderer/hooks/useDebounce'
 import { CheckCircle2, CircleX, Loader2 } from 'lucide-react'
 import axios from 'axios'
 import { showToast } from '@renderer/hooks/useToast'
+import checkError from '@renderer/assets/icons/checkError.svg'
+import checkGray from '@renderer/assets/icons/checkGray.svg'
+import checkGreen from '@renderer/assets/icons/checkGreen.svg'
+import loader from '@renderer/assets/icons/spinner.svg'
 
 export type ServerValidationStatus = 'idle' | 'testing' | 'success' | 'error'
 
@@ -13,10 +17,10 @@ export interface ServerStatusState {
 }
 
 export const statusIcons: Record<ServerValidationStatus, () => React.ReactNode> = {
-  idle: () => <CheckCircle2 strokeWidth={1} />,
-  testing: () => <Loader2 className="animate-spin" />,
-  success: () => <CheckCircle2 className="text-green-600" />,
-  error: () => <CircleX strokeWidth={1} className="text-destructive/60" />
+  idle: () => <img src={checkGray} />,
+  testing: () => <img src={loader} className="animate-spin" />,
+  success: () => <img src={checkGreen} />,
+  error: () => <img src={checkError} />
 }
 
 // State Machine Definition
