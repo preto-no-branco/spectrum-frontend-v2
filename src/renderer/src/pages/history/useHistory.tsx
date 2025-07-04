@@ -132,7 +132,7 @@ const columns: Columns<InspectionColumn> = [
 ]
 
 export function useHistory(filterData: InspectionAPIGetHistoryParams) {
-  const PAGE_SIZE = 2
+  const PAGE_SIZE = 10
   const [date, setDate] = useState<Date | null>(null)
   const [view, setView] = useState<'list' | 'grid'>('list')
   const flexRef = useRef<HTMLDivElement>(null)
@@ -151,8 +151,8 @@ export function useHistory(filterData: InspectionAPIGetHistoryParams) {
             ([, v]) => v !== null && v !== '' && v !== undefined && v !== false
           )
         ),
-        from: '2025-05-21T17:32:28Z',
-        until: '2025-08-01T17:32:28Z',
+        from: filterData.from || '',
+        until: filterData.until || '',
         take: PAGE_SIZE,
         skip: pageParam * PAGE_SIZE
       }),

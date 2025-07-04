@@ -10,7 +10,6 @@ import { Input } from '@/components/ui/input'
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover'
 import { Calendar } from '@/components/ui/calendar'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
-
 import { useEffect, useState } from 'react'
 import { FiSearch, FiDownload, FiChevronDown } from 'react-icons/fi'
 import { BsFilter } from 'react-icons/bs'
@@ -22,6 +21,14 @@ import HistoricCard from '@renderer/components/HistoricCard'
 import { DataTable } from '@renderer/components/Table'
 import { useHistory } from './useHistory'
 import { useInView } from 'react-intersection-observer'
+import { DateRange } from 'react-day-picker'
+
+const convertToUTCMinus3ISOString = (date: Date, h: number, m: number, s: number, ms: number) => {
+  const d = new Date(date)
+  d.setHours(h, m, s, ms)
+  d.setTime(d.getTime() - 3 * 60 * 60 * 1000)
+  return d.toISOString()
+}
 
 const SearchInput = ({ placeholder }: { placeholder: string }) => (
   <div className="relative w-full max-w-60">
@@ -41,7 +48,7 @@ const FilterDropdown = ({
     <DropdownMenuTrigger asChild>
       <Button
         variant="outline"
-        className="w-full px-3 py-2 flex items-center justify-between gap-2 text-muted-foreground"
+        className="w-full px-3 py-2 flex justify-between gap-2 text-muted-foreground"
       >
         <div className="flex items-center gap-2">
           <BsFilter className="h-4 w-4" />
@@ -67,13 +74,13 @@ const FilterDropdown = ({
 )
 
 const DatePickerPopover = ({
-  date,
-  setDate,
+  dates,
+  setDates,
   open,
   setOpen
 }: {
-  date: Date | undefined
-  setDate: (d?: Date) => void
+  dates: DateRange
+  setDates: (d: DateRange) => void
   open: boolean
   setOpen: (b: boolean) => void
 }) => (
@@ -81,54 +88,52 @@ const DatePickerPopover = ({
     <PopoverTrigger asChild>
       <Button
         variant="outline"
-        data-empty={!date}
+        data-empty={!dates}
         className="data-[empty=true]:text-muted-foreground w-full justify-between text-left font-normal"
       >
         <span className="w-full truncate">
-          {date ? date.toLocaleDateString() : 'Selecione um período'}
+          {`${dates?.from?.toLocaleDateString()} - ${dates?.to?.toLocaleDateString()}`}
         </span>
         <CalendarIcon />
       </Button>
     </PopoverTrigger>
     <PopoverContent className="w-auto p-0">
-      <Calendar mode="single" selected={date} onSelect={setDate} />
+      <Calendar mode="range" selected={dates} required onSelect={setDates} />
     </PopoverContent>
   </Popover>
 )
 
 const ViewToggle = () => (
   <TabsList className="flex items-center p-0 border-none">
-    <TabsTrigger
-      value="list"
-      className="px-4 py-0 bg-background border border-border-secondary rounded-tl-lg rounded-tr-none rounded-br-none rounded-bl-md dark:data-[state=active]:bg-background dark:data-[state=active]:border-primary cursor-pointer"
-    >
-      <GrList className="!h-5 !w-5" />
-    </TabsTrigger>
-    <TabsTrigger
-      value="grid"
-      className="px-4 py-0 bg-background border border-border-secondary rounded-tr-md rounded-br-md rounded-tl-none rounded-bl-none dark:data-[state=active]:bg-background dark:data-[state=active]:border-primary cursor-pointer"
-    >
-      <HiOutlineViewGrid className="!h-5 !w-5" />
-    </TabsTrigger>
+    {[
+      { value: 'list', Icon: GrList },
+      { value: 'grid', Icon: HiOutlineViewGrid }
+    ].map(({ value, Icon }) => (
+      <TabsTrigger
+        key={value}
+        value={value}
+        className={`px-4 py-0 bg-background border border-border-secondary cursor-pointer
+          dark:data-[state=active]:bg-background dark:data-[state=active]:border-primary
+          ${value === 'list' ? 'rounded-tl-lg rounded-bl-md' : 'rounded-tr-md rounded-br-md'}
+        `}
+      >
+        <Icon className="!h-5 !w-5" />
+      </TabsTrigger>
+    ))}
   </TabsList>
 )
 
 const History = () => {
   const [open, setOpen] = useState(false)
-  const [date, setDate] = useState<Date>()
+  const [dates, setDates] = useState<DateRange>({
+    from: new Date(new Date().setDate(new Date().getDate() - 6)),
+    to: new Date(new Date().setDate(new Date().getDate() + 1))
+  })
 
-  const {
-    inspections,
-    columns,
-    statusFilter,
-    typesFilter,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage
-  } = useHistory({
+  const [filterData, setFilterData] = useState({
     spectrum: '',
-    from: '',
-    until: '',
+    from: dates.from ? convertToUTCMinus3ISOString(dates.from, 0, 0, 0, 0) : '',
+    until: dates.to ? convertToUTCMinus3ISOString(dates.to, 23, 59, 59, 0) : '',
     plate: '',
     container: '',
     case_id: '',
@@ -141,28 +146,44 @@ const History = () => {
     is_ignored: false
   })
 
+  const {
+    inspections,
+    columns,
+    statusFilter,
+    typesFilter,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage
+  } = useHistory(filterData)
+
   const { ref, inView } = useInView()
 
   useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage()
-    }
+    if (inView && hasNextPage && !isFetchingNextPage) fetchNextPage()
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
+
+  const handleSearch = () => {
+    setFilterData((prev) => ({
+      ...prev,
+      from: dates.from ? convertToUTCMinus3ISOString(dates.from, 0, 0, 0, 0) : '',
+      until: dates.to ? convertToUTCMinus3ISOString(dates.to, 23, 59, 59, 0) : ''
+    }))
+  }
 
   return (
     <Tabs defaultValue="grid" className="w-full h-fit flex flex-col pb-8">
       <div className="flex justify-between px-3 gap-4 sticky pt-2 top-0 z-10 bg-background pb-4 w-full">
         <div className="flex gap-4 w-full">
-          <SearchInput placeholder="Digite o CaseID" />
-          <SearchInput placeholder="Digite a placa" />
-          <SearchInput placeholder="Digite o nº do contêiner" />
+          {['Digite o CaseID', 'Digite a placa', 'Digite o nº do contêiner'].map((ph, i) => (
+            <SearchInput key={i} placeholder={ph} />
+          ))}
           <div className="w-full max-w-60">
             <FilterDropdown statusFilter={statusFilter} typesFilter={typesFilter} />
           </div>
           <div className="w-full max-w-60">
-            <DatePickerPopover date={date} setDate={setDate} open={open} setOpen={setOpen} />
+            <DatePickerPopover dates={dates} setDates={setDates} open={open} setOpen={setOpen} />
           </div>
-          <Button className="w-full max-w-23 font-semibold ml-4">
+          <Button className="w-full max-w-23 font-semibold ml-4" onClick={handleSearch}>
             <FiSearch className="h-4 w-4" />
             Buscar
           </Button>
