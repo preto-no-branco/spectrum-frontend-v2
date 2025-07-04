@@ -4,6 +4,7 @@ import { CreateWindowOptions, RendererRoutes } from './windowManager/interface'
 
 export type AppRoute =
   | '/'
+  | '/login'
   | '/analysis'
   | '/analysis/details'
   | '/history'

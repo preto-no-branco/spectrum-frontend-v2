@@ -8,7 +8,6 @@ if (baseURL && !baseURL.startsWith('http://') && !baseURL.startsWith('https://')
 }
 
 export const api = axios.create({
-  // http://localhost:3000
   baseURL: baseURL || ''
 })
 

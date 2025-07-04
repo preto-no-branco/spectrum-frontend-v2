@@ -16,7 +16,7 @@ function createIPCHandlers(): void {
 app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.electron')
 
-  windowManager.createWindow('/')
+  windowManager.createWindow('/login')
 
   createIPCHandlers()
 
@@ -26,7 +26,7 @@ app.whenReady().then(() => {
 
   app.on('activate', () => {
     if (windowManager.getRootWindows().length === 0) {
-      windowManager.createWindow('/')
+      windowManager.createWindow('/login')
     }
   })
 })
