@@ -7,6 +7,8 @@ import infoCircle from '@/assets/analysis/info-circle.png'
 import checkCircle from '@/assets/analysis/check-circle-filled.png'
 import { useState } from 'react'
 import { cn } from '@renderer/lib/utils'
+import { Input } from '@renderer/components/ui/input'
+import { useContainerWidth } from '@renderer/hooks/useContainerWidth'
 
 interface SidebarBodyProps {
   activeTab: 'details' | 'movements'
@@ -16,10 +18,14 @@ interface SidebarBodyProps {
 export default function SidebarBody({ activeTab, className }: SidebarBodyProps) {
   const [plates, setPlates] = useState<string[]>(['ABC1234', 'XYZ5678'])
   const [containers, setContainers] = useState<string[]>(['12345678912', '98765432100'])
+  const { ref, isBelow } = useContainerWidth<HTMLDivElement>()
+
+  const flexDir = isBelow(300) ? 'flex-col' : 'flex-row'
+  const gap = isBelow(300) ? '' : 'gap-3'
 
   return (
     <>
-      <div className={cn('flex h-full flex-col', className)}>
+      <div className={cn('flex h-full flex-col', className)} ref={ref}>
         <div
           className="p-5 space-y-4 overflow-y-auto h-full"
           style={{
@@ -112,7 +118,96 @@ export default function SidebarBody({ activeTab, className }: SidebarBodyProps) 
             </>
           )}
 
-          {activeTab === 'movements' && <div className="flex flex-1">movements</div>}
+          {activeTab === 'movements' && (
+            <>
+              <div className={`flex ${flexDir} ${gap} text-[#B3BDC0]`}>
+                <Input
+                  type="text"
+                  value={''}
+                  onChange={() => {}}
+                  placeholder="Insira uma palavra-chave"
+                  className={'size-sm'}
+                />
+                {/* Usar Filtros do Leo que ele usou em Histórico */}
+                <Input type="text" value={''} onChange={() => {}} placeholder="Filtrar" />
+              </div>
+
+              <div className="flex flex-col gap-3 pb-6 text-[#B3BDC0]">
+                <span className={cn('font-semibold', 'text-sm')}>
+                  Status da inspeção atualizado
+                </span>
+                <span className={cn('font-normal', 'text-xs', 'text-content-secondary')}>
+                  Lorem ipsum dolor sit amet consectetur. Purus sem facilisis amet pulvinar odio.
+                  Lectus praesent adipiscing eu etiam pharetra egestas sed
+                </span>
+
+                <div className="flex justify-between">
+                  <span className={cn('font-normal', 'text-xs')}>Leonardo Barbosa</span>
+                  <span className={cn('font-normal', 'text-xs')}>12/05/24 16:15:01</span>
+                </div>
+              </div>
+              <hr className="border-t border-gray-700 my-6 h-px" />
+              <div className="flex flex-col gap-3 py-6 text-[#B3BDC0]">
+                <span className={cn('font-semibold', 'text-sm')}>Placas recebidas</span>
+                <span className={cn('font-normal', 'text-xs', 'text-content-secondary')}></span>
+
+                <div className="flex justify-between">
+                  <span className={cn('font-normal', 'text-xs')}>Leonardo Barbosa</span>
+                  <span className={cn('font-normal', 'text-xs')}>12/05/24 16:15:01</span>
+                </div>
+              </div>
+              <hr className="border-t border-gray-700 my-6 h-px" />
+              <div className="flex flex-col gap-3 py-6 text-[#B3BDC0]">
+                <span className={cn('font-semibold', 'text-sm')}>Contêineres recebidos</span>
+                <span className={cn('font-normal', 'text-xs', 'text-content-secondary')}>
+                  Lorem ipsum dolor sit amet consectetur. Purus sem facilisis amet pulvinar odio.
+                  Lectus praesent adipiscing eu etiam pharetra egestas sed
+                </span>
+
+                <div className="flex justify-between">
+                  <span className={cn('font-normal', 'text-xs')}>Leonardo Barbosa</span>
+                  <span className={cn('font-normal', 'text-xs')}>12/05/24 16:15:01</span>
+                </div>
+              </div>
+              <hr className="border-t border-gray-700 my-6 h-px" />
+              <div className="flex flex-col gap-3 py-6 text-[#B3BDC0]">
+                <span className={cn('font-semibold', 'text-sm')}>Máscara do Raio-x recebida</span>
+                <span className={cn('font-normal', 'text-xs', 'text-content-secondary')}>
+                  Lorem ipsum dolor sit amet consectetur. Purus sem facilisis amet pulvinar odio.
+                  Lectus praesent adipiscing eu etiam pharetra egestas sed
+                </span>
+
+                <div className="flex justify-between">
+                  <span className={cn('font-normal', 'text-xs')}>Leonardo Barbosa</span>
+                  <span className={cn('font-normal', 'text-xs')}>12/05/24 16:15:01</span>
+                </div>
+              </div>
+              <hr className="border-t border-gray-700 my-6 h-px" />
+              <div className="flex flex-col gap-3 py-6 text-[#B3BDC0]">
+                <span className={cn('font-semibold', 'text-sm')}>Imagem do UVSS recebida</span>
+                <span className={cn('font-normal', 'text-xs', 'text-content-secondary')}></span>
+
+                <div className="flex justify-between">
+                  <span className={cn('font-normal', 'text-xs')}>Leonardo Barbosa</span>
+                  <span className={cn('font-normal', 'text-xs')}>12/05/24 16:15:01</span>
+                </div>
+              </div>
+              <hr className="border-t border-gray-700 my-6 h-px" />
+              <div className="flex flex-col gap-3 py-6 text-[#B3BDC0]">
+                <span className={cn('font-semibold', 'text-sm')}>Status da radiação recebido</span>
+                <span className={cn('font-normal', 'text-xs', 'text-content-secondary')}>
+                  Lorem ipsum dolor sit amet consectetur. Purus sem facilisis amet pulvinar odio.
+                  Lectus praesent adipiscing eu etiam pharetra egestas sed
+                </span>
+
+                <div className="flex justify-between">
+                  <span className={cn('font-normal', 'text-xs')}>Leonardo Barbosa</span>
+                  <span className={cn('font-normal', 'text-xs')}>12/05/24 16:15:01</span>
+                </div>
+              </div>
+              <hr className="border-t border-gray-700 my-6 h-px" />
+            </>
+          )}
         </div>
       </div>
     </>
