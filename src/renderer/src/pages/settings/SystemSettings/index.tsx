@@ -13,7 +13,7 @@ function SettingsItem({ children, title }: { children: ReactNode; title: string 
   )
 }
 
-export default function SystemSettings() {
+export default function WebhookConfig() {
   const { handleSubmit, IntegrationServerForm, InspectionWindowForm, LanguageForm, ThemeForm } =
     useSystemSettings()
 

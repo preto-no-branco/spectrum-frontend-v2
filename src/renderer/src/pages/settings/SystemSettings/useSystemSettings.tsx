@@ -1,15 +1,18 @@
 import { useForm } from '@renderer/components/custom/Form'
-import { SystemSettings } from '@renderer/services/systemSettingsService/interfaces'
-import { useSystemSettingsAPI } from '@renderer/services/systemSettingsService/useSystemSettingsAPI'
+import { STORAGE_KEY } from '@renderer/core/constants/storageKeys'
+import { useSystemConfig } from '@renderer/services/systemConfigService/useSystemConfig'
+import { WebhookConfig } from '@renderer/services/webhookConfigService/interfaces'
+import { useWebhookConfigAPI } from '@renderer/services/webhookConfigService/useWebhookConfigAPI'
 import { useCallback, useEffect, useState } from 'react'
 
-type ServerSettings = Omit<SystemSettings, 'inspectionWindow' | 'alarmWindow'> & {
+type ServerSettings = Omit<WebhookConfig, 'inspectionWindow' | 'alarmWindow'> & {
   server: string
 }
 
 export const useSystemSettings = () => {
-  const { get, post } = useSystemSettingsAPI()
-  const [systemConfigs, setSystemConfigs] = useState<SystemSettings>({} as SystemSettings)
+  const { get, post } = useWebhookConfigAPI()
+  const { set } = useSystemConfig()
+  const [systemConfigs, setSystemConfigs] = useState<WebhookConfig>({} as WebhookConfig)
 
   const fetchSystemConfigs = useCallback(async () => {
     const data = await get()
@@ -99,13 +102,16 @@ export const useSystemSettings = () => {
   const handleSubmit = useCallback(async () => {
     submitIntegrationServer(async (data) => {
       console.log('🚀 ~ data:', data)
-      post({
-        // alarmWindow: 100,
-        // inspectionWindow: 100,
-        // webhookToken: data.webhookToken,
-        // webhookUrl: data.webhookUrl,
-        // webhookVersion: data.webhookVersion
-      })
+      if (data.server) {
+        set(STORAGE_KEY.SYSTEM_CONFIG.SERVER_URL, data.server)
+      }
+      // post({
+      //   //   // alarmWindow: 100,
+      //   //   // inspectionWindow: 100,
+      //   //   // webhookToken: data.webhookToken,
+      //   //   // webhookUrl: data.webhookUrl,
+      //   //   // webhookVersion: data.webhookVersion
+      // })
     })
   }, [submitIntegrationServer])
 

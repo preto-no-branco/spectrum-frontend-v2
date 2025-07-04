@@ -1,4 +1,4 @@
-export interface SystemSettingsAPI {
+export interface WebhookConfigAPI {
   id: string
   webhook_url: string
   webhook_token: string
@@ -9,7 +9,7 @@ export interface SystemSettingsAPI {
   updated_at: Date | null
 }
 
-export interface SystemSettings {
+export interface WebhookConfig {
   id?: string
   webhookUrl: string
   webhookToken: string
@@ -20,7 +20,7 @@ export interface SystemSettings {
   updatedAt: Date | null
 }
 
-export interface SystemSettingsPost {
+export interface WebhookConfigPost {
   webhook_url: string
   webhook_token: string
   webhook_version: string | null
@@ -28,9 +28,9 @@ export interface SystemSettingsPost {
   alarm_window: number
 }
 
-export interface UseSystemSettingsService {
-  get: () => Promise<SystemSettings | void>
-  post: (config: SystemSettings) => Promise<'system-settings-created' | void>
-  // put: (id: string, config: SystemSettings) => Promise<PermissionAPIPut | void>
+export interface UseWebhookConfigService {
+  get: () => Promise<WebhookConfig | void>
+  post: (config: WebhookConfig) => Promise<'webhook-config-created' | void>
+  // put: (id: string, config: WebhookConfig) => Promise<PermissionAPIPut | void>
   // del: (id: string) => Promise<'permission-deleted' | void>
 }

@@ -1,28 +1,28 @@
-import SystemSettingsService from '.'
-import { SystemSettings, UseSystemSettingsService } from './interfaces'
-import { systemSettingsMappers } from './systemSettingsMappers'
+import WebhookConfigService from '.'
+import { UseWebhookConfigService, WebhookConfig } from './interfaces'
+import { webhookConfigMappers } from './webhookConfigMappers'
 
-export const useSystemSettingsAPI = (): UseSystemSettingsService => {
-  const get = async (): Promise<SystemSettings | void> => {
-    const configs = await SystemSettingsService.get((data) => {
-      return data.map((config) => systemSettingsMappers.mapDataGet(config))
+export const useWebhookConfigAPI = (): UseWebhookConfigService => {
+  const get = async (): Promise<WebhookConfig | void> => {
+    const configs = await WebhookConfigService.get((data) => {
+      return data.map((config) => webhookConfigMappers.mapDataGet(config))
     })
 
     console.log(configs)
 
     if (!configs.success) {
-      // alert(systemSettingsMappers.translateError[configs.error])
+      // alert(webhookConfigMappers.translateError[configs.error])
       return
     }
 
     return configs.data[0]
   }
 
-  const post = async (config: SystemSettings): Promise<'system-settings-created' | void> => {
-    const response = await SystemSettingsService.post(systemSettingsMappers.mapDataPost(config))
+  const post = async (config: WebhookConfig): Promise<'webhook-config-created' | void> => {
+    const response = await WebhookConfigService.post(webhookConfigMappers.mapDataPost(config))
 
     if (!response.success) {
-      alert(systemSettingsMappers.translateError[response.error])
+      alert(webhookConfigMappers.translateError[response.error])
       return
     } else {
       return response.data

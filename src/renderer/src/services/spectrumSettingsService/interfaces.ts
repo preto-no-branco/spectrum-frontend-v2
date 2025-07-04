@@ -21,6 +21,6 @@ export interface SpectrumSettingsPost {
 export interface UseSpectrumSettingsService {
   get: () => Promise<SpectrumSettings[] | void>
   post: (config: SpectrumSettings[]) => Promise<'spectrum-settings-created' | void>
-  // put: (id: string, config: SystemSettings) => Promise<PermissionAPIPut | void>
+  // put: (id: string, config: WebhookConfig) => Promise<PermissionAPIPut | void>
   // del: (id: string) => Promise<'permission-deleted' | void>
 }

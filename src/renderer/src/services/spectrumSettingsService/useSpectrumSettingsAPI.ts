@@ -9,7 +9,7 @@ export const useSpectrumSettingsAPI = (): UseSpectrumSettingsService => {
     })
 
     if (!permissions.success) {
-      // alert(systemSettingsMappers.translateError[permissions.error])
+      // alert(webhookConfigMappers.translateError[permissions.error])
       return
     }
 

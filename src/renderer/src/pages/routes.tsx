@@ -6,7 +6,7 @@ import Home from './home/Home'
 import Settings from './settings'
 import AccessSettings from './settings/AccessSettings'
 import CategoriesSettings from './settings/CategoriesSettings'
-import SystemSettings from './settings/SystemSettings'
+import WebhookConfig from './settings/SystemSettings'
 import UserSettings from './settings/UserSettings'
 import InspectionsSettings from './settings/WayInspectionsSettings'
 
@@ -51,7 +51,7 @@ export const routes: Routes[] = [
       {
         id: 'system-settings',
         path: APP_ROUTES.SETTINGS.SYSTEM,
-        element: <SystemSettings />
+        element: <WebhookConfig />
       },
       {
         id: 'categories-settings',

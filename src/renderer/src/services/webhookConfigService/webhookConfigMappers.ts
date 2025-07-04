@@ -1,7 +1,7 @@
 import { ErrorMessageGet, ErrorMessagePost } from '../interfaces'
-import { SystemSettings, SystemSettingsAPI, SystemSettingsPost } from './interfaces'
+import { WebhookConfig, WebhookConfigAPI, WebhookConfigPost } from './interfaces'
 
-export class systemSettingsMappers {
+export class webhookConfigMappers {
   // TODO: Apply the translate function from the i18n library
   public static translateError: Record<ErrorMessageGet | ErrorMessagePost, string> = {
     not_found: 'Configuração não encontrada',
@@ -15,10 +15,10 @@ export class systemSettingsMappers {
     not_implemented: 'Funcionalidade não implementada'
   }
 
-  public static mapDataGetAll = (data: SystemSettingsAPI[]): SystemSettings[] =>
-    data.map((systemSettings) => systemSettingsMappers.mapDataGet(systemSettings))
+  public static mapDataGetAll = (data: WebhookConfigAPI[]): WebhookConfig[] =>
+    data.map((systemSettings) => webhookConfigMappers.mapDataGet(systemSettings))
 
-  public static mapDataGet = (data: SystemSettingsAPI): SystemSettings => ({
+  public static mapDataGet = (data: WebhookConfigAPI): WebhookConfig => ({
     id: data.id,
     webhookUrl: data.webhook_url,
     webhookToken: data.webhook_token,
@@ -29,7 +29,7 @@ export class systemSettingsMappers {
     updatedAt: data.updated_at
   })
 
-  public static mapDataPost = (data: SystemSettings): SystemSettingsPost => ({
+  public static mapDataPost = (data: WebhookConfig): WebhookConfigPost => ({
     webhook_url: data.webhookUrl,
     webhook_token: data.webhookToken,
     webhook_version: data.webhookVersion,

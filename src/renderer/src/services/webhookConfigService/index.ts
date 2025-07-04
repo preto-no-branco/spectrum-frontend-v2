@@ -6,14 +6,14 @@ import {
   ErrorMessagePost,
   ResponseAsync
 } from '../interfaces'
-import { SystemSettingsAPI, SystemSettingsPost } from './interfaces'
+import { WebhookConfigAPI, WebhookConfigPost } from './interfaces'
 
-export default class SystemSettingsService {
+export default class WebhookConfigService {
   static async get<MappedResponse>(
-    callback: callback<SystemSettingsAPI[], MappedResponse>
+    callback: callback<WebhookConfigAPI[], MappedResponse>
   ): ResponseAsync<MappedResponse, ErrorMessageGet> {
     try {
-      const response = await api.get<SystemSettingsAPI>('/configurations')
+      const response = await api.get<WebhookConfigAPI>('/configurations')
       return {
         success: true,
         data: callback([response.data])
@@ -27,13 +27,13 @@ export default class SystemSettingsService {
   }
 
   static async post(
-    config: SystemSettingsPost
-  ): ResponseAsync<'system-settings-created', ErrorMessagePost> {
+    config: WebhookConfigPost
+  ): ResponseAsync<'webhook-config-created', ErrorMessagePost> {
     try {
       await api.post<{ message: string }>('/configurations', config)
       return {
         success: true,
-        data: 'system-settings-created'
+        data: 'webhook-config-created'
       }
     } catch {
       return {
