@@ -25,7 +25,7 @@ export class EffectStep implements PipelineStep<Mat, EffectType[]> {
   constructor(cv: CV) {
     this.cv = cv
     this.adapters = {
-      '': this.noneEffect,
+      none: this.noneEffect,
       edgeDetection: this.effectAdapter(edgeDetection),
       emboss: this.effectAdapter(emboss),
       denseObject: this.effectAdapter(denseObject),

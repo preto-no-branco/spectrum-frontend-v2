@@ -6,18 +6,29 @@ import {
   EffectType,
   NonLinearMapType
 } from '@renderer/Image-processing/types/effects.types'
+import { ROIStore } from '@renderer/pages/analysis/stores/ROIStore'
 
 export const useEffectsTag = () => {
-  const { colorMap, linearMap, effectStack, contrast, exposure } = useStore(
+  const RoiRect = useStore(ROIStore, (state) => state)
+  const hasROISelected = RoiRect.width > 0 && RoiRect.height > 0
+
+  const { colorMap, linearMap, effectStack, contrast, exposure, histogramROI } = useStore(
     effectsStore,
     (state) => ({
       colorMap: state.colorMap,
       linearMap: state.linearMap,
       effectStack: state.effectStack,
       contrast: state.contrast,
-      exposure: state.exposure
+      exposure: state.exposure,
+      histogramROI: state.histogramROI
     })
   )
+
+  const hasHistogramROISelected =
+    histogramROI.x_start !== 0 ||
+    histogramROI.x_end !== 0 ||
+    histogramROI.y_start !== 0 ||
+    histogramROI.y_end !== 0
   const removeEffectFromStack = useCallback((index: number) => {
     effectsStore.setState((state) => ({
       ...state,
@@ -66,6 +77,8 @@ export const useEffectsTag = () => {
     effectStack: effectStack.map((effect) => effectsDictionary[effect] || effect),
     contrast,
     exposure,
-    removeEffectFromStack
+    removeEffectFromStack,
+    hasROISelected,
+    hasHistogramROISelected
   }
 }

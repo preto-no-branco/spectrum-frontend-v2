@@ -1,4 +1,4 @@
-import { BiMinus, BiPlus, BiTargetLock } from "react-icons/bi"
+import { BiMinus, BiPlus, BiTargetLock } from 'react-icons/bi'
 
 const ZoomControls = ({
   zoomIn,
@@ -14,7 +14,7 @@ const ZoomControls = ({
       <div
         onClick={() => resetTransform()}
         className="absolute top-2 right-2 bg-background text-white px-1 py-1 rounded-lg
-                z-10 shadow-md font-semibold text-sm border-1 border-border-primary"
+                z-10 shadow-md font-semibold text-sm border-1 border-border-primary hover:cursor-pointer"
       >
         <BiTargetLock className="w-5 h-5" />
       </div>
@@ -23,9 +23,9 @@ const ZoomControls = ({
                 right-2 bg-background text-white px-1 py-1 rounded-lg z-10 shadow-md font-semibold
                 text-sm border-1 border-border-primary"
       >
-        <BiMinus onClick={() => zoomOut()} className="w-5 h-5" />
+        <BiMinus onClick={() => zoomOut()} className="w-5 h-5 hover:cursor-pointer" />
         <div className="border-t border-gray-600 w-4"></div>
-        <BiPlus onClick={() => zoomIn()} className="w-5 h-5" />
+        <BiPlus onClick={() => zoomIn()} className="w-5 h-5 hover:cursor-pointer" />
       </div>
     </>
   )

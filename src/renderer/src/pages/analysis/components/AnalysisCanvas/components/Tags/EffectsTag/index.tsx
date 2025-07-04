@@ -3,7 +3,14 @@ import { useEffectsTag } from './useEffectsTag'
 import { IoIosArrowForward, IoMdClose } from 'react-icons/io'
 
 const EffectsTag: React.FC = () => {
-  const { linearMap, colorMap, effectStack, removeEffectFromStack } = useEffectsTag()
+  const {
+    linearMap,
+    colorMap,
+    effectStack,
+    removeEffectFromStack,
+    hasROISelected,
+    hasHistogramROISelected
+  } = useEffectsTag()
 
   return (
     <div
@@ -16,13 +23,31 @@ const EffectsTag: React.FC = () => {
         flex flex-wrap items-center gap-1
       "
     >
+      {hasHistogramROISelected && (
+        <>
+          <span>Histograma</span>
+          <span className="px-1">
+            <IoIosArrowForward className="fill-content-tertiary" />
+          </span>
+        </>
+      )}
+      {hasROISelected && (
+        <>
+          <span>ROI</span>
+          <span className="px-1">
+            <IoIosArrowForward className="fill-content-tertiary" />
+          </span>
+        </>
+      )}
       <span>{linearMap}</span>
-      <span className="px-1"><IoIosArrowForward className='fill-content-tertiary'/></span>
+      <span className="px-1">
+        <IoIosArrowForward className="fill-content-tertiary" />
+      </span>
       <span>{colorMap}</span>
       {effectStack.map((effect, idx) => (
         <React.Fragment key={idx}>
           <span className="px-1">
-            <IoIosArrowForward className='fill-content-tertiary'/>
+            <IoIosArrowForward className="fill-content-tertiary" />
           </span>
           <button
             onClick={() => removeEffectFromStack(idx)}

@@ -1,7 +1,6 @@
 import { ErrorMessageGet, ErrorMessagePost } from '../interfaces'
 import {
   Inspection,
-  InspectionAPI,
   InspectionAPIGetById,
   InspectionAPIGetHistory,
   InspectionAPIPut

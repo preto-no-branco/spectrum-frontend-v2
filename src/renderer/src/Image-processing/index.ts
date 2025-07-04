@@ -2,7 +2,7 @@ import { Mat, CV } from '@techstark/opencv-js'
 import { Pipeline } from './pipeline'
 import { PipelineStep } from './interfaces/pipeline'
 import { m16UC1to8UC1 } from './utils'
-import { ColorMapType, EffectType, NonLinearMapType } from './types/effects.types'
+import { ColorMapType, EffectType, HistogramROI, NonLinearMapType } from './types/effects.types'
 export default class ImageProcessing {
   private cv: CV
   private pipeline: Pipeline<Mat>
@@ -45,6 +45,16 @@ export default class ImageProcessing {
     )
     if (!updated) {
       this.pipeline.addStep(step, effectStack)
+    }
+  }
+
+  public histogramStep(roi: HistogramROI, step: PipelineStep<Mat, HistogramROI>): void {
+    const updated = this.pipeline.updateStepIfExists(
+      (s) => s.constructor.name === step.constructor.name,
+      roi
+    )
+    if (!updated) {
+      this.pipeline.addStep(step, roi)
     }
   }
 

@@ -29,3 +29,10 @@ export type NonLinearMapType =
   | 'sigmoidMap2'
   | 'gammaMap1'
   | 'gammaMap2'
+
+export type HistogramROI = {
+  x_start: number
+  x_end: number
+  y_start: number
+  y_end: number
+}

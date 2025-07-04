@@ -11,7 +11,7 @@ type EffectsState = {
   effectStack: EffectType[]
   contrast: number
   exposure: number
-  HistogramROI?: {
+  histogramROI: {
     x_start: number
     x_end: number
     y_start: number
@@ -25,7 +25,12 @@ export const initialEffectsState: EffectsState = {
   effectStack: [],
   contrast: 1,
   exposure: 1,
-  HistogramROI: undefined
+  histogramROI: {
+    x_start: 0,
+    x_end: 0,
+    y_start: 0,
+    y_end: 0
+  }
 }
 
 export const effectsStore = new Store<EffectsState>(initialEffectsState)
