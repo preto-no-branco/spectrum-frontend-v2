@@ -1,5 +1,6 @@
 export const APP_ROUTES = {
   HOME: '/',
+  LOGIN: '/login',
   ANALYSIS: {
     INITIAL: '/analysis',
     DETAILS: '/analysis/details'

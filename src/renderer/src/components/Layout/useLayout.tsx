@@ -11,7 +11,7 @@ export const useLayout = () => {
   const location = useLocation()
   const isAnalysisPage = location.pathname === APP_ROUTES.ANALYSIS.INITIAL
 
-  const disableLayoutPages: Set<string> = new Set([APP_ROUTES.ANALYSIS.DETAILS])
+  const disableLayoutPages: Set<string> = new Set([APP_ROUTES.ANALYSIS.DETAILS, APP_ROUTES.LOGIN])
 
   const isLayoutDisabled = disableLayoutPages.has(location.pathname)
 

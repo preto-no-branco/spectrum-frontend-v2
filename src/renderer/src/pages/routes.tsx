@@ -9,6 +9,7 @@ import CategoriesSettings from './settings/CategoriesSettings'
 import SystemSettings from './settings/SystemSettings'
 import UserSettings from './settings/UserSettings'
 import InspectionsSettings from './settings/WayInspectionsSettings'
+import Login from './login/Login'
 
 type Routes = {
   id: string
@@ -18,6 +19,11 @@ type Routes = {
 }
 
 export const routes: Routes[] = [
+  {
+    id: 'login',
+    path: APP_ROUTES.LOGIN,
+    element: <Login />
+  },
   {
     id: 'home',
     path: APP_ROUTES.HOME,
