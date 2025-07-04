@@ -51,7 +51,7 @@ const Login = () => {
   }
 
   const isFieldDisabled = (fieldName: string) => {
-    return fieldName === 'server' && statusState.status === 'loading'
+    return fieldName === 'server' && statusState.status === 'testing'
   }
 
   const getFieldClassName = (fieldName: string) => {
@@ -68,7 +68,7 @@ const Login = () => {
     }
 
     // Add loading styling for server field when testing
-    if (fieldName === 'server' && statusState.status === 'loading') {
+    if (fieldName === 'server' && statusState.status === 'testing') {
       return cn(baseClasses, 'border-blue-500 focus:border-blue-500')
     }
 
@@ -78,7 +78,7 @@ const Login = () => {
   return (
     <div className="flex items-center justify-center w-full h-screen max-h-full">
       <FormProvider {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={onSubmit}>
           <div className="bg-background-secondary border border-secondary rounded-[12px] flex flex-col items-center py-6 max-h-[37rem] max-w-[24.5rem]">
             <CardContent className="space-y-4 flex flex-col gap-3 w-full">
               <h1 className="text-2xl font-semibold text-left text-secondary-foreground pb-2">
@@ -153,7 +153,7 @@ const Login = () => {
                   <span
                     className={cn('transition-colors', submitDisable && 'text-content-secondary')}
                   >
-                    {statusState.status === 'loading' ? 'Verificando...' : 'Acessar'}
+                    {statusState.status === 'testing' ? 'Verificando...' : 'Acessar'}
                   </span>
                 </Button>
               </div>
