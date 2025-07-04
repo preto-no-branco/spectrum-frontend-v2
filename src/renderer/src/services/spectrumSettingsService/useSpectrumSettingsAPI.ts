@@ -1,28 +1,26 @@
-import SystemSettingsService from '.'
-import { SystemSettings, UseSystemSettingsService } from './interfaces'
-import { systemSettingsMappers } from './systemSettingsMappers'
+import SpectrumSettingsService from '.'
+import { SpectrumSettings, UseSpectrumSettingsService } from './interfaces'
+import { spectrumSettingsMappers } from './spectrumSettingsMappers'
 
-export const useSystemSettingsAPI = (): UseSystemSettingsService => {
-  const get = async (): Promise<SystemSettings | void> => {
-    const configs = await SystemSettingsService.get((data) => {
-      return data.map((config) => systemSettingsMappers.mapDataGet(config))
+export const useSpectrumSettingsAPI = (): UseSpectrumSettingsService => {
+  const get = async (): Promise<SpectrumSettings[] | void> => {
+    const permissions = await SpectrumSettingsService.get((data) => {
+      return data.map((permission) => spectrumSettingsMappers.mapDataGet(permission))
     })
 
-    console.log(configs)
-
-    if (!configs.success) {
-      // alert(systemSettingsMappers.translateError[configs.error])
+    if (!permissions.success) {
+      // alert(systemSettingsMappers.translateError[permissions.error])
       return
     }
 
-    return configs.data[0]
+    return permissions.data
   }
 
-  const post = async (config: SystemSettings): Promise<'system-settings-created' | void> => {
-    const response = await SystemSettingsService.post(systemSettingsMappers.mapDataPost(config))
+  const post = async (config: SpectrumSettings[]): Promise<'spectrum-settings-created' | void> => {
+    const response = await SpectrumSettingsService.post(spectrumSettingsMappers.mapDataPost(config))
 
     if (!response.success) {
-      alert(systemSettingsMappers.translateError[response.error])
+      alert(spectrumSettingsMappers.translateError[response.error])
       return
     } else {
       return response.data

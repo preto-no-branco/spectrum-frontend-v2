@@ -6,17 +6,17 @@ import {
   ErrorMessagePost,
   ResponseAsync
 } from '../interfaces'
-import { SystemSettingsAPI, SystemSettingsPost } from './interfaces'
+import { SpectrumSettingsAPI, SpectrumSettingsPost } from './interfaces'
 
-export default class SystemSettingsService {
+export default class SpectrumSettingsService {
   static async get<MappedResponse>(
-    callback: callback<SystemSettingsAPI[], MappedResponse>
+    callback: callback<SpectrumSettingsAPI[], MappedResponse>
   ): ResponseAsync<MappedResponse, ErrorMessageGet> {
     try {
-      const response = await api.get<SystemSettingsAPI>('/configurations')
+      const response = await api.get<SpectrumSettingsAPI[]>('/spectrum')
       return {
         success: true,
-        data: callback([response.data])
+        data: callback(response.data)
       }
     } catch {
       return {
@@ -27,13 +27,14 @@ export default class SystemSettingsService {
   }
 
   static async post(
-    config: SystemSettingsPost
-  ): ResponseAsync<'system-settings-created', ErrorMessagePost> {
+    spectrum: SpectrumSettingsPost[]
+  ): ResponseAsync<'spectrum-settings-created', ErrorMessagePost> {
+    console.log('🚀 ~ spectrum:', spectrum)
     try {
-      await api.post<{ message: string }>('/configurations', config)
+      await api.post<{ message: string }>('/spectrum', spectrum)
       return {
         success: true,
-        data: 'system-settings-created'
+        data: 'spectrum-settings-created'
       }
     } catch {
       return {

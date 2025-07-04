@@ -1,12 +1,15 @@
 import { useForm } from '@renderer/components/custom/Form'
+import { SpectrumSettings } from '@renderer/services/spectrumSettingsService/interfaces'
 import { useCallback } from 'react'
 
-export const useWayInspectionFormModal = () => {
-  const { Form: WayInspectionForm, submitForm } = useForm<{
-    name: string
-    code: string
-  }>({
+export const useWayInspectionFormModal = ({
+  defaultValues
+}: {
+  defaultValues?: SpectrumSettings
+}) => {
+  const { Form: WayInspectionForm, submitForm } = useForm<SpectrumSettings>({
     // schema: accessProfileSchema,
+    defaultValues,
     fields: {
       name: {
         colSpan: 2,
@@ -20,11 +23,14 @@ export const useWayInspectionFormModal = () => {
     }
   })
 
-  const handleSubmit = useCallback(() => {
-    submitForm((data) => {
-      console.log('🚀 ~ data:', data)
-    })
-  }, [submitForm])
+  const handleSubmit = useCallback(
+    (callback: (data: SpectrumSettings, id?: string) => void) => {
+      submitForm((data) => {
+        callback(data, defaultValues?.id)
+      })
+    },
+    [submitForm, defaultValues?.id]
+  )
 
   return {
     WayInspectionForm,

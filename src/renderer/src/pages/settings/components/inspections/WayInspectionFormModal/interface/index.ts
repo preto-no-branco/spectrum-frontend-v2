@@ -1,6 +1,8 @@
+import { SpectrumSettings } from '@renderer/services/spectrumSettingsService/interfaces'
+
 export interface WayInspectionFormModalProps {
   isOpen: boolean
+  defaultValues?: SpectrumSettings
   onClose: () => void
-  onSubmit: (data: unknown) => void
-  // TODO: implement user interface
+  onSubmit: (data: SpectrumSettings, id?: string) => void
 }

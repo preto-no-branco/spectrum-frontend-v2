@@ -29,7 +29,7 @@ export interface SystemSettingsPost {
 }
 
 export interface UseSystemSettingsService {
-  get: () => Promise<SystemSettings[] | void>
+  get: () => Promise<SystemSettings | void>
   post: (config: SystemSettings) => Promise<'system-settings-created' | void>
   // put: (id: string, config: SystemSettings) => Promise<PermissionAPIPut | void>
   // del: (id: string) => Promise<'permission-deleted' | void>

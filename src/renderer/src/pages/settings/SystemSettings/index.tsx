@@ -1,3 +1,4 @@
+import { Button } from '@renderer/components/ui/button'
 import { Label } from '@renderer/components/ui/label'
 import { SystemSettingsLayout } from '@renderer/pages/settings/components/system/SystemSettingsLayout'
 import { ReactNode } from 'react'
@@ -5,7 +6,7 @@ import { useSystemSettings } from './useSystemSettings'
 
 function SettingsItem({ children, title }: { children: ReactNode; title: string }) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 relative">
       <Label className="text-xl font-medium">{title}</Label>
       <div className="flex flex-col gap-3">{children}</div>
     </div>
@@ -13,12 +14,15 @@ function SettingsItem({ children, title }: { children: ReactNode; title: string 
 }
 
 export default function SystemSettings() {
-  const { IntegrationServerForm, InspectionWindowForm, LanguageForm, ThemeForm } =
+  const { handleSubmit, IntegrationServerForm, InspectionWindowForm, LanguageForm, ThemeForm } =
     useSystemSettings()
 
   return (
     <div className="flex flex-col flex-1 items-center w-full gap-12">
       <SettingsItem title="Servidores e conexões">
+        <Button className="w-fit absolute top-0 right-0" size="sm" onClick={handleSubmit}>
+          Salvar configurações
+        </Button>
         <SystemSettingsLayout
           title="Servidores de integração"
           description="Selecione ou edite o servidor de integração"

@@ -3,16 +3,13 @@ import { SystemSettings } from '@renderer/services/systemSettingsService/interfa
 import { useSystemSettingsAPI } from '@renderer/services/systemSettingsService/useSystemSettingsAPI'
 import { useCallback, useEffect, useState } from 'react'
 
-export type IntegrationServer = {
+type ServerSettings = Omit<SystemSettings, 'inspectionWindow' | 'alarmWindow'> & {
   server: string
-  webHookUrl: string
-  webhookToken: string
-  webhookType: string
 }
 
 export const useSystemSettings = () => {
-  const { get } = useSystemSettingsAPI()
-  const [systemConfigs, setSystemConfigs] = useState<SystemSettings[]>([])
+  const { get, post } = useSystemSettingsAPI()
+  const [systemConfigs, setSystemConfigs] = useState<SystemSettings>({} as SystemSettings)
 
   const fetchSystemConfigs = useCallback(async () => {
     const data = await get()
@@ -21,35 +18,45 @@ export const useSystemSettings = () => {
     if (data) setSystemConfigs(data)
   }, [get])
 
-  const { Form: IntegrationServerForm } = useForm<IntegrationServer>({
-    fields: {
-      server: {
-        label: 'Servidor',
-        placeholder: 'Endereço do servidor'
+  const { Form: IntegrationServerForm, submitForm: submitIntegrationServer } =
+    useForm<ServerSettings>({
+      defaultValues: {
+        server: '',
+        webhookUrl: systemConfigs.webhookUrl,
+        webhookToken: systemConfigs.webhookToken,
+        webhookVersion: systemConfigs.webhookVersion || undefined
       },
-      webHookUrl: {
-        label: 'URL do Webhook',
-        placeholder: 'Digite a URL'
-      },
-      webhookToken: {
-        inputType: 'textarea',
-        label: 'Token do Webhook',
-        placeholder: 'Digite o token do Webhook'
-      },
-      webhookType: {
-        inputType: 'radio',
-        label: 'Formato do Webhook',
-        options: [
-          { label: 'V1', value: 'v1' },
-          { label: 'V2', value: 'v2' }
-        ]
+      fields: {
+        server: {
+          label: 'Servidor',
+          placeholder: 'Endereço do servidor'
+        },
+        webhookUrl: {
+          label: 'URL do Webhook',
+          placeholder: 'Digite a URL'
+        },
+        webhookToken: {
+          inputType: 'textarea',
+          label: 'Token do Webhook',
+          placeholder: 'Digite o token do Webhook'
+        },
+        webhookVersion: {
+          inputType: 'radio',
+          label: 'Formato do Webhook',
+          options: [
+            { label: 'V1', value: 'v1' },
+            { label: 'V2', value: 'v2' }
+          ]
+        }
       }
-    }
-  })
+    })
 
-  const { Form: InspectionWindowForm } = useForm<{
+  const { Form: InspectionWindowForm, submitForm: submitInspectionWindow } = useForm<{
     inspectionWindow: number
   }>({
+    defaultValues: {
+      inspectionWindow: systemConfigs.inspectionWindow
+    },
     fields: {
       inspectionWindow: {
         label: 'Janela de inspeção',
@@ -89,12 +96,27 @@ export const useSystemSettings = () => {
     }
   })
 
+  const handleSubmit = useCallback(async () => {
+    submitIntegrationServer(async (data) => {
+      console.log('🚀 ~ data:', data)
+      post({
+        // alarmWindow: 100,
+        // inspectionWindow: 100,
+        // webhookToken: data.webhookToken,
+        // webhookUrl: data.webhookUrl,
+        // webhookVersion: data.webhookVersion
+      })
+    })
+  }, [submitIntegrationServer])
+
   useEffect(() => {
     fetchSystemConfigs()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return {
+    systemConfigs,
+    handleSubmit,
     IntegrationServerForm,
     InspectionWindowForm,
     LanguageForm,

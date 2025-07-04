@@ -7,10 +7,14 @@ import { useWayInspectionsSettings } from './useWayInspectionsSettings'
 
 export default function WayInspectionsSettings() {
   const {
+    filteredWayInspections,
+    spectrumToEdit,
+    isCreateWayIdentifierModalOpen,
     handleEditWayIdentifier,
     handleDeleteWayIdentifier,
-    handleCreateWayIdentifier,
-    isCreateWayIdentifierModalOpen,
+    handleSubmitWayIdentifier,
+    onSearchTermChange,
+    onOpenCreateWayIdentifierModal,
     onCloseCreateWayIdentifierModal
   } = useWayInspectionsSettings()
 
@@ -18,20 +22,27 @@ export default function WayInspectionsSettings() {
     <div className="flex flex-col flex-1 w-full gap-3">
       <div className="flex w-full justify-between">
         <div className="flex gap-3">
-          <Input type="search" placeholder="Pesquisar" leftIcon={<Search size={16} />} />
+          <Input
+            type="search"
+            placeholder="Pesquisar"
+            leftIcon={<Search size={16} />}
+            onChange={onSearchTermChange}
+          />
         </div>
-        <Button onClick={handleCreateWayIdentifier}>Cadastrar identificador</Button>
+        <Button onClick={onOpenCreateWayIdentifierModal}>Cadastrar identificador</Button>
       </div>
 
       <div className="flex flex-1">
         <WayInspectionsTable
+          spectrums={filteredWayInspections}
           onEdit={handleEditWayIdentifier}
           onDelete={handleDeleteWayIdentifier}
         />
         <WayInspectionFormModal
           isOpen={isCreateWayIdentifierModalOpen}
           onClose={onCloseCreateWayIdentifierModal}
-          onSubmit={() => console.log('submit')}
+          defaultValues={spectrumToEdit || undefined}
+          onSubmit={handleSubmitWayIdentifier}
         />
       </div>
     </div>
