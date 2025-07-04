@@ -1,5 +1,6 @@
-import { Button } from '@renderer/components/ui/button'
 import { Label } from '@renderer/components/ui/label'
+import { Select } from '@renderer/components/ui/select'
+import { themeOptions } from '@renderer/core/configs/forms/systemConfig'
 import { SystemSettingsLayout } from '@renderer/pages/settings/components/system/SystemSettingsLayout'
 import { ReactNode } from 'react'
 import { useSystemSettings } from './useSystemSettings'
@@ -14,24 +15,26 @@ function SettingsItem({ children, title }: { children: ReactNode; title: string 
 }
 
 export default function WebhookConfig() {
-  const { handleSubmit, IntegrationServerForm, InspectionWindowForm, LanguageForm, ThemeForm } =
-    useSystemSettings()
+  const {
+    theme,
+    setTheme,
+    handleSubmit,
+    handleSubmitServerConfig,
+    ServerInput,
+    WebhookForm,
+    InspectionWindowForm,
+    LanguageForm
+  } = useSystemSettings()
 
   return (
     <div className="flex flex-col flex-1 items-center w-full gap-12">
       <SettingsItem title="Servidores e conexões">
-        <Button className="w-fit absolute top-0 right-0" size="sm" onClick={handleSubmit}>
-          Salvar configurações
-        </Button>
         <SystemSettingsLayout
           title="Servidores de integração"
           description="Selecione ou edite o servidor de integração"
         >
-          <IntegrationServerForm
-            containerProps={{
-              className: 'w-full'
-            }}
-          />
+          <ServerInput onSubmit={handleSubmitServerConfig} />
+          <WebhookForm onSubmit={handleSubmit} />
         </SystemSettingsLayout>
       </SettingsItem>
 
@@ -56,7 +59,13 @@ export default function WebhookConfig() {
           title="Tema da interface"
           description="Selecione o esquema de cores da interface"
         >
-          <ThemeForm containerProps={{ className: 'w-2/6' }} />
+          <Select
+            name="theme"
+            containerProps={{ className: 'w-2/6' }}
+            options={themeOptions}
+            defaultValue={theme}
+            onValueChange={setTheme}
+          />
         </SystemSettingsLayout>
       </SettingsItem>
 

@@ -1,19 +1,19 @@
-import { SettingsService } from '.'
-import { AppSettings, UseAppSettingsService } from './interfaces'
+import { SystemConfigService } from '.'
+import { AppSettings, SystemConfigKey, UseAppSettingsService } from './interfaces'
 
 export const useSystemConfig = (): UseAppSettingsService => {
-  const get = (key: keyof AppSettings) => {
-    SettingsService.get(key)
+  const getSystemConfig = (key: SystemConfigKey) => {
+    return SystemConfigService.get(key) ?? ''
   }
-  const set = (key: keyof AppSettings, value: AppSettings[keyof AppSettings]) => {
-    SettingsService.set(key, value)
+  const setSystemConfig = (key: SystemConfigKey, value: AppSettings[keyof AppSettings]) => {
+    return SystemConfigService.set(key, value)
   }
-  const reset = () => {
-    SettingsService.reset()
+  const resetSystemConfig = () => {
+    return SystemConfigService.reset()
   }
   return {
-    get,
-    set,
-    reset
+    getSystemConfig,
+    setSystemConfig,
+    resetSystemConfig
   }
 }

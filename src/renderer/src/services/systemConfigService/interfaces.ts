@@ -3,6 +3,7 @@ import { STORAGE_KEY } from '@renderer/core/constants/storageKeys'
 export type SorageSystemConfigKey = 'SERVER_URL' | 'THEME' | 'LANGUAGE'
 
 export type SystemConfig = keyof typeof STORAGE_KEY.SYSTEM_CONFIG
+export type SystemConfigKey = (typeof STORAGE_KEY.SYSTEM_CONFIG)[SystemConfig]
 
 export type AppSettings = {
   THEME: 'light' | 'dark'
@@ -11,7 +12,7 @@ export type AppSettings = {
 }
 
 export interface UseAppSettingsService {
-  get: (key: keyof AppSettings) => void
-  set: (key: AppSettings[keyof AppSettings], value: AppSettings[keyof AppSettings]) => void
-  reset: () => void
+  getSystemConfig: (key: SystemConfigKey) => AppSettings[SystemConfig]
+  setSystemConfig: (key: SystemConfigKey, value: AppSettings[keyof AppSettings]) => void
+  resetSystemConfig: () => void
 }

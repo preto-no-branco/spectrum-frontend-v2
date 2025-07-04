@@ -17,9 +17,13 @@ function RenderInput({
   ...restInputProps
 }: Omit<InputProps, 'control'>) {
   const { className: containerClassName, ...restContainerProps } = containerProps || {}
+
   return (
     <div
-      className={cn('flex flex-col gap-2 pb-6 relative', containerClassName)}
+      className={cn(
+        'flex flex-col gap-2 pb-6 relative disabled:cursor-not-allowed',
+        containerClassName
+      )}
       {...restContainerProps}
     >
       {label && (

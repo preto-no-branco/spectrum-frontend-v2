@@ -87,13 +87,17 @@ function createFormFields<T extends FieldValues>({
           const { inputType, colSpan, ...restField } = field
 
           if (inputType === 'custom') {
-            const Component = field.component
+            const { component: Component, ...restCustomComponent } = field
+            //eslint-disable-next-line
+            // @ts-ignore
+            delete restCustomComponent.inputType
+
             return (
               <div key={name} style={{ gridColumn: `span ${colSpan ?? 1}` }}>
                 <Component
                   control={control}
                   name={String(name)}
-                  {...field}
+                  {...restCustomComponent}
                   style={{ gridColumn: `span ${colSpan ?? 1}` }}
                 />
               </div>

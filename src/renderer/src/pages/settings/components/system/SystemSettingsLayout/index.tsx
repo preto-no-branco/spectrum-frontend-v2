@@ -13,7 +13,7 @@ export function SystemSettingsLayout({ children, title, description }: SystemSet
         <Label className="text-lg font-medium">{title}</Label>
         {description && <span className="text-sm text-muted-foreground">{description}</span>}
       </div>
-      <div className="flex flex-1 w-full">{children}</div>
+      <div className="flex flex-col flex-1 w-full">{children}</div>
     </div>
   )
 }

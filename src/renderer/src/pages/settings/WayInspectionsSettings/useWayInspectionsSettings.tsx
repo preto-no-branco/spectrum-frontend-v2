@@ -29,6 +29,10 @@ export const useWayInspectionsSettings = () => {
 
   const onCloseCreateWayIdentifierModal = useCallback(() => {
     setIsCreateWayIdentifierModalOpen(false)
+
+    setTimeout(() => {
+      setSpectrumToEdit(null)
+    }, 300)
   }, [])
 
   const onOpenCreateWayIdentifierModal = useCallback(() => {

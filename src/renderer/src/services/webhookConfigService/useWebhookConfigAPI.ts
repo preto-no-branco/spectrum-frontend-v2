@@ -8,8 +8,6 @@ export const useWebhookConfigAPI = (): UseWebhookConfigService => {
       return data.map((config) => webhookConfigMappers.mapDataGet(config))
     })
 
-    console.log(configs)
-
     if (!configs.success) {
       // alert(webhookConfigMappers.translateError[configs.error])
       return

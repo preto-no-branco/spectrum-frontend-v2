@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import { CommonInputProps, InputPropsWithControl } from './input'
 import { SelectOption } from './select'
+import { TextareaPropsWithControl } from './textarea'
 
 export type FormInputType =
   | 'input'
@@ -11,7 +12,7 @@ export type FormInputType =
   | 'date'
   | 'custom'
 
-export type CustomComponentProps = InputPropsWithControl & {
+export type CustomComponentProps = (TextareaPropsWithControl & InputPropsWithControl) & {
   options?: SelectOption[]
 }
 

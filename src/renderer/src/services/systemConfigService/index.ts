@@ -7,26 +7,25 @@ const defaults: AppSettings = {
   LANGUAGE: 'pt'
 }
 
-export class SettingsService {
-  private static storage: Storage
+export class SystemConfigService {
+  static get(
+    key: (typeof STORAGE_KEY.SYSTEM_CONFIG)[SystemConfig]
+  ): AppSettings[SystemConfig] | null {
+    const value = localStorage.getItem(key) as AppSettings[SystemConfig] | null
 
-  constructor() {
-    SettingsService.storage = localStorage
+    return value
   }
 
-  static get<K extends keyof typeof STORAGE_KEY.SYSTEM_CONFIG>(key: K) {
-    SettingsService.storage.set(key, this.storage.getItem(key))
-
-    return
-  }
-
-  static set<K extends SystemConfig>(key: K, value: AppSettings[K]) {
-    SettingsService.storage.setItem(key, value)
+  static set(
+    key: (typeof STORAGE_KEY.SYSTEM_CONFIG)[SystemConfig],
+    value: AppSettings[SystemConfig]
+  ) {
+    localStorage.setItem(key, value)
     return value
   }
 
   static reset() {
-    SettingsService.storage.clear()
+    localStorage.clear()
     return defaults
   }
 }
